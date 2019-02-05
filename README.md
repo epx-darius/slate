@@ -1,6 +1,6 @@
-#EpxApi Documentation
+# EpxApi Documentation
 
-##Installing Requirements
+## Installing Requirements
 
 - install [slate](https://github.com/epx-darius/slate) our forked version of the popular markdown documentation generator
 
