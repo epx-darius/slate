@@ -1,0 +1,1651 @@
+openapi: 3.0.0
+info:
+  version: '1'
+  title: 'Epharmix Platform API'
+  description: 'This documentation describes the RESTful API for the Epharmix platform.'
+servers:
+# Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1
+  - url: https://stage.ephx.io
+    description: API staging server for Epharmix.
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    PatientParams:
+      type: object
+      properties:
+        firstName:
+          description: The first name of the patient.
+          type: string
+          example: "John"
+        middleInitial:
+          description: The middle initial of the patient.
+          type: string
+          example: "M"
+        lastName:
+          description: The last name of the patient.
+          type: string
+          example: "Smith"
+        phone:
+          description: The phone number of the patient.
+          type: string
+          pattern: ^\d{10}$
+          example: "5551234567"
+      required:
+        - firstName
+        - lastName
+        - phone
+        
+    PatientObject:
+      allOf:
+        - $ref: '#/components/schemas/PatientParams'
+        - type: object
+          properties:
+            id:
+              example: 623
+              type: number
+          required:
+            - id
+            
+    TriageCategory:
+      type: object
+      properties:
+        page:
+          type: integer
+          minimum: 0
+        limit:
+          type: integer
+          minimum: 0
+          maximum: 100
+          example: 20
+        apps:
+          type: array
+          items:
+            type: string
+            pattern: '^epx[a-z]+$'
+          minItems: 1
+          uniqueItems: true
+          example:
+            - 'epxcopd'
+            - 'epxdiabetes'
+        order:
+          type: array
+          items:
+            oneOf:
+              - type: string
+                enum:
+                  - alerts
+                  - addressedAt
+                  - snoozedUntil
+                  - lastName
+                  - enrollDate
+              - type: string
+                enum:
+                  - asc
+                  - desc
+          minItems: 1
+          maxItems: 2
+          example:
+            - 'addressedAt'
+            - 'desc'
+      required:
+        - page
+        - limit
+            
+    TriageOptions:
+      type: object
+      properties:
+        patients:
+          type: object
+          properties:
+            danger:
+              $ref: '#/components/schemas/TriageCategory'
+            warning:
+              $ref: '#/components/schemas/TriageCategory'
+            success:
+              $ref: '#/components/schemas/TriageCategory'
+            unresponsive:
+              $ref: '#/components/schemas/TriageCategory'
+        alerts:
+          type: object
+          properties:
+            page:
+              type: integer
+              minimum: 0
+            limit:
+              type: integer
+              minimum: 0
+              maximum: 100
+              example: 20
+            unreadOnly:
+              type: boolean
+              example: false
+            apps:
+              type: array
+              items:
+                type: string
+                pattern: '^epx[a-z]+$'
+              minItems: 1
+              uniqueItems: true
+              example:
+                - 'epxdiabetes'
+                - 'epxheart'
+            order:
+              type: string
+              pattern: ^(asc)|(desc)$
+              example: 'desc'
+          required:
+            - page
+            - limit
+    
+    TriageObjects:
+      type: object
+      properties:
+        alerts:
+          type: object
+          properties:
+            limit:
+              type: integer
+            page:
+              type: integer
+            total:
+              type: integer
+              description: 'The total amount of results without the limit restriction'
+            results:
+              type: array
+              items:
+                $ref: '#/components/schemas/AlertObject'
+        contacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactObject'
+        patientIds:
+          type: array
+          items:
+            type: integer
+            description: 'IDs of the patients that are included in the results'
+        patients:
+          type: object
+          properties:
+            danger:
+              $ref: '#/components/schemas/TriageCategoryData'
+              
+    TriageCategoryData:
+      type: object
+      properties:
+        page:
+          type: integer
+        limit:
+          type: integer
+        total:
+          type: integer
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TriageCategoryResult'
+            
+    TriageCategoryResult:
+      type: object
+      properties:
+        alerts:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertObject'
+        apps:
+          type: object
+          properties:
+            epx{appname}:
+              type: object
+              properties:
+                alert:
+                  type: object
+                  properties:
+                    total:
+                      type: integer
+                      example: 8
+                      description: 'The total amount of alerts triggered by this patient in the given timeframe'
+                    unread:
+                      type: integer
+                      example: 2
+                      description: 'The amount of unresolved alerts for the patient in the given timeframe'
+                    active:
+                      type: integer
+                      example: 2
+                category:
+                  type: integer
+                  example: 1
+                  description: 'The current category for the corresponding app. 1: danger 2: warning 3: success 4: unresponsive 5: empty 6: inactive'
+                contactId:
+                  type: integer
+                  example: 81
+                  description: "The ID of the patient's contact for this app"
+                engagement:
+                  type: object
+                  properties:
+                    responded:
+                      type: integer
+                      description: 'The amount of sessions the patient responded to for the corresponding app (in the set timeframe)'
+                      example: 10
+                    total:
+                      type: integer
+                      description: 'The total amount of sessions the patient had for the corresponding app (in the set timeframe)'
+                      example: 14
+                    rate:
+                      type: number
+                      example: .714285
+                      description: 'The response rate for this app (in the set timeframe)'
+                schedule:
+                  $ref: '#/components/schemas/ScheduleObject'
+        category:
+          type: integer
+          example: 2
+          description: 'The current primary category for the patient (patients can be in more than one category at a time). 1: danger 2: warning 3: success 4: unresponsive 5: empty 6: inactive 7: snoozed 8: completed 9: paused 10: recent'
+        patient:
+          $ref: '#/components/schemas/PatientObject'
+          
+    ContactObject:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 53
+        displayName:
+          type: string
+          example: 'Your Nurse Carly'
+          description: 'The patient-facing name used in text messages/calls'
+        description:
+          type: string
+          example: 'Dr. Woodward (Internal Medicine)'
+          description: 'The internal description to help differentiate contacts'
+        email:
+          type: string
+
+    ContactParams:
+      type: object
+      properties:
+        tz:
+          type: string
+          example: 'US/Eastern'
+        displayName:
+          type: string
+          example: 'Your Nurse Carly'
+          description: 'The patient-facing name used in text messages/calls'
+        description:
+          type: string
+          example: 'Dr. Woodward (Internal Medicine)'
+          description: 'The internal description to help differentiate contacts'
+        email:
+          type: string
+        primaryPhone:
+          type: string
+          description: 'A 10-digit phone number, used to route calls/alerts to the contact.'
+          example: '5551234567'
+        primaryStart:
+          type: string
+          description: 'The time that the primary phone becomes active. (24-hour time)'
+          example: '08:00'
+        primaryEnd:
+          type: string
+          description: 'The time that the primary phone is no longer active. (24-hour time)'
+        notificationPreference:
+          type: string
+          enum: ['C', 'T', 'P', 'E', 'O']
+          description: 'How the contact would like to be notified. Call, Text, Page, Email, Integration, Off'
+
+    AlertObject:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 2543
+        app:
+          type: string
+          example: 'epxcopd'
+        body:
+          type: string
+          example: 'Patient Brionna has responded that she is having trouble breathing.'
+        contact:
+          $ref: '#/components/schemas/ContactObject'
+        createdAt:
+          type: string
+          description: 'When the alert was triggered (ISO timestamp)'
+          example: '2019-02-01T19:37:00.000Z'
+        isRead:
+          type: boolean
+          description: 'True if the alert has been addressed by a user'
+        snoozedAt:
+          type: string
+          description: 'When the alert was snoozed (ISO timestamp)'
+          example: '2019-02-18T10:00:00-06:00'
+        snoozedUntil:
+          type: string
+          description: 'When the alert will no longer be snoozed (ISO timestamp)'
+          example: '2019-02-25T10:00:09-06:00'
+        patient:
+          $ref: '#/components/schemas/PatientObject'
+
+    ScheduleParams:
+      type: object
+      properties:
+        start:
+          type: string
+          description: 'The start date of the intervention'
+          example: '2019-02-05T10:00:09-06:00'
+        end:
+          type: string
+          description: 'The end date of the intervention (optional)'
+          example: '2019-03-05T10:00:09-06:00'
+        times:
+          type: array
+          description: 'The times that the patient would prefer to receive messages (24-hour time)'
+          example: ['09:00', '17:30']
+          items:
+            type: string
+        days:
+          description: 'Days of the week that the sessions will occur (0: Sunday... 6: Saturday)'
+          example: [1, 3, 5]
+          type: array
+          items:
+            type: integer
+            minimum: 0
+            maximum: 6
+        method:
+          type: string
+          description: 'The method in which the patient will be contacted.'
+          enum:
+            - message
+            - call
+        tz:
+          type: string
+          description: 'The timezone of the schedule'
+          example: 'US/Central'
+        patientId:
+          type: integer
+          description: 'The ID of the patient who will receive the intervention'
+          example: 1638
+        contactId:
+          type: integer
+          description: 'The ID of the contact that will be assigned to the intervention'
+          example: 76
+
+    ScheduleObject:
+      allOf:
+        - $ref: '#/components/schemas/ScheduleParams'
+        - type: object
+          properties:
+            id:
+              type: integer
+              example: 14
+            isCanceled:
+              type: boolean
+              description: 'If true, the patient will not longer receive calls/messages'
+            canceledAt:
+              type: 'string'
+              description: 'The time that the schedule was canceled'
+            patientId:
+              type: integer
+              example: 372
+              description: 'The ID of the patient'
+            contactId:
+              type: integer
+              description: 'The ID of the contact associated to this schedule'
+              example: 39
+
+        
+paths:
+  /patient/create/:
+    post:
+      tags:
+        - Patients
+      summary: Create a Patient
+      description: >
+        Enroll a patient into the Epharmix system. Once enrolled a patient can be assigned to a number of active Epharmix Interventions.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatientParams'
+      responses:
+        201:
+          description: Patient Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: 'string'
+                    enum:
+                      - OK
+                  patient:
+                    $ref: '#/components/schemas/PatientParams'
+                example:
+                  status: 'OK'
+                  patient: 
+                    id: 1
+                    firstName: 'John'
+                    middleInitial: 'T'
+                    lastName: 'Doe'
+                    phone: '0001112222'
+  
+  /patient/edit/:
+    post:
+      tags:
+        - Patients
+      summary: Edit a patient
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatientParams'
+      responses:
+        200:
+          description: Patient Edited
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: 'string'
+                    enum:
+                      - OK
+                  patient:
+                    $ref: '#/components/schemas/PatientParams'
+                example:
+                  status: 'OK'
+                  patient: 
+                    id: 1
+                    firstName: 'John'
+                    middleInitial: 'T'
+                    lastName: 'Doe'
+                    phone: '0001112222'
+  
+  /patient/delete/:
+    post:
+      tags:
+        - Patients
+      summary: Delete a patient (paranoid)
+      description: Removes a patient from an account, but retains patient data in case it is needed.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: 'string'
+                  example: 5
+      responses:
+        200:
+          description: Patient Deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: 'string'
+                    enum:
+                      - OK
+                  patient:
+                    $ref: '#/components/schemas/PatientParams'
+                example:
+                  status: 'OK'
+                  patient: 
+                    id: 5
+                    firstName: 'DELETED'
+                    middleInitial: null
+                    lastName: 'DELETED'
+                    phone: '0000000000'
+  
+  /patient/data_single/:
+    post:
+      tags:
+        - Patients
+      summary: Get patient information
+      description: Given an id, returns information stored for specific patient.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: 'string'
+                  example: 5
+      responses:
+        200:
+          description: Retrieved Patient Data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: 'string'
+                    enum:
+                      - OK
+                  patient:
+                    $ref: '#/components/schemas/PatientParams'
+                example:
+                  status: 'OK'
+                  patient: 
+                    id: 1
+                    firstName: 'John'
+                    middleInitial: 'T'
+                    lastName: 'Doe'
+                    phone: '0001112222'
+
+  /contact/create/:
+    post:
+      tags:
+        - Contacts
+      summary: Add a contact to your Epharmix account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactParams'
+      responses:
+        201:
+          description: Contact Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: 'string'
+                    enum:
+                      - OK
+                  contact:
+                    $ref: '#/components/schemas/ContactObject'
+  
+  /contact/edit/:
+    post:
+      tags:
+        - Contacts
+      summary: Edit a contact
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactParams'
+      responses:
+        200:
+          description: Contact Edited
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: 'string'
+                    enum:
+                      - OK
+                  contact:
+                    $ref: '#/components/schemas/ContactObject'
+                    
+  /contact/delete/:
+    post:
+      tags:
+        - Contacts
+      summary: Removes a contact from an account, but retains contact data in case it is needed.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: 'string'
+                  example: 5
+      responses:
+        200:
+          description: Contact Deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: 'string'
+                    enum:
+                      - OK
+                  contact:
+                    $ref: '#/components/schemas/ContactObject'
+  
+  /contact/data_single/:
+    post:
+      tags:
+        - Contacts
+      summary: Get a contact's info
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: 'string'
+                  example: 5
+      responses:
+        200:
+          description: Retrieved Contact Data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: 'string'
+                    enum:
+                      - OK
+                  contact:
+                    $ref: '#/components/schemas/ContactObject'
+                    
+  /triage/data/:
+    post:
+      tags:
+        - Triage
+      summary: Get triage information about patients
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                start:
+                  type: 'string'
+                  example: '2019-01-18T10:22:09-06:00'
+                  description: 'the start date of the timeframe, ISO format'
+                end:
+                  type: 'string'
+                  example: '2019-02-18T10:22:09-06:00'
+                  description: 'the end date of the timeframe, ISO format (optional)'
+                options:
+                  $ref: '#/components/schemas/TriageOptions'
+      responses:
+        200:
+          description: Retrieved Triage Data
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - type: object
+                    properties:
+                      status:
+                        type: string
+                        enum:
+                          - OK
+                        example: 'OK'
+                  - $ref: '#/components/schemas/TriageObjects'
+  
+  /triage/data_single/:
+    post:
+      tags:
+        - Triage
+      summary: Get triage information about a single patient
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: 'integer'
+                  example: 150
+                  description: 'the ID of the patient'
+                start:
+                  type: 'string'
+                  example: '2019-01-18T10:22:09-06:00'
+                  description: 'the start date of the timeframe, ISO format'
+                end:
+                  type: 'string'
+                  example: '2019-02-18T10:22:09-06:00'
+                  description: 'the end date of the timeframe, ISO format (optional)'
+                tz:
+                  type: 'string'
+                  example: 'US/Central'
+      responses:
+        200:
+          description: Retrieved Triage Data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: 'string'
+                    enum:
+                      - OK
+                  contacts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ContactObject'
+                  data:
+                    $ref: '#/components/schemas/TriageCategoryResult'
+
+  /alert/data/:
+    post:
+      tags:
+        - Alerts
+      summary: Fetch data about alerts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tz:
+                  type: string
+                  example: 'US/Eastern'
+                  description: 'The timezone'
+                limit:
+                  type: integer
+                  maximum: 100
+                  example: 30
+                  description: 'If set, will return this amount of alerts per page'
+                page:
+                  type: integer
+                  example: 5
+                contactIds:
+                  type: array
+                  description: "If set, will only return alerts from the designated contact's patients"
+                  example: [13, 15, 16]
+                  items:
+                    type: integer
+                patientIds:
+                  type: array
+                  description: 'If set, will only return alerts from the designated patients'
+                  example: [1321, 1522, 1618]
+                  items:
+                    type: integer
+                apps:
+                  type: array
+                  description: 'If set, will only return alerts from the specified apps'
+                  example: ['epxcopd', 'epxdiabetes']
+                  items:
+                    type: string
+                unreadOnly:
+                  type: boolean
+                  description: 'If true, will only return alerts that have not been resolved.'
+                snoozedOnly:
+                  type: boolean
+                  description: 'If true, will only return alerts that are currently snoozed'
+                start:
+                  type: string
+                  description: 'The start date of the alerts being fetched.'
+                  example: '2019-01-18T10:22:09-06:00'
+                end:
+                  type: string
+                  description: 'The end date of the alerts being fetched.'
+                  example: '2019-02-05T10:22:09-06:00'
+      responses:
+        200:
+          description: Retrieved Alert Data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: 'string'
+                    enum:
+                      - OK
+                  alerts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AlertObject'
+
+  /alert/snooze/:
+    post:
+      tags:
+        - Alerts
+      summary: Snooze alerts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tz:
+                  type: string
+                  example: 'US/Eastern'
+                  description: 'The timezone'
+                reason:
+                  type: string
+                  description: 'The reason why the alerts have been snoozed'
+                  example: 'Patient has been asked to update medication, will check back in a week'
+                snoozeUntil:
+                  type: string
+                  description: 'The time when the alert will no longer be snoozed'
+                  example: '2019-02-15T10:22:09-06:00'
+                ids:
+                  type: array
+                  description: 'The IDs of the alerts that will be snoozed'
+                  example: [5722, 5725, 5729]
+                  items:
+                    type: integer
+      responses:
+        200:
+          description: Alerts Snoozed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: 'string'
+                    enum:
+                      - OK
+                  alerts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AlertObject'
+
+  /alert/set_status/:
+    post:
+      tags:
+        - Alerts
+      summary: Change the resolved (isRead) value for alerts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reason:
+                  type: string
+                  description: 'The reason why the alerts have been resolved'
+                  example: 'Patient has been asked to update medication, will check back in a week'
+                status:
+                  type: boolean
+                  description: 'If true, the alerts will be marked as resolved (isRead). If false, will set to unresolved.'
+                ids:
+                  type: array
+                  description: 'The IDs of the alerts that will be resolved'
+                  example: [5722, 5725, 5729]
+                  items:
+                    type: integer
+      responses:
+        200:
+          description: Alert Statuses Updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: 'string'
+                    enum:
+                      - OK
+                  alerts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AlertObject'
+
+  /epxdiabetes/create/:
+    post:
+      tags:
+        - Interventions
+      summary: "EpxDiabetes: Create a schedule for the patient"
+      description: Enrolls a patient into the Epharmix EpxDiabetes intervention. 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ScheduleParams'
+                - type: object
+                  properties:
+                    language:
+                      type: 'string'
+                      description: 'The language of messages/calls to the patient'
+                      enum:
+                        - en
+                        - es
+                    isFixed:
+                      type: boolean
+                      description: 'If true, the message will be on a fixed frequency of your choice. If false, the patient will be on "smart schedule", with the frequency based on their responses.'
+                    mode:
+                      type: string
+                      description: 'Only required if schedule is fixed. Sets the frequency of sessions.'
+                      enum: ['T', 'P', 'D', 'B', 'W', 'C', 'Q']
+                      example: 'D'
+      responses:
+        201:
+          description: EpxDiabetes Schedule Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: 'string'
+                    enum:
+                      - OK
+                  schedule:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ScheduleParams'
+
+  /epxdiabetes/edit/:
+    post:
+      tags:
+        - Interventions
+      summary: "EpxDiabetes: Edit a schedule for a patient"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ScheduleParams'
+                - type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: 'The ID of the schedule being edited'
+                      example: 681
+                    isFixed:
+                      type: boolean
+                      description: 'If true, the message will be on a fixed frequency of your choice. If false, the patient will be on "smart schedule", with the frequency based on their responses.'
+                    mode:
+                      type: string
+                      description: 'Only required if schedule is fixed. Sets the frequency of sessions.'
+                      enum: ['T', 'P', 'D', 'B', 'W', 'C', 'Q']
+
+      responses:
+        200:
+          description: EpxDiabetes Schedule Edited
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: 'string'
+                    enum:
+                      - OK
+                  schedule:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ScheduleObject'
+  
+  /epxdiabetes/cancel/:
+    post:
+      tags:
+        - Interventions
+      summary: "EpxDiabetes: Cancel a schedule for a patient"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  description: 'The ID of the schedule being canceled'
+                  example: 681
+
+      responses:
+        200:
+          description: EpxDiabetes Schedule Canceled
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: 'string'
+                    enum:
+                      - OK
+                  schedule:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ScheduleObject'
+
+  /epxdiabetes/data/:
+    post:
+      tags:
+        - Interventions
+      summary: "EpxDiabetes: get epxdiabetes data for a patient"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                patient:
+                  type: integer
+                  description: 'The ID of the patient'
+                  example: 2645
+
+      responses:
+        200:
+          description: EpxDiabetes Session Data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: 'string'
+                    enum:
+                      - OK
+                  sessions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        time:
+                          type: string
+                          description: 'The time of the session'
+                          example: '2019-02-15T10:22:09-06:00'
+                        respondedAt:
+                          type: string
+                          description: 'If set, it is the time that the patient first responded to the session. If null, the patient has not yet responded.'
+                          example: '2019-02-15T10:22:15-55:00'
+                        bloodSugar:
+                          type: integer
+                          description: "The patient's blood sugar"
+                          example: 125
+                        hasEaten:
+                          type: boolean
+                          description: 'If true, the patient ate within 2 hours of taking the blood sugar reading'
+                        isCanceled:
+                          type: boolean
+                          description: 'If true, the session was canceled'
+                        schedule:
+                          $ref: '#/components/schemas/ScheduleParams'
+                        patient:
+                          $ref: '#/components/schemas/PatientObject'
+
+  /epxhyper/create/:
+    post:
+      tags:
+        - Interventions
+      summary: "EpxHypertension: Create an epxhypertension schedule for a patient"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ScheduleParams'
+                - type: object
+                  properties:
+                    language:
+                      type: 'string'
+                      description: 'The language of messages/calls to the patient'
+                      enum:
+                        - en
+                        - es
+                    isFixed:
+                      type: boolean
+                      description: 'If true, the message will be on a fixed frequency of your choice. If false, the patient will be on "smart schedule", with the frequency based on their responses.'
+                    mode:
+                      type: string
+                      description: 'Only required if schedule is fixed. Sets the frequency of sessions.'
+                      enum: ['T', 'D', 'B', 'C']
+                      example: 'D'
+                    hasMedInstruction:
+                      type: boolean
+                      description: 'If true, the patient will be asked about taking their medication when the blood pressure is critical.'
+      responses:
+        201:
+          description: EpxHypertension Schedule Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: 'string'
+                    enum:
+                      - OK
+                  schedule:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ScheduleObject'
+
+  /epxhyper/edit/:
+    post:
+      tags:
+        - Interventions
+      summary: "EpxHypertension: Edit an epxhypertension schedule for a patient"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ScheduleParams'
+                - type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: 'The ID of the schedule being edited'
+                      example: 681
+                    isFixed:
+                      type: boolean
+                      description: 'If true, the message will be on a fixed frequency of your choice. If false, the patient will be on "smart schedule", with the frequency based on their responses.'
+                    mode:
+                      type: string
+                      description: 'Only required if schedule is fixed. Sets the frequency of sessions.'
+                      enum: ['T', 'D', 'B', 'C']
+                    hasMedInstruction:
+                      type: boolean
+                      description: 'If true, the patient will be asked about taking their medication when the blood pressure is critical.'
+
+      responses:
+        200:
+          description: EpxHypertension Schedule Edited
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: 'string'
+                    enum:
+                      - OK
+                  schedule:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ScheduleObject'
+  
+  /epxhyper/cancel/:
+    post:
+      tags:
+        - Interventions
+      summary: "EpxHypertension: Cancel an EpxHypertension schedule for a patient"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  description: 'The ID of the schedule being canceled'
+                  example: 681
+
+      responses:
+        200:
+          description: EpxHypertension Schedule Canceled
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: 'string'
+                    enum:
+                      - OK
+                  schedule:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ScheduleObject'
+
+  /epxhyper/data/:
+    post:
+      tags:
+        - Interventions
+      summary: "EpxHypertension: Get EpxHypertension data for a patient"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                patient:
+                  type: integer
+                  description: 'The ID of the patient'
+                  example: 2645
+
+      responses:
+        200:
+          description: EpxHypertension Session Data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: 'string'
+                    enum:
+                      - OK
+                  sessions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        time:
+                          type: string
+                          description: 'The time of the session'
+                          example: '2019-02-15T10:22:09-06:00'
+                        respondedAt:
+                          type: string
+                          description: 'If set, it is the time that the patient first responded to the session. If null, the patient has not yet responded.'
+                          example: '2019-02-15T10:22:15-55:00'
+                        upper:
+                          type: integer
+                          description: "The patient's upper (systolic) blood pressure"
+                          example: 110
+                        lower:
+                          type: integer
+                          description: "The patient's lower (diastolic) blood pressure"
+                          example: 80
+                        tookMedication:
+                          type: boolean
+                          description: "If true, the patient has followed their doctor's medication instructions for the day"
+                        isCanceled:
+                          type: boolean
+                          description: 'If true, the session was canceled'
+                        schedule:
+                          $ref: '#/components/schemas/ScheduleParams'
+                        patient:
+                          $ref: '#/components/schemas/PatientObject'
+
+  /epxcopd/create/:
+    post:
+      tags:
+        - Interventions
+      summary: "EpxCopd: Create an EpxCOPD schedule for a patient"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ScheduleParams'
+                - type: object
+                  properties:
+                    language:
+                      type: 'string'
+                      description: 'The language of messages/calls to the patient'
+                      enum:
+                        - en
+                        - es
+                    isFixed:
+                      type: boolean
+                      description: 'If true, the message will be on a fixed frequency of your choice. If false, the patient will be on "smart schedule", with the frequency based on their responses.'
+                    mode:
+                      type: string
+                      description: 'Only required if schedule is fixed. Sets the frequency of sessions.'
+                      enum: ['D', 'B', 'W']
+                      example: 'D'
+                    shouldAskSymptoms:
+                      type: boolean
+                      description: 'If true, the patient will be asked about symptoms other than just their difficulty breathing.'
+      responses:
+        201:
+          description: EpxCOPD Schedule Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: 'string'
+                    enum:
+                      - OK
+                  schedule:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ScheduleObject'
+
+  /epxcopd/edit/:
+    post:
+      tags:
+        - Interventions
+      summary: "EpxCopd: Edit an EpxCOPD schedule for a patient"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ScheduleParams'
+                - type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: 'The ID of the schedule being edited'
+                      example: 681
+                    isFixed:
+                      type: boolean
+                      description: 'If true, the message will be on a fixed frequency of your choice. If false, the patient will be on "smart schedule", with the frequency based on their responses.'
+                    mode:
+                      type: string
+                      description: 'Only required if schedule is fixed. Sets the frequency of sessions.'
+                      enum: ['T', 'D', 'B', 'C']
+                    shouldAskSymptoms:
+                      type: boolean
+                      description: 'If true, the patient will be asked about symptoms other than just their difficulty breathing.'
+
+      responses:
+        200:
+          description: EpxCOPD Schedule Edited
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: 'string'
+                    enum:
+                      - OK
+                  schedule:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ScheduleObject'
+  
+  /epxcopd/cancel/:
+    post:
+      tags:
+        - Interventions
+      summary: "EpxCopd: Cancel an EpxCOPD schedule for a patient"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  description: 'The ID of the schedule being canceled'
+                  example: 681
+
+      responses:
+        200:
+          description: EpxCOPD Schedule Canceled
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: 'string'
+                    enum:
+                      - OK
+                  schedule:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ScheduleObject'
+
+  /epxcopd/data/:
+    post:
+      tags:
+        - Interventions
+      summary: "EpxCOPD: Get EpxCOPD data for a patient"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                patient:
+                  type: integer
+                  description: 'The ID of the patient'
+                  example: 2645
+
+      responses:
+        200:
+          description: EpxCOPD Session Data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: 'string'
+                    enum:
+                      - OK
+                  sessions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        time:
+                          type: string
+                          description: 'The time of the session'
+                          example: '2019-02-15T10:22:09-06:00'
+                        respondedAt:
+                          type: string
+                          description: 'If set, it is the time that the patient first responded to the session. If null, the patient has not yet responded.'
+                          example: '2019-02-15T10:22:15-55:00'
+                        breathing:
+                          type: integer
+                          description: "-1: worse, 0: same, 1: better"
+                          example: 1
+                        coughing:
+                          type: integer
+                          description: "-1: worse, 0: same, 1: better"
+                          example: 1
+                        sputum:
+                          type: integer
+                          description: "1: no change, 2: more, 3: changed color"
+                          example: 3
+                        isCanceled:
+                          type: boolean
+                          description: 'If true, the session was canceled'
+                        schedule:
+                          $ref: '#/components/schemas/ScheduleParams'
+                        patient:
+                          $ref: '#/components/schemas/PatientObject'
+  
+  /epxheart/create/:
+    post:
+      tags:
+        - Interventions
+      summary: "EpxHeartFailure: Create an EpxHeartFailure schedule for a patient"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ScheduleParams'
+                - type: object
+                  properties:
+                    isFixed:
+                      type: boolean
+                      description: 'If true, the message will be on a fixed frequency of your choice. If false, the patient will be on "smart schedule", with the frequency based on their responses.'
+                    mode:
+                      type: string
+                      description: 'Only required if schedule is fixed. Sets the frequency of sessions.'
+                      enum: ['D', 'W']
+                      example: 'D'
+                    hasScale:
+                      type: boolean
+                      description: 'If true, the patient indicated that they own a scale.'
+      responses:
+        201:
+          description: EpxHeartFailure Schedule Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: 'string'
+                    enum:
+                      - OK
+                  schedule:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ScheduleObject'
+
+  /epxheart/edit/:
+    post:
+      tags:
+        - Interventions
+      summary: "EpxHeartFailure: Edit an EpxHeartFailure schedule for a patient"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ScheduleParams'
+                - type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: 'The ID of the schedule being edited'
+                      example: 681
+                    isFixed:
+                      type: boolean
+                      description: 'If true, the message will be on a fixed frequency of your choice. If false, the patient will be on "smart schedule", with the frequency based on their responses.'
+                    mode:
+                      type: string
+                      description: 'Only required if schedule is fixed. Sets the frequency of sessions.'
+                      enum: ['T', 'D', 'B', 'C']
+                    hasScale:
+                      type: boolean
+                      description: 'If true, the patient indicated that they own a scale.'
+
+      responses:
+        200:
+          description: EpxHeartFailure Schedule Edited
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: 'string'
+                    enum:
+                      - OK
+                  schedule:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ScheduleObject'
+  
+  /epxheart/cancel/:
+    post:
+      tags:
+        - Interventions
+      summary: "EpxHeartFailure: Cancel an EpxHeartFailure schedule for a patient"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  description: 'The ID of the schedule being canceled'
+                  example: 681
+
+      responses:
+        200:
+          description: EpxHeartFailure Schedule Canceled
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: 'string'
+                    enum:
+                      - OK
+                  schedule:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ScheduleObject'
+
+  /epxheart/data/:
+    post:
+      tags:
+        - Interventions
+      summary: "EpxHeartFailure: Get EpxHeartFailure data for a patient"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                patient:
+                  type: integer
+                  description: 'The ID of the patient'
+                  example: 2645
+
+      responses:
+        200:
+          description: EpxHeartFailure Session Data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: 'string'
+                    enum:
+                      - OK
+                  sessions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        time:
+                          type: string
+                          description: 'The time of the session'
+                          example: '2019-02-15T10:22:09-06:00'
+                        respondedAt:
+                          type: string
+                          description: 'If set, it is the time that the patient first responded to the session. If null, the patient has not yet responded.'
+                          example: '2019-02-15T10:22:15-55:00'
+                        weight:
+                          type: integer
+                          description: "The patient's weight, in pounds"
+                          example: 190
+                        dpe:
+                          type: integer
+                          description: "Patient experiencing dyspnea or pedal edema. -1: worse, 0: same, 1: better"
+                          example: 1
+                        orthopnea:
+                          type: integer
+                          description: "Patient experiencing orthopnea. -1: worse, 0: same, 1: better"
+                          example: 1
+                        edema:
+                          type: integer
+                          description: "-1: more, 0: same, 1: less"
+                          example: 0
+                        isCanceled:
+                          type: boolean
+                          description: 'If true, the session was canceled'
+                        schedule:
+                          $ref: '#/components/schemas/ScheduleParams'
+                        patient:
+                          $ref: '#/components/schemas/PatientObject'
