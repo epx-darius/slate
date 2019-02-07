@@ -18,7 +18,7 @@ You're going to need:
 ### Getting Set Up
 
 1. Fork this repository on GitHub.
-2. Clone *your forked repository* (not our original one) to your hard drive with `git clone https://github.com/YOURUSERNAME/slate.git`
+2. Clone to your hard drive with `git clone https://github.com/YOURUSERNAME/slate.git`
 3. `cd slate`
 4. Initialize and start Slate. You can either do this locally, or with Vagrant:
 
@@ -33,12 +33,8 @@ vagrant up
 
 You can now see the docs at http://localhost:4567. Whoa! That was fast!
 
-Now that Slate is all set up on your machine, you'll probably want to learn more about [editing Slate markdown](https://github.com/lord/slate/wiki/Markdown-Syntax), or [how to publish your docs](https://github.com/lord/slate/wiki/Deploying-Slate).
+**Production / Static Site Build**
 
-If you'd prefer to use Docker, instructions are available [in the wiki](https://github.com/lord/slate/wiki/Docker).
-
-- install [widdershins](https://github.com/epx-darius/widdershins) by running `npm install -g widdershins`
-
-## Updating Slate w/ newer OpenAPI yaml.
-If we update the yaml representing our open api specification we can run the below function to quickly have widdershins recompile our `markdown`.
-- run `./update_swagger_docs.sh`
+```shell
+bundle exec middleman build --clean
+```
