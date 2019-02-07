@@ -1,0 +1,1 @@
+The Contacts Api allows for the creation, editing, deletion and info retrieval of a single contact resource.  

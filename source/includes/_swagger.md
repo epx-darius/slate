@@ -1,3 +1,22 @@
+---
+title: Epharmix Platform API
+language_tabs:
+  - shell: Shell
+  - http: HTTP
+  - javascript: JavaScript
+  - javascript--nodejs: Node.JS
+  - ruby: Ruby
+  - python: Python
+  - java: Java
+  - go: Go
+toc_footers: []
+includes: []
+search: true
+highlight_theme: darkula
+headingLevel: 2
+
+---
+
 <h1 id="epharmix-platform-api">Epharmix Platform API v1</h1>
 
 > Scroll down for code samples, example requests and responses. Select a language for code samples from the tabs above or the mobile navigation menu.
@@ -16,122 +35,11 @@ Base URLs:
 
 <h1 id="epharmix-platform-api-patients">Patients</h1>
 
-## Create a Patient
-
-> Code samples
-
-```shell
-curl --request POST \
-  --url https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/patient/create/ \
-  --header 'accept: application/json' \
-  --header 'content-type: application/json' \
-  --data '{"firstName":"John","middleInitial":"M","lastName":"Smith","phone":"5551234567"}'
-```
-
-```javascript
-var data = JSON.stringify({
-  "firstName": "John",
-  "middleInitial": "M",
-  "lastName": "Smith",
-  "phone": "5551234567"
-});
-
-var xhr = new XMLHttpRequest();
-xhr.withCredentials = true;
-
-xhr.addEventListener("readystatechange", function () {
-  if (this.readyState === this.DONE) {
-    console.log(this.responseText);
-  }
-});
-
-xhr.open("POST", "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/patient/create/");
-xhr.setRequestHeader("content-type", "application/json");
-xhr.setRequestHeader("accept", "application/json");
-
-xhr.send(data);
-```
-
-```ruby
-require 'uri'
-require 'net/http'
-
-url = URI("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/patient/create/")
-
-http = Net::HTTP.new(url.host, url.port)
-http.use_ssl = true
-http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-request = Net::HTTP::Post.new(url)
-request["content-type"] = 'application/json'
-request["accept"] = 'application/json'
-request.body = "{\"firstName\":\"John\",\"middleInitial\":\"M\",\"lastName\":\"Smith\",\"phone\":\"5551234567\"}"
-
-response = http.request(request)
-puts response.read_body
-```
-
-```python
-import http.client
-
-conn = http.client.HTTPSConnection("virtserver.swaggerhub.com")
-
-payload = "{\"firstName\":\"John\",\"middleInitial\":\"M\",\"lastName\":\"Smith\",\"phone\":\"5551234567\"}"
-
-headers = {
-    'content-type': "application/json",
-    'accept': "application/json"
-    }
-
-conn.request("POST", "/EpxHealth/Epharmix/1/patient/create/", payload, headers)
-
-res = conn.getresponse()
-data = res.read()
-
-print(data.decode("utf-8"))
-```
-
-```java
-HttpResponse<String> response = Unirest.post("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/patient/create/")
-  .header("content-type", "application/json")
-  .header("accept", "application/json")
-  .body("{\"firstName\":\"John\",\"middleInitial\":\"M\",\"lastName\":\"Smith\",\"phone\":\"5551234567\"}")
-  .asString();
-```
-
-```go
-package main
-
-import (
-	"fmt"
-	"strings"
-	"net/http"
-	"io/ioutil"
-)
-
-func main() {
-
-	url := "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/patient/create/"
-
-	payload := strings.NewReader("{\"firstName\":\"John\",\"middleInitial\":\"M\",\"lastName\":\"Smith\",\"phone\":\"5551234567\"}")
-
-	req, _ := http.NewRequest("POST", url, payload)
-
-	req.Header.Add("content-type", "application/json")
-	req.Header.Add("accept", "application/json")
-
-	res, _ := http.DefaultClient.Do(req)
-
-	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
-
-	fmt.Println(res)
-	fmt.Println(string(body))
-
-}
-```
+## post__patient_create_
 
 `POST /patient/create/`
+
+*Create a Patient*
 
 Enroll a patient into the Epharmix system. Once enrolled a patient can be assigned to a number of active Epharmix Interventions.
 
@@ -139,22 +47,43 @@ Enroll a patient into the Epharmix system. Once enrolled a patient can be assign
 
 ```json
 {
-  "firstName": "John",
-  "middleInitial": "M",
-  "lastName": "Smith",
-  "phone": "5551234567"
+  "type": "object",
+  "properties": {
+    "firstName": {
+      "description": "The first name of the patient.",
+      "type": "string",
+      "example": "John"
+    },
+    "middleInitial": {
+      "description": "The middle initial of the patient.",
+      "type": "string",
+      "example": "M"
+    },
+    "lastName": {
+      "description": "The last name of the patient.",
+      "type": "string",
+      "example": "Smith"
+    },
+    "phone": {
+      "description": "The phone number of the patient.",
+      "type": "string",
+      "pattern": "^\\d{10}$",
+      "example": "5551234567"
+    }
+  },
+  "required": [
+    "firstName",
+    "lastName",
+    "phone"
+  ]
 }
 ```
 
-<h3 id="create-a-patient-parameters">Parameters</h3>
+<h3 id="post__patient_create_-parameters">Parameters</h3>
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
 |body|body|[PatientParams](#schemapatientparams)|true|none|
-|» firstName|body|string|true|The first name of the patient.|
-|» middleInitial|body|string|false|The middle initial of the patient.|
-|» lastName|body|string|true|The last name of the patient.|
-|» phone|body|string|true|The phone number of the patient.|
 
 > Example responses
 
@@ -173,24 +102,29 @@ Enroll a patient into the Epharmix system. Once enrolled a patient can be assign
 }
 ```
 
-<h3 id="create-a-patient-responses">Responses</h3>
+<h3 id="post__patient_create_-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |201|[Created](https://tools.ietf.org/html/rfc7231#section-6.3.2)|Patient Created|Inline|
 
-<h3 id="create-a-patient-responseschema">Response Schema</h3>
+<h3 id="post__patient_create_-responseschema">Response Schema</h3>
 
 Status Code **201**
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |» status|string|false|none|none|
-|» patient|[PatientParams](#schemapatientparams)|false|none|none|
-|»» firstName|string|true|none|The first name of the patient.|
-|»» middleInitial|string|false|none|The middle initial of the patient.|
-|»» lastName|string|true|none|The last name of the patient.|
-|»» phone|string|true|none|The phone number of the patient.|
+
+*allOf*
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+
+*and*
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
 
 #### Enumerated Values
 
@@ -202,143 +136,53 @@ Status Code **201**
 This operation does not require authentication
 </aside>
 
-## Edit a patient
-
-> Code samples
-
-```shell
-curl --request POST \
-  --url https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/patient/edit/ \
-  --header 'accept: application/json' \
-  --header 'content-type: application/json' \
-  --data '{"firstName":"John","middleInitial":"M","lastName":"Smith","phone":"5551234567"}'
-```
-
-```javascript
-var data = JSON.stringify({
-  "firstName": "John",
-  "middleInitial": "M",
-  "lastName": "Smith",
-  "phone": "5551234567"
-});
-
-var xhr = new XMLHttpRequest();
-xhr.withCredentials = true;
-
-xhr.addEventListener("readystatechange", function () {
-  if (this.readyState === this.DONE) {
-    console.log(this.responseText);
-  }
-});
-
-xhr.open("POST", "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/patient/edit/");
-xhr.setRequestHeader("content-type", "application/json");
-xhr.setRequestHeader("accept", "application/json");
-
-xhr.send(data);
-```
-
-```ruby
-require 'uri'
-require 'net/http'
-
-url = URI("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/patient/edit/")
-
-http = Net::HTTP.new(url.host, url.port)
-http.use_ssl = true
-http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-request = Net::HTTP::Post.new(url)
-request["content-type"] = 'application/json'
-request["accept"] = 'application/json'
-request.body = "{\"firstName\":\"John\",\"middleInitial\":\"M\",\"lastName\":\"Smith\",\"phone\":\"5551234567\"}"
-
-response = http.request(request)
-puts response.read_body
-```
-
-```python
-import http.client
-
-conn = http.client.HTTPSConnection("virtserver.swaggerhub.com")
-
-payload = "{\"firstName\":\"John\",\"middleInitial\":\"M\",\"lastName\":\"Smith\",\"phone\":\"5551234567\"}"
-
-headers = {
-    'content-type': "application/json",
-    'accept': "application/json"
-    }
-
-conn.request("POST", "/EpxHealth/Epharmix/1/patient/edit/", payload, headers)
-
-res = conn.getresponse()
-data = res.read()
-
-print(data.decode("utf-8"))
-```
-
-```java
-HttpResponse<String> response = Unirest.post("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/patient/edit/")
-  .header("content-type", "application/json")
-  .header("accept", "application/json")
-  .body("{\"firstName\":\"John\",\"middleInitial\":\"M\",\"lastName\":\"Smith\",\"phone\":\"5551234567\"}")
-  .asString();
-```
-
-```go
-package main
-
-import (
-	"fmt"
-	"strings"
-	"net/http"
-	"io/ioutil"
-)
-
-func main() {
-
-	url := "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/patient/edit/"
-
-	payload := strings.NewReader("{\"firstName\":\"John\",\"middleInitial\":\"M\",\"lastName\":\"Smith\",\"phone\":\"5551234567\"}")
-
-	req, _ := http.NewRequest("POST", url, payload)
-
-	req.Header.Add("content-type", "application/json")
-	req.Header.Add("accept", "application/json")
-
-	res, _ := http.DefaultClient.Do(req)
-
-	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
-
-	fmt.Println(res)
-	fmt.Println(string(body))
-
-}
-```
+## post__patient_edit_
 
 `POST /patient/edit/`
+
+*Edit a patient*
 
 > Body parameter
 
 ```json
 {
-  "firstName": "John",
-  "middleInitial": "M",
-  "lastName": "Smith",
-  "phone": "5551234567"
+  "type": "object",
+  "properties": {
+    "firstName": {
+      "description": "The first name of the patient.",
+      "type": "string",
+      "example": "John"
+    },
+    "middleInitial": {
+      "description": "The middle initial of the patient.",
+      "type": "string",
+      "example": "M"
+    },
+    "lastName": {
+      "description": "The last name of the patient.",
+      "type": "string",
+      "example": "Smith"
+    },
+    "phone": {
+      "description": "The phone number of the patient.",
+      "type": "string",
+      "pattern": "^\\d{10}$",
+      "example": "5551234567"
+    }
+  },
+  "required": [
+    "firstName",
+    "lastName",
+    "phone"
+  ]
 }
 ```
 
-<h3 id="edit-a-patient-parameters">Parameters</h3>
+<h3 id="post__patient_edit_-parameters">Parameters</h3>
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
 |body|body|[PatientParams](#schemapatientparams)|true|none|
-|» firstName|body|string|true|The first name of the patient.|
-|» middleInitial|body|string|false|The middle initial of the patient.|
-|» lastName|body|string|true|The last name of the patient.|
-|» phone|body|string|true|The phone number of the patient.|
 
 > Example responses
 
@@ -357,24 +201,29 @@ func main() {
 }
 ```
 
-<h3 id="edit-a-patient-responses">Responses</h3>
+<h3 id="post__patient_edit_-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|Patient Edited|Inline|
 
-<h3 id="edit-a-patient-responseschema">Response Schema</h3>
+<h3 id="post__patient_edit_-responseschema">Response Schema</h3>
 
 Status Code **200**
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |» status|string|false|none|none|
-|» patient|[PatientParams](#schemapatientparams)|false|none|none|
-|»» firstName|string|true|none|The first name of the patient.|
-|»» middleInitial|string|false|none|The middle initial of the patient.|
-|»» lastName|string|true|none|The last name of the patient.|
-|»» phone|string|true|none|The phone number of the patient.|
+
+*allOf*
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+
+*and*
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
 
 #### Enumerated Values
 
@@ -386,119 +235,11 @@ Status Code **200**
 This operation does not require authentication
 </aside>
 
-## Delete a patient (paranoid)
-
-> Code samples
-
-```shell
-curl --request POST \
-  --url https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/patient/delete/ \
-  --header 'accept: application/json' \
-  --header 'content-type: application/json' \
-  --data '{"id":5}'
-```
-
-```javascript
-var data = JSON.stringify({
-  "id": 5
-});
-
-var xhr = new XMLHttpRequest();
-xhr.withCredentials = true;
-
-xhr.addEventListener("readystatechange", function () {
-  if (this.readyState === this.DONE) {
-    console.log(this.responseText);
-  }
-});
-
-xhr.open("POST", "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/patient/delete/");
-xhr.setRequestHeader("content-type", "application/json");
-xhr.setRequestHeader("accept", "application/json");
-
-xhr.send(data);
-```
-
-```ruby
-require 'uri'
-require 'net/http'
-
-url = URI("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/patient/delete/")
-
-http = Net::HTTP.new(url.host, url.port)
-http.use_ssl = true
-http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-request = Net::HTTP::Post.new(url)
-request["content-type"] = 'application/json'
-request["accept"] = 'application/json'
-request.body = "{\"id\":5}"
-
-response = http.request(request)
-puts response.read_body
-```
-
-```python
-import http.client
-
-conn = http.client.HTTPSConnection("virtserver.swaggerhub.com")
-
-payload = "{\"id\":5}"
-
-headers = {
-    'content-type': "application/json",
-    'accept': "application/json"
-    }
-
-conn.request("POST", "/EpxHealth/Epharmix/1/patient/delete/", payload, headers)
-
-res = conn.getresponse()
-data = res.read()
-
-print(data.decode("utf-8"))
-```
-
-```java
-HttpResponse<String> response = Unirest.post("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/patient/delete/")
-  .header("content-type", "application/json")
-  .header("accept", "application/json")
-  .body("{\"id\":5}")
-  .asString();
-```
-
-```go
-package main
-
-import (
-	"fmt"
-	"strings"
-	"net/http"
-	"io/ioutil"
-)
-
-func main() {
-
-	url := "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/patient/delete/"
-
-	payload := strings.NewReader("{\"id\":5}")
-
-	req, _ := http.NewRequest("POST", url, payload)
-
-	req.Header.Add("content-type", "application/json")
-	req.Header.Add("accept", "application/json")
-
-	res, _ := http.DefaultClient.Do(req)
-
-	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
-
-	fmt.Println(res)
-	fmt.Println(string(body))
-
-}
-```
+## post__patient_delete_
 
 `POST /patient/delete/`
+
+*Delete a patient (paranoid)*
 
 Removes a patient from an account, but retains patient data in case it is needed.
 
@@ -506,11 +247,17 @@ Removes a patient from an account, but retains patient data in case it is needed
 
 ```json
 {
-  "id": 5
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "example": 5
+    }
+  }
 }
 ```
 
-<h3 id="delete-a-patient-(paranoid)-parameters">Parameters</h3>
+<h3 id="post__patient_delete_-parameters">Parameters</h3>
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
@@ -534,24 +281,29 @@ Removes a patient from an account, but retains patient data in case it is needed
 }
 ```
 
-<h3 id="delete-a-patient-(paranoid)-responses">Responses</h3>
+<h3 id="post__patient_delete_-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|Patient Deleted|Inline|
 
-<h3 id="delete-a-patient-(paranoid)-responseschema">Response Schema</h3>
+<h3 id="post__patient_delete_-responseschema">Response Schema</h3>
 
 Status Code **200**
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |» status|string|false|none|none|
-|» patient|[PatientParams](#schemapatientparams)|false|none|none|
-|»» firstName|string|true|none|The first name of the patient.|
-|»» middleInitial|string|false|none|The middle initial of the patient.|
-|»» lastName|string|true|none|The last name of the patient.|
-|»» phone|string|true|none|The phone number of the patient.|
+
+*allOf*
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+
+*and*
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
 
 #### Enumerated Values
 
@@ -563,119 +315,11 @@ Status Code **200**
 This operation does not require authentication
 </aside>
 
-## Get patient information
-
-> Code samples
-
-```shell
-curl --request POST \
-  --url https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/patient/data_single/ \
-  --header 'accept: application/json' \
-  --header 'content-type: application/json' \
-  --data '{"id":5}'
-```
-
-```javascript
-var data = JSON.stringify({
-  "id": 5
-});
-
-var xhr = new XMLHttpRequest();
-xhr.withCredentials = true;
-
-xhr.addEventListener("readystatechange", function () {
-  if (this.readyState === this.DONE) {
-    console.log(this.responseText);
-  }
-});
-
-xhr.open("POST", "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/patient/data_single/");
-xhr.setRequestHeader("content-type", "application/json");
-xhr.setRequestHeader("accept", "application/json");
-
-xhr.send(data);
-```
-
-```ruby
-require 'uri'
-require 'net/http'
-
-url = URI("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/patient/data_single/")
-
-http = Net::HTTP.new(url.host, url.port)
-http.use_ssl = true
-http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-request = Net::HTTP::Post.new(url)
-request["content-type"] = 'application/json'
-request["accept"] = 'application/json'
-request.body = "{\"id\":5}"
-
-response = http.request(request)
-puts response.read_body
-```
-
-```python
-import http.client
-
-conn = http.client.HTTPSConnection("virtserver.swaggerhub.com")
-
-payload = "{\"id\":5}"
-
-headers = {
-    'content-type': "application/json",
-    'accept': "application/json"
-    }
-
-conn.request("POST", "/EpxHealth/Epharmix/1/patient/data_single/", payload, headers)
-
-res = conn.getresponse()
-data = res.read()
-
-print(data.decode("utf-8"))
-```
-
-```java
-HttpResponse<String> response = Unirest.post("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/patient/data_single/")
-  .header("content-type", "application/json")
-  .header("accept", "application/json")
-  .body("{\"id\":5}")
-  .asString();
-```
-
-```go
-package main
-
-import (
-	"fmt"
-	"strings"
-	"net/http"
-	"io/ioutil"
-)
-
-func main() {
-
-	url := "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/patient/data_single/"
-
-	payload := strings.NewReader("{\"id\":5}")
-
-	req, _ := http.NewRequest("POST", url, payload)
-
-	req.Header.Add("content-type", "application/json")
-	req.Header.Add("accept", "application/json")
-
-	res, _ := http.DefaultClient.Do(req)
-
-	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
-
-	fmt.Println(res)
-	fmt.Println(string(body))
-
-}
-```
+## post__patient_data_single_
 
 `POST /patient/data_single/`
+
+*Get patient information*
 
 Given an id, returns information stored for specific patient.
 
@@ -683,11 +327,17 @@ Given an id, returns information stored for specific patient.
 
 ```json
 {
-  "id": 5
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "example": 5
+    }
+  }
 }
 ```
 
-<h3 id="get-patient-information-parameters">Parameters</h3>
+<h3 id="post__patient_data_single_-parameters">Parameters</h3>
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
@@ -711,24 +361,29 @@ Given an id, returns information stored for specific patient.
 }
 ```
 
-<h3 id="get-patient-information-responses">Responses</h3>
+<h3 id="post__patient_data_single_-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|Retrieved Patient Data|Inline|
 
-<h3 id="get-patient-information-responseschema">Response Schema</h3>
+<h3 id="post__patient_data_single_-responseschema">Response Schema</h3>
 
 Status Code **200**
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |» status|string|false|none|none|
-|» patient|[PatientParams](#schemapatientparams)|false|none|none|
-|»» firstName|string|true|none|The first name of the patient.|
-|»» middleInitial|string|false|none|The middle initial of the patient.|
-|»» lastName|string|true|none|The last name of the patient.|
-|»» phone|string|true|none|The phone number of the patient.|
+
+*allOf*
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+
+*and*
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
 
 #### Enumerated Values
 
@@ -742,165 +397,69 @@ This operation does not require authentication
 
 <h1 id="epharmix-platform-api-contacts">Contacts</h1>
 
-## Add a contact to your Epharmix account
-
-> Code samples
-
-```shell
-curl --request POST \
-  --url https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/contact/create/ \
-  --header 'accept: application/json' \
-  --header 'content-type: application/json' \
-  --data '{"tz":"US/Eastern","displayName":"Your Nurse Carly","description":"Dr. Woodward (Internal Medicine)","email":"string","primaryPhone":"5551234567","primaryStart":"08:00","primaryEnd":"string","notificationPreference":"C"}'
-```
-
-```javascript
-var data = JSON.stringify({
-  "tz": "US/Eastern",
-  "displayName": "Your Nurse Carly",
-  "description": "Dr. Woodward (Internal Medicine)",
-  "email": "string",
-  "primaryPhone": "5551234567",
-  "primaryStart": "08:00",
-  "primaryEnd": "string",
-  "notificationPreference": "C"
-});
-
-var xhr = new XMLHttpRequest();
-xhr.withCredentials = true;
-
-xhr.addEventListener("readystatechange", function () {
-  if (this.readyState === this.DONE) {
-    console.log(this.responseText);
-  }
-});
-
-xhr.open("POST", "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/contact/create/");
-xhr.setRequestHeader("content-type", "application/json");
-xhr.setRequestHeader("accept", "application/json");
-
-xhr.send(data);
-```
-
-```ruby
-require 'uri'
-require 'net/http'
-
-url = URI("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/contact/create/")
-
-http = Net::HTTP.new(url.host, url.port)
-http.use_ssl = true
-http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-request = Net::HTTP::Post.new(url)
-request["content-type"] = 'application/json'
-request["accept"] = 'application/json'
-request.body = "{\"tz\":\"US/Eastern\",\"displayName\":\"Your Nurse Carly\",\"description\":\"Dr. Woodward (Internal Medicine)\",\"email\":\"string\",\"primaryPhone\":\"5551234567\",\"primaryStart\":\"08:00\",\"primaryEnd\":\"string\",\"notificationPreference\":\"C\"}"
-
-response = http.request(request)
-puts response.read_body
-```
-
-```python
-import http.client
-
-conn = http.client.HTTPSConnection("virtserver.swaggerhub.com")
-
-payload = "{\"tz\":\"US/Eastern\",\"displayName\":\"Your Nurse Carly\",\"description\":\"Dr. Woodward (Internal Medicine)\",\"email\":\"string\",\"primaryPhone\":\"5551234567\",\"primaryStart\":\"08:00\",\"primaryEnd\":\"string\",\"notificationPreference\":\"C\"}"
-
-headers = {
-    'content-type': "application/json",
-    'accept': "application/json"
-    }
-
-conn.request("POST", "/EpxHealth/Epharmix/1/contact/create/", payload, headers)
-
-res = conn.getresponse()
-data = res.read()
-
-print(data.decode("utf-8"))
-```
-
-```java
-HttpResponse<String> response = Unirest.post("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/contact/create/")
-  .header("content-type", "application/json")
-  .header("accept", "application/json")
-  .body("{\"tz\":\"US/Eastern\",\"displayName\":\"Your Nurse Carly\",\"description\":\"Dr. Woodward (Internal Medicine)\",\"email\":\"string\",\"primaryPhone\":\"5551234567\",\"primaryStart\":\"08:00\",\"primaryEnd\":\"string\",\"notificationPreference\":\"C\"}")
-  .asString();
-```
-
-```go
-package main
-
-import (
-	"fmt"
-	"strings"
-	"net/http"
-	"io/ioutil"
-)
-
-func main() {
-
-	url := "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/contact/create/"
-
-	payload := strings.NewReader("{\"tz\":\"US/Eastern\",\"displayName\":\"Your Nurse Carly\",\"description\":\"Dr. Woodward (Internal Medicine)\",\"email\":\"string\",\"primaryPhone\":\"5551234567\",\"primaryStart\":\"08:00\",\"primaryEnd\":\"string\",\"notificationPreference\":\"C\"}")
-
-	req, _ := http.NewRequest("POST", url, payload)
-
-	req.Header.Add("content-type", "application/json")
-	req.Header.Add("accept", "application/json")
-
-	res, _ := http.DefaultClient.Do(req)
-
-	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
-
-	fmt.Println(res)
-	fmt.Println(string(body))
-
-}
-```
+## post__contact_create_
 
 `POST /contact/create/`
+
+*Add a contact to your Epharmix account*
 
 > Body parameter
 
 ```json
 {
-  "tz": "US/Eastern",
-  "displayName": "Your Nurse Carly",
-  "description": "Dr. Woodward (Internal Medicine)",
-  "email": "string",
-  "primaryPhone": "5551234567",
-  "primaryStart": "08:00",
-  "primaryEnd": "string",
-  "notificationPreference": "C"
+  "type": "object",
+  "properties": {
+    "tz": {
+      "type": "string",
+      "example": "US/Eastern"
+    },
+    "displayName": {
+      "type": "string",
+      "example": "Your Nurse Carly",
+      "description": "The patient-facing name used in text messages/calls"
+    },
+    "description": {
+      "type": "string",
+      "example": "Dr. Woodward (Internal Medicine)",
+      "description": "The internal description to help differentiate contacts"
+    },
+    "email": {
+      "type": "string"
+    },
+    "primaryPhone": {
+      "type": "string",
+      "description": "A 10-digit phone number, used to route calls/alerts to the contact.",
+      "example": "5551234567"
+    },
+    "primaryStart": {
+      "type": "string",
+      "description": "The time that the primary phone becomes active. (24-hour time)",
+      "example": "08:00"
+    },
+    "primaryEnd": {
+      "type": "string",
+      "description": "The time that the primary phone is no longer active. (24-hour time)"
+    },
+    "notificationPreference": {
+      "type": "string",
+      "enum": [
+        "C",
+        "T",
+        "P",
+        "E",
+        "O"
+      ],
+      "description": "How the contact would like to be notified. Call, Text, Page, Email, Integration, Off"
+    }
+  }
 }
 ```
 
-<h3 id="add-a-contact-to-your-epharmix-account-parameters">Parameters</h3>
+<h3 id="post__contact_create_-parameters">Parameters</h3>
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
 |body|body|[ContactParams](#schemacontactparams)|true|none|
-|» tz|body|string|false|none|
-|» displayName|body|string|false|The patient-facing name used in text messages/calls|
-|» description|body|string|false|The internal description to help differentiate contacts|
-|» email|body|string|false|none|
-|» primaryPhone|body|string|false|A 10-digit phone number, used to route calls/alerts to the contact.|
-|» primaryStart|body|string|false|The time that the primary phone becomes active. (24-hour time)|
-|» primaryEnd|body|string|false|The time that the primary phone is no longer active. (24-hour time)|
-|» notificationPreference|body|string|false|How the contact would like to be notified. Call, Text, Page, Email, Integration, Off|
-
-#### Enumerated Values
-
-|Parameter|Value|
-|---|---|
-|» notificationPreference|C|
-|» notificationPreference|T|
-|» notificationPreference|P|
-|» notificationPreference|E|
-|» notificationPreference|O|
 
 > Example responses
 
@@ -908,34 +467,53 @@ func main() {
 
 ```json
 {
-  "status": "OK",
-  "contact": {
-    "id": 53,
-    "displayName": "Your Nurse Carly",
-    "description": "Dr. Woodward (Internal Medicine)",
-    "email": "string"
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "OK"
+      ]
+    },
+    "contact": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "example": 53
+        },
+        "displayName": {
+          "type": "string",
+          "example": "Your Nurse Carly",
+          "description": "The patient-facing name used in text messages/calls"
+        },
+        "description": {
+          "type": "string",
+          "example": "Dr. Woodward (Internal Medicine)",
+          "description": "The internal description to help differentiate contacts"
+        },
+        "email": {
+          "type": "string"
+        }
+      }
+    }
   }
 }
 ```
 
-<h3 id="add-a-contact-to-your-epharmix-account-responses">Responses</h3>
+<h3 id="post__contact_create_-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |201|[Created](https://tools.ietf.org/html/rfc7231#section-6.3.2)|Contact Created|Inline|
 
-<h3 id="add-a-contact-to-your-epharmix-account-responseschema">Response Schema</h3>
+<h3 id="post__contact_create_-responseschema">Response Schema</h3>
 
 Status Code **201**
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |» status|string|false|none|none|
-|» contact|[ContactObject](#schemacontactobject)|false|none|none|
-|»» id|integer|false|none|none|
-|»» displayName|string|false|none|The patient-facing name used in text messages/calls|
-|»» description|string|false|none|The internal description to help differentiate contacts|
-|»» email|string|false|none|none|
 
 #### Enumerated Values
 
@@ -947,165 +525,69 @@ Status Code **201**
 This operation does not require authentication
 </aside>
 
-## Edit a contact
-
-> Code samples
-
-```shell
-curl --request POST \
-  --url https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/contact/edit/ \
-  --header 'accept: application/json' \
-  --header 'content-type: application/json' \
-  --data '{"tz":"US/Eastern","displayName":"Your Nurse Carly","description":"Dr. Woodward (Internal Medicine)","email":"string","primaryPhone":"5551234567","primaryStart":"08:00","primaryEnd":"string","notificationPreference":"C"}'
-```
-
-```javascript
-var data = JSON.stringify({
-  "tz": "US/Eastern",
-  "displayName": "Your Nurse Carly",
-  "description": "Dr. Woodward (Internal Medicine)",
-  "email": "string",
-  "primaryPhone": "5551234567",
-  "primaryStart": "08:00",
-  "primaryEnd": "string",
-  "notificationPreference": "C"
-});
-
-var xhr = new XMLHttpRequest();
-xhr.withCredentials = true;
-
-xhr.addEventListener("readystatechange", function () {
-  if (this.readyState === this.DONE) {
-    console.log(this.responseText);
-  }
-});
-
-xhr.open("POST", "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/contact/edit/");
-xhr.setRequestHeader("content-type", "application/json");
-xhr.setRequestHeader("accept", "application/json");
-
-xhr.send(data);
-```
-
-```ruby
-require 'uri'
-require 'net/http'
-
-url = URI("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/contact/edit/")
-
-http = Net::HTTP.new(url.host, url.port)
-http.use_ssl = true
-http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-request = Net::HTTP::Post.new(url)
-request["content-type"] = 'application/json'
-request["accept"] = 'application/json'
-request.body = "{\"tz\":\"US/Eastern\",\"displayName\":\"Your Nurse Carly\",\"description\":\"Dr. Woodward (Internal Medicine)\",\"email\":\"string\",\"primaryPhone\":\"5551234567\",\"primaryStart\":\"08:00\",\"primaryEnd\":\"string\",\"notificationPreference\":\"C\"}"
-
-response = http.request(request)
-puts response.read_body
-```
-
-```python
-import http.client
-
-conn = http.client.HTTPSConnection("virtserver.swaggerhub.com")
-
-payload = "{\"tz\":\"US/Eastern\",\"displayName\":\"Your Nurse Carly\",\"description\":\"Dr. Woodward (Internal Medicine)\",\"email\":\"string\",\"primaryPhone\":\"5551234567\",\"primaryStart\":\"08:00\",\"primaryEnd\":\"string\",\"notificationPreference\":\"C\"}"
-
-headers = {
-    'content-type': "application/json",
-    'accept': "application/json"
-    }
-
-conn.request("POST", "/EpxHealth/Epharmix/1/contact/edit/", payload, headers)
-
-res = conn.getresponse()
-data = res.read()
-
-print(data.decode("utf-8"))
-```
-
-```java
-HttpResponse<String> response = Unirest.post("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/contact/edit/")
-  .header("content-type", "application/json")
-  .header("accept", "application/json")
-  .body("{\"tz\":\"US/Eastern\",\"displayName\":\"Your Nurse Carly\",\"description\":\"Dr. Woodward (Internal Medicine)\",\"email\":\"string\",\"primaryPhone\":\"5551234567\",\"primaryStart\":\"08:00\",\"primaryEnd\":\"string\",\"notificationPreference\":\"C\"}")
-  .asString();
-```
-
-```go
-package main
-
-import (
-	"fmt"
-	"strings"
-	"net/http"
-	"io/ioutil"
-)
-
-func main() {
-
-	url := "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/contact/edit/"
-
-	payload := strings.NewReader("{\"tz\":\"US/Eastern\",\"displayName\":\"Your Nurse Carly\",\"description\":\"Dr. Woodward (Internal Medicine)\",\"email\":\"string\",\"primaryPhone\":\"5551234567\",\"primaryStart\":\"08:00\",\"primaryEnd\":\"string\",\"notificationPreference\":\"C\"}")
-
-	req, _ := http.NewRequest("POST", url, payload)
-
-	req.Header.Add("content-type", "application/json")
-	req.Header.Add("accept", "application/json")
-
-	res, _ := http.DefaultClient.Do(req)
-
-	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
-
-	fmt.Println(res)
-	fmt.Println(string(body))
-
-}
-```
+## post__contact_edit_
 
 `POST /contact/edit/`
+
+*Edit a contact*
 
 > Body parameter
 
 ```json
 {
-  "tz": "US/Eastern",
-  "displayName": "Your Nurse Carly",
-  "description": "Dr. Woodward (Internal Medicine)",
-  "email": "string",
-  "primaryPhone": "5551234567",
-  "primaryStart": "08:00",
-  "primaryEnd": "string",
-  "notificationPreference": "C"
+  "type": "object",
+  "properties": {
+    "tz": {
+      "type": "string",
+      "example": "US/Eastern"
+    },
+    "displayName": {
+      "type": "string",
+      "example": "Your Nurse Carly",
+      "description": "The patient-facing name used in text messages/calls"
+    },
+    "description": {
+      "type": "string",
+      "example": "Dr. Woodward (Internal Medicine)",
+      "description": "The internal description to help differentiate contacts"
+    },
+    "email": {
+      "type": "string"
+    },
+    "primaryPhone": {
+      "type": "string",
+      "description": "A 10-digit phone number, used to route calls/alerts to the contact.",
+      "example": "5551234567"
+    },
+    "primaryStart": {
+      "type": "string",
+      "description": "The time that the primary phone becomes active. (24-hour time)",
+      "example": "08:00"
+    },
+    "primaryEnd": {
+      "type": "string",
+      "description": "The time that the primary phone is no longer active. (24-hour time)"
+    },
+    "notificationPreference": {
+      "type": "string",
+      "enum": [
+        "C",
+        "T",
+        "P",
+        "E",
+        "O"
+      ],
+      "description": "How the contact would like to be notified. Call, Text, Page, Email, Integration, Off"
+    }
+  }
 }
 ```
 
-<h3 id="edit-a-contact-parameters">Parameters</h3>
+<h3 id="post__contact_edit_-parameters">Parameters</h3>
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
 |body|body|[ContactParams](#schemacontactparams)|true|none|
-|» tz|body|string|false|none|
-|» displayName|body|string|false|The patient-facing name used in text messages/calls|
-|» description|body|string|false|The internal description to help differentiate contacts|
-|» email|body|string|false|none|
-|» primaryPhone|body|string|false|A 10-digit phone number, used to route calls/alerts to the contact.|
-|» primaryStart|body|string|false|The time that the primary phone becomes active. (24-hour time)|
-|» primaryEnd|body|string|false|The time that the primary phone is no longer active. (24-hour time)|
-|» notificationPreference|body|string|false|How the contact would like to be notified. Call, Text, Page, Email, Integration, Off|
-
-#### Enumerated Values
-
-|Parameter|Value|
-|---|---|
-|» notificationPreference|C|
-|» notificationPreference|T|
-|» notificationPreference|P|
-|» notificationPreference|E|
-|» notificationPreference|O|
 
 > Example responses
 
@@ -1113,34 +595,53 @@ func main() {
 
 ```json
 {
-  "status": "OK",
-  "contact": {
-    "id": 53,
-    "displayName": "Your Nurse Carly",
-    "description": "Dr. Woodward (Internal Medicine)",
-    "email": "string"
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "OK"
+      ]
+    },
+    "contact": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "example": 53
+        },
+        "displayName": {
+          "type": "string",
+          "example": "Your Nurse Carly",
+          "description": "The patient-facing name used in text messages/calls"
+        },
+        "description": {
+          "type": "string",
+          "example": "Dr. Woodward (Internal Medicine)",
+          "description": "The internal description to help differentiate contacts"
+        },
+        "email": {
+          "type": "string"
+        }
+      }
+    }
   }
 }
 ```
 
-<h3 id="edit-a-contact-responses">Responses</h3>
+<h3 id="post__contact_edit_-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|Contact Edited|Inline|
 
-<h3 id="edit-a-contact-responseschema">Response Schema</h3>
+<h3 id="post__contact_edit_-responseschema">Response Schema</h3>
 
 Status Code **200**
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |» status|string|false|none|none|
-|» contact|[ContactObject](#schemacontactobject)|false|none|none|
-|»» id|integer|false|none|none|
-|»» displayName|string|false|none|The patient-facing name used in text messages/calls|
-|»» description|string|false|none|The internal description to help differentiate contacts|
-|»» email|string|false|none|none|
 
 #### Enumerated Values
 
@@ -1152,129 +653,27 @@ Status Code **200**
 This operation does not require authentication
 </aside>
 
-## Removes a contact from an account, but retains contact data in case it is needed.
-
-> Code samples
-
-```shell
-curl --request POST \
-  --url https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/contact/delete/ \
-  --header 'accept: application/json' \
-  --header 'content-type: application/json' \
-  --data '{"id":5}'
-```
-
-```javascript
-var data = JSON.stringify({
-  "id": 5
-});
-
-var xhr = new XMLHttpRequest();
-xhr.withCredentials = true;
-
-xhr.addEventListener("readystatechange", function () {
-  if (this.readyState === this.DONE) {
-    console.log(this.responseText);
-  }
-});
-
-xhr.open("POST", "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/contact/delete/");
-xhr.setRequestHeader("content-type", "application/json");
-xhr.setRequestHeader("accept", "application/json");
-
-xhr.send(data);
-```
-
-```ruby
-require 'uri'
-require 'net/http'
-
-url = URI("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/contact/delete/")
-
-http = Net::HTTP.new(url.host, url.port)
-http.use_ssl = true
-http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-request = Net::HTTP::Post.new(url)
-request["content-type"] = 'application/json'
-request["accept"] = 'application/json'
-request.body = "{\"id\":5}"
-
-response = http.request(request)
-puts response.read_body
-```
-
-```python
-import http.client
-
-conn = http.client.HTTPSConnection("virtserver.swaggerhub.com")
-
-payload = "{\"id\":5}"
-
-headers = {
-    'content-type': "application/json",
-    'accept': "application/json"
-    }
-
-conn.request("POST", "/EpxHealth/Epharmix/1/contact/delete/", payload, headers)
-
-res = conn.getresponse()
-data = res.read()
-
-print(data.decode("utf-8"))
-```
-
-```java
-HttpResponse<String> response = Unirest.post("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/contact/delete/")
-  .header("content-type", "application/json")
-  .header("accept", "application/json")
-  .body("{\"id\":5}")
-  .asString();
-```
-
-```go
-package main
-
-import (
-	"fmt"
-	"strings"
-	"net/http"
-	"io/ioutil"
-)
-
-func main() {
-
-	url := "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/contact/delete/"
-
-	payload := strings.NewReader("{\"id\":5}")
-
-	req, _ := http.NewRequest("POST", url, payload)
-
-	req.Header.Add("content-type", "application/json")
-	req.Header.Add("accept", "application/json")
-
-	res, _ := http.DefaultClient.Do(req)
-
-	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
-
-	fmt.Println(res)
-	fmt.Println(string(body))
-
-}
-```
+## post__contact_delete_
 
 `POST /contact/delete/`
+
+*Removes a contact from an account, but retains contact data in case it is needed.*
 
 > Body parameter
 
 ```json
 {
-  "id": 5
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "example": 5
+    }
+  }
 }
 ```
 
-<h3 id="removes-a-contact-from-an-account,-but-retains-contact-data-in-case-it-is-needed.-parameters">Parameters</h3>
+<h3 id="post__contact_delete_-parameters">Parameters</h3>
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
@@ -1287,34 +686,53 @@ func main() {
 
 ```json
 {
-  "status": "OK",
-  "contact": {
-    "id": 53,
-    "displayName": "Your Nurse Carly",
-    "description": "Dr. Woodward (Internal Medicine)",
-    "email": "string"
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "OK"
+      ]
+    },
+    "contact": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "example": 53
+        },
+        "displayName": {
+          "type": "string",
+          "example": "Your Nurse Carly",
+          "description": "The patient-facing name used in text messages/calls"
+        },
+        "description": {
+          "type": "string",
+          "example": "Dr. Woodward (Internal Medicine)",
+          "description": "The internal description to help differentiate contacts"
+        },
+        "email": {
+          "type": "string"
+        }
+      }
+    }
   }
 }
 ```
 
-<h3 id="removes-a-contact-from-an-account,-but-retains-contact-data-in-case-it-is-needed.-responses">Responses</h3>
+<h3 id="post__contact_delete_-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|Contact Deleted|Inline|
 
-<h3 id="removes-a-contact-from-an-account,-but-retains-contact-data-in-case-it-is-needed.-responseschema">Response Schema</h3>
+<h3 id="post__contact_delete_-responseschema">Response Schema</h3>
 
 Status Code **200**
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |» status|string|false|none|none|
-|» contact|[ContactObject](#schemacontactobject)|false|none|none|
-|»» id|integer|false|none|none|
-|»» displayName|string|false|none|The patient-facing name used in text messages/calls|
-|»» description|string|false|none|The internal description to help differentiate contacts|
-|»» email|string|false|none|none|
 
 #### Enumerated Values
 
@@ -1326,129 +744,27 @@ Status Code **200**
 This operation does not require authentication
 </aside>
 
-## Get a contact's info
-
-> Code samples
-
-```shell
-curl --request POST \
-  --url https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/contact/data_single/ \
-  --header 'accept: application/json' \
-  --header 'content-type: application/json' \
-  --data '{"id":5}'
-```
-
-```javascript
-var data = JSON.stringify({
-  "id": 5
-});
-
-var xhr = new XMLHttpRequest();
-xhr.withCredentials = true;
-
-xhr.addEventListener("readystatechange", function () {
-  if (this.readyState === this.DONE) {
-    console.log(this.responseText);
-  }
-});
-
-xhr.open("POST", "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/contact/data_single/");
-xhr.setRequestHeader("content-type", "application/json");
-xhr.setRequestHeader("accept", "application/json");
-
-xhr.send(data);
-```
-
-```ruby
-require 'uri'
-require 'net/http'
-
-url = URI("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/contact/data_single/")
-
-http = Net::HTTP.new(url.host, url.port)
-http.use_ssl = true
-http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-request = Net::HTTP::Post.new(url)
-request["content-type"] = 'application/json'
-request["accept"] = 'application/json'
-request.body = "{\"id\":5}"
-
-response = http.request(request)
-puts response.read_body
-```
-
-```python
-import http.client
-
-conn = http.client.HTTPSConnection("virtserver.swaggerhub.com")
-
-payload = "{\"id\":5}"
-
-headers = {
-    'content-type': "application/json",
-    'accept': "application/json"
-    }
-
-conn.request("POST", "/EpxHealth/Epharmix/1/contact/data_single/", payload, headers)
-
-res = conn.getresponse()
-data = res.read()
-
-print(data.decode("utf-8"))
-```
-
-```java
-HttpResponse<String> response = Unirest.post("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/contact/data_single/")
-  .header("content-type", "application/json")
-  .header("accept", "application/json")
-  .body("{\"id\":5}")
-  .asString();
-```
-
-```go
-package main
-
-import (
-	"fmt"
-	"strings"
-	"net/http"
-	"io/ioutil"
-)
-
-func main() {
-
-	url := "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/contact/data_single/"
-
-	payload := strings.NewReader("{\"id\":5}")
-
-	req, _ := http.NewRequest("POST", url, payload)
-
-	req.Header.Add("content-type", "application/json")
-	req.Header.Add("accept", "application/json")
-
-	res, _ := http.DefaultClient.Do(req)
-
-	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
-
-	fmt.Println(res)
-	fmt.Println(string(body))
-
-}
-```
+## post__contact_data_single_
 
 `POST /contact/data_single/`
+
+*Get a contact's info*
 
 > Body parameter
 
 ```json
 {
-  "id": 5
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "example": 5
+    }
+  }
 }
 ```
 
-<h3 id="get-a-contact's-info-parameters">Parameters</h3>
+<h3 id="post__contact_data_single_-parameters">Parameters</h3>
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
@@ -1461,34 +777,53 @@ func main() {
 
 ```json
 {
-  "status": "OK",
-  "contact": {
-    "id": 53,
-    "displayName": "Your Nurse Carly",
-    "description": "Dr. Woodward (Internal Medicine)",
-    "email": "string"
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "OK"
+      ]
+    },
+    "contact": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "example": 53
+        },
+        "displayName": {
+          "type": "string",
+          "example": "Your Nurse Carly",
+          "description": "The patient-facing name used in text messages/calls"
+        },
+        "description": {
+          "type": "string",
+          "example": "Dr. Woodward (Internal Medicine)",
+          "description": "The internal description to help differentiate contacts"
+        },
+        "email": {
+          "type": "string"
+        }
+      }
+    }
   }
 }
 ```
 
-<h3 id="get-a-contact's-info-responses">Responses</h3>
+<h3 id="post__contact_data_single_-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|Retrieved Contact Data|Inline|
 
-<h3 id="get-a-contact's-info-responseschema">Response Schema</h3>
+<h3 id="post__contact_data_single_-responseschema">Response Schema</h3>
 
 Status Code **200**
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |» status|string|false|none|none|
-|» contact|[ContactObject](#schemacontactobject)|false|none|none|
-|»» id|integer|false|none|none|
-|»» displayName|string|false|none|The patient-facing name used in text messages/calls|
-|»» description|string|false|none|The internal description to help differentiate contacts|
-|»» email|string|false|none|none|
 
 #### Enumerated Values
 
@@ -1502,273 +837,339 @@ This operation does not require authentication
 
 <h1 id="epharmix-platform-api-triage">Triage</h1>
 
-## Get triage information about patients
-
-> Code samples
-
-```shell
-curl --request POST \
-  --url https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/triage/data/ \
-  --header 'accept: application/json' \
-  --header 'content-type: application/json' \
-  --data '{"start":"2019-01-18T10:22:09-06:00","end":"2019-02-18T10:22:09-06:00","options":{"patients":{"danger":{"page":0,"limit":20,"apps":["epxcopd","epxdiabetes"],"order":["addressedAt","desc"]},"warning":{"page":0,"limit":20,"apps":["epxcopd","epxdiabetes"],"order":["addressedAt","desc"]},"success":{"page":0,"limit":20,"apps":["epxcopd","epxdiabetes"],"order":["addressedAt","desc"]},"unresponsive":{"page":0,"limit":20,"apps":["epxcopd","epxdiabetes"],"order":["addressedAt","desc"]}},"alerts":{"page":0,"limit":20,"unreadOnly":false,"apps":["epxdiabetes","epxheart"],"order":"desc"}}}'
-```
-
-```javascript
-var data = JSON.stringify({
-  "start": "2019-01-18T10:22:09-06:00",
-  "end": "2019-02-18T10:22:09-06:00",
-  "options": {
-    "patients": {
-      "danger": {
-        "page": 0,
-        "limit": 20,
-        "apps": [
-          "epxcopd",
-          "epxdiabetes"
-        ],
-        "order": [
-          "addressedAt",
-          "desc"
-        ]
-      },
-      "warning": {
-        "page": 0,
-        "limit": 20,
-        "apps": [
-          "epxcopd",
-          "epxdiabetes"
-        ],
-        "order": [
-          "addressedAt",
-          "desc"
-        ]
-      },
-      "success": {
-        "page": 0,
-        "limit": 20,
-        "apps": [
-          "epxcopd",
-          "epxdiabetes"
-        ],
-        "order": [
-          "addressedAt",
-          "desc"
-        ]
-      },
-      "unresponsive": {
-        "page": 0,
-        "limit": 20,
-        "apps": [
-          "epxcopd",
-          "epxdiabetes"
-        ],
-        "order": [
-          "addressedAt",
-          "desc"
-        ]
-      }
-    },
-    "alerts": {
-      "page": 0,
-      "limit": 20,
-      "unreadOnly": false,
-      "apps": [
-        "epxdiabetes",
-        "epxheart"
-      ],
-      "order": "desc"
-    }
-  }
-});
-
-var xhr = new XMLHttpRequest();
-xhr.withCredentials = true;
-
-xhr.addEventListener("readystatechange", function () {
-  if (this.readyState === this.DONE) {
-    console.log(this.responseText);
-  }
-});
-
-xhr.open("POST", "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/triage/data/");
-xhr.setRequestHeader("content-type", "application/json");
-xhr.setRequestHeader("accept", "application/json");
-
-xhr.send(data);
-```
-
-```ruby
-require 'uri'
-require 'net/http'
-
-url = URI("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/triage/data/")
-
-http = Net::HTTP.new(url.host, url.port)
-http.use_ssl = true
-http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-request = Net::HTTP::Post.new(url)
-request["content-type"] = 'application/json'
-request["accept"] = 'application/json'
-request.body = "{\"start\":\"2019-01-18T10:22:09-06:00\",\"end\":\"2019-02-18T10:22:09-06:00\",\"options\":{\"patients\":{\"danger\":{\"page\":0,\"limit\":20,\"apps\":[\"epxcopd\",\"epxdiabetes\"],\"order\":[\"addressedAt\",\"desc\"]},\"warning\":{\"page\":0,\"limit\":20,\"apps\":[\"epxcopd\",\"epxdiabetes\"],\"order\":[\"addressedAt\",\"desc\"]},\"success\":{\"page\":0,\"limit\":20,\"apps\":[\"epxcopd\",\"epxdiabetes\"],\"order\":[\"addressedAt\",\"desc\"]},\"unresponsive\":{\"page\":0,\"limit\":20,\"apps\":[\"epxcopd\",\"epxdiabetes\"],\"order\":[\"addressedAt\",\"desc\"]}},\"alerts\":{\"page\":0,\"limit\":20,\"unreadOnly\":false,\"apps\":[\"epxdiabetes\",\"epxheart\"],\"order\":\"desc\"}}}"
-
-response = http.request(request)
-puts response.read_body
-```
-
-```python
-import http.client
-
-conn = http.client.HTTPSConnection("virtserver.swaggerhub.com")
-
-payload = "{\"start\":\"2019-01-18T10:22:09-06:00\",\"end\":\"2019-02-18T10:22:09-06:00\",\"options\":{\"patients\":{\"danger\":{\"page\":0,\"limit\":20,\"apps\":[\"epxcopd\",\"epxdiabetes\"],\"order\":[\"addressedAt\",\"desc\"]},\"warning\":{\"page\":0,\"limit\":20,\"apps\":[\"epxcopd\",\"epxdiabetes\"],\"order\":[\"addressedAt\",\"desc\"]},\"success\":{\"page\":0,\"limit\":20,\"apps\":[\"epxcopd\",\"epxdiabetes\"],\"order\":[\"addressedAt\",\"desc\"]},\"unresponsive\":{\"page\":0,\"limit\":20,\"apps\":[\"epxcopd\",\"epxdiabetes\"],\"order\":[\"addressedAt\",\"desc\"]}},\"alerts\":{\"page\":0,\"limit\":20,\"unreadOnly\":false,\"apps\":[\"epxdiabetes\",\"epxheart\"],\"order\":\"desc\"}}}"
-
-headers = {
-    'content-type': "application/json",
-    'accept': "application/json"
-    }
-
-conn.request("POST", "/EpxHealth/Epharmix/1/triage/data/", payload, headers)
-
-res = conn.getresponse()
-data = res.read()
-
-print(data.decode("utf-8"))
-```
-
-```java
-HttpResponse<String> response = Unirest.post("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/triage/data/")
-  .header("content-type", "application/json")
-  .header("accept", "application/json")
-  .body("{\"start\":\"2019-01-18T10:22:09-06:00\",\"end\":\"2019-02-18T10:22:09-06:00\",\"options\":{\"patients\":{\"danger\":{\"page\":0,\"limit\":20,\"apps\":[\"epxcopd\",\"epxdiabetes\"],\"order\":[\"addressedAt\",\"desc\"]},\"warning\":{\"page\":0,\"limit\":20,\"apps\":[\"epxcopd\",\"epxdiabetes\"],\"order\":[\"addressedAt\",\"desc\"]},\"success\":{\"page\":0,\"limit\":20,\"apps\":[\"epxcopd\",\"epxdiabetes\"],\"order\":[\"addressedAt\",\"desc\"]},\"unresponsive\":{\"page\":0,\"limit\":20,\"apps\":[\"epxcopd\",\"epxdiabetes\"],\"order\":[\"addressedAt\",\"desc\"]}},\"alerts\":{\"page\":0,\"limit\":20,\"unreadOnly\":false,\"apps\":[\"epxdiabetes\",\"epxheart\"],\"order\":\"desc\"}}}")
-  .asString();
-```
-
-```go
-package main
-
-import (
-	"fmt"
-	"strings"
-	"net/http"
-	"io/ioutil"
-)
-
-func main() {
-
-	url := "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/triage/data/"
-
-	payload := strings.NewReader("{\"start\":\"2019-01-18T10:22:09-06:00\",\"end\":\"2019-02-18T10:22:09-06:00\",\"options\":{\"patients\":{\"danger\":{\"page\":0,\"limit\":20,\"apps\":[\"epxcopd\",\"epxdiabetes\"],\"order\":[\"addressedAt\",\"desc\"]},\"warning\":{\"page\":0,\"limit\":20,\"apps\":[\"epxcopd\",\"epxdiabetes\"],\"order\":[\"addressedAt\",\"desc\"]},\"success\":{\"page\":0,\"limit\":20,\"apps\":[\"epxcopd\",\"epxdiabetes\"],\"order\":[\"addressedAt\",\"desc\"]},\"unresponsive\":{\"page\":0,\"limit\":20,\"apps\":[\"epxcopd\",\"epxdiabetes\"],\"order\":[\"addressedAt\",\"desc\"]}},\"alerts\":{\"page\":0,\"limit\":20,\"unreadOnly\":false,\"apps\":[\"epxdiabetes\",\"epxheart\"],\"order\":\"desc\"}}}")
-
-	req, _ := http.NewRequest("POST", url, payload)
-
-	req.Header.Add("content-type", "application/json")
-	req.Header.Add("accept", "application/json")
-
-	res, _ := http.DefaultClient.Do(req)
-
-	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
-
-	fmt.Println(res)
-	fmt.Println(string(body))
-
-}
-```
+## post__triage_data_
 
 `POST /triage/data/`
+
+*Get triage information about patients*
 
 > Body parameter
 
 ```json
 {
-  "start": "2019-01-18T10:22:09-06:00",
-  "end": "2019-02-18T10:22:09-06:00",
-  "options": {
-    "patients": {
-      "danger": {
-        "page": 0,
-        "limit": 20,
-        "apps": [
-          "epxcopd",
-          "epxdiabetes"
-        ],
-        "order": [
-          "addressedAt",
-          "desc"
-        ]
-      },
-      "warning": {
-        "page": 0,
-        "limit": 20,
-        "apps": [
-          "epxcopd",
-          "epxdiabetes"
-        ],
-        "order": [
-          "addressedAt",
-          "desc"
-        ]
-      },
-      "success": {
-        "page": 0,
-        "limit": 20,
-        "apps": [
-          "epxcopd",
-          "epxdiabetes"
-        ],
-        "order": [
-          "addressedAt",
-          "desc"
-        ]
-      },
-      "unresponsive": {
-        "page": 0,
-        "limit": 20,
-        "apps": [
-          "epxcopd",
-          "epxdiabetes"
-        ],
-        "order": [
-          "addressedAt",
-          "desc"
-        ]
-      }
+  "type": "object",
+  "properties": {
+    "start": {
+      "type": "string",
+      "example": "2019-01-18T10:22:09-06:00",
+      "description": "the start date of the timeframe, ISO format"
     },
-    "alerts": {
-      "page": 0,
-      "limit": 20,
-      "unreadOnly": false,
-      "apps": [
-        "epxdiabetes",
-        "epxheart"
-      ],
-      "order": "desc"
+    "end": {
+      "type": "string",
+      "example": "2019-02-18T10:22:09-06:00",
+      "description": "the end date of the timeframe, ISO format (optional)"
+    },
+    "options": {
+      "type": "object",
+      "properties": {
+        "patients": {
+          "type": "object",
+          "properties": {
+            "danger": {
+              "type": "object",
+              "properties": {
+                "page": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "limit": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 100,
+                  "example": 20
+                },
+                "apps": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^epx[a-z]+$"
+                  },
+                  "minItems": 1,
+                  "uniqueItems": true,
+                  "example": [
+                    "epxcopd",
+                    "epxdiabetes"
+                  ]
+                },
+                "order": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "alerts",
+                          "addressedAt",
+                          "snoozedUntil",
+                          "lastName",
+                          "enrollDate"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "asc",
+                          "desc"
+                        ]
+                      }
+                    ]
+                  },
+                  "minItems": 1,
+                  "maxItems": 2,
+                  "example": [
+                    "addressedAt",
+                    "desc"
+                  ]
+                }
+              },
+              "required": [
+                "page",
+                "limit"
+              ]
+            },
+            "warning": {
+              "type": "object",
+              "properties": {
+                "page": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "limit": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 100,
+                  "example": 20
+                },
+                "apps": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^epx[a-z]+$"
+                  },
+                  "minItems": 1,
+                  "uniqueItems": true,
+                  "example": [
+                    "epxcopd",
+                    "epxdiabetes"
+                  ]
+                },
+                "order": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "alerts",
+                          "addressedAt",
+                          "snoozedUntil",
+                          "lastName",
+                          "enrollDate"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "asc",
+                          "desc"
+                        ]
+                      }
+                    ]
+                  },
+                  "minItems": 1,
+                  "maxItems": 2,
+                  "example": [
+                    "addressedAt",
+                    "desc"
+                  ]
+                }
+              },
+              "required": [
+                "page",
+                "limit"
+              ]
+            },
+            "success": {
+              "type": "object",
+              "properties": {
+                "page": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "limit": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 100,
+                  "example": 20
+                },
+                "apps": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^epx[a-z]+$"
+                  },
+                  "minItems": 1,
+                  "uniqueItems": true,
+                  "example": [
+                    "epxcopd",
+                    "epxdiabetes"
+                  ]
+                },
+                "order": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "alerts",
+                          "addressedAt",
+                          "snoozedUntil",
+                          "lastName",
+                          "enrollDate"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "asc",
+                          "desc"
+                        ]
+                      }
+                    ]
+                  },
+                  "minItems": 1,
+                  "maxItems": 2,
+                  "example": [
+                    "addressedAt",
+                    "desc"
+                  ]
+                }
+              },
+              "required": [
+                "page",
+                "limit"
+              ]
+            },
+            "unresponsive": {
+              "type": "object",
+              "properties": {
+                "page": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "limit": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 100,
+                  "example": 20
+                },
+                "apps": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^epx[a-z]+$"
+                  },
+                  "minItems": 1,
+                  "uniqueItems": true,
+                  "example": [
+                    "epxcopd",
+                    "epxdiabetes"
+                  ]
+                },
+                "order": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "alerts",
+                          "addressedAt",
+                          "snoozedUntil",
+                          "lastName",
+                          "enrollDate"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "asc",
+                          "desc"
+                        ]
+                      }
+                    ]
+                  },
+                  "minItems": 1,
+                  "maxItems": 2,
+                  "example": [
+                    "addressedAt",
+                    "desc"
+                  ]
+                }
+              },
+              "required": [
+                "page",
+                "limit"
+              ]
+            }
+          }
+        },
+        "alerts": {
+          "type": "object",
+          "properties": {
+            "page": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100,
+              "example": 20
+            },
+            "unreadOnly": {
+              "type": "boolean",
+              "example": false
+            },
+            "apps": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^epx[a-z]+$"
+              },
+              "minItems": 1,
+              "uniqueItems": true,
+              "example": [
+                "epxdiabetes",
+                "epxheart",
+                "epxcopd"
+              ]
+            },
+            "order": {
+              "type": "string",
+              "pattern": "^(asc)|(desc)$",
+              "example": "desc"
+            }
+          },
+          "required": [
+            "page",
+            "limit"
+          ]
+        }
+      }
     }
   }
 }
 ```
 
-<h3 id="get-triage-information-about-patients-parameters">Parameters</h3>
+<h3 id="post__triage_data_-parameters">Parameters</h3>
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
 |body|body|object|true|none|
 |» start|body|string|false|the start date of the timeframe, ISO format|
 |» end|body|string|false|the end date of the timeframe, ISO format (optional)|
-|» options|body|[TriageOptions](#schematriageoptions)|false|none|
-|»» patients|body|object|false|none|
-|»»» danger|body|[TriageCategory](#schematriagecategory)|false|none|
-|»»»» page|body|integer|true|none|
-|»»»» limit|body|integer|true|none|
-|»»»» apps|body|[string]|false|none|
-|»»»» order|body|[oneOf]|false|none|
-|»»»»» *anonymous*|body|string|false|none|
-|»»»»» *anonymous*|body|string|false|none|
-|»»»» warning|body|[TriageCategory](#schematriagecategory)|false|none|
-|»»»» success|body|[TriageCategory](#schematriagecategory)|false|none|
-|»»»» unresponsive|body|[TriageCategory](#schematriagecategory)|false|none|
 |»»» alerts|body|object|false|none|
 |»»»» page|body|integer|true|none|
 |»»»» limit|body|integer|true|none|
@@ -1776,296 +1177,583 @@ func main() {
 |»»»» apps|body|[string]|false|none|
 |»»»» order|body|string|false|none|
 
-#### Enumerated Values
-
-|Parameter|Value|
-|---|---|
-|»»»»» *anonymous*|alerts|
-|»»»»» *anonymous*|addressedAt|
-|»»»»» *anonymous*|snoozedUntil|
-|»»»»» *anonymous*|lastName|
-|»»»»» *anonymous*|enrollDate|
-|»»»»» *anonymous*|asc|
-|»»»»» *anonymous*|desc|
-
 > Example responses
 
 > 200 Response
 
 ```json
 {
-  "status": "OK",
-  "alerts": {
-    "limit": 0,
-    "page": 0,
-    "total": 0,
-    "results": [
-      {
-        "id": 2543,
-        "app": "epxcopd",
-        "body": "Patient Brionna has responded that she is having trouble breathing.",
-        "contact": {
-          "id": 53,
-          "displayName": "Your Nurse Carly",
-          "description": "Dr. Woodward (Internal Medicine)",
-          "email": "string"
-        },
-        "createdAt": "2019-02-01T19:37:00.000Z",
-        "isRead": true,
-        "snoozedAt": "2019-02-18T10:00:00-06:00",
-        "snoozedUntil": "2019-02-25T10:00:09-06:00",
-        "patient": {
-          "firstName": "John",
-          "middleInitial": "M",
-          "lastName": "Smith",
-          "phone": "5551234567",
-          "id": 623
+  "allOf": [
+    {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "OK"
+          ],
+          "example": "OK"
         }
       }
-    ]
-  },
-  "contacts": [
+    },
     {
-      "id": 53,
-      "displayName": "Your Nurse Carly",
-      "description": "Dr. Woodward (Internal Medicine)",
-      "email": "string"
-    }
-  ],
-  "patientIds": [
-    0
-  ],
-  "patients": {
-    "danger": {
-      "page": 0,
-      "limit": 0,
-      "total": 0,
-      "results": [
-        {
-          "alerts": [
-            {
-              "id": 2543,
-              "app": "epxcopd",
-              "body": "Patient Brionna has responded that she is having trouble breathing.",
-              "contact": {
-                "id": 53,
-                "displayName": "Your Nurse Carly",
-                "description": "Dr. Woodward (Internal Medicine)",
-                "email": "string"
-              },
-              "createdAt": "2019-02-01T19:37:00.000Z",
-              "isRead": true,
-              "snoozedAt": "2019-02-18T10:00:00-06:00",
-              "snoozedUntil": "2019-02-25T10:00:09-06:00",
-              "patient": {
-                "firstName": "John",
-                "middleInitial": "M",
-                "lastName": "Smith",
-                "phone": "5551234567",
-                "id": 623
+      "type": "object",
+      "properties": {
+        "alerts": {
+          "type": "object",
+          "properties": {
+            "limit": {
+              "type": "integer"
+            },
+            "page": {
+              "type": "integer"
+            },
+            "total": {
+              "type": "integer",
+              "description": "The total amount of results without the limit restriction"
+            },
+            "results": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "example": 2543
+                  },
+                  "app": {
+                    "type": "string",
+                    "example": "epxcopd"
+                  },
+                  "body": {
+                    "type": "string",
+                    "example": "Patient Brionna has responded that she is having trouble breathing."
+                  },
+                  "contact": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "example": 53
+                      },
+                      "displayName": {
+                        "type": "string",
+                        "example": "Your Nurse Carly",
+                        "description": "The patient-facing name used in text messages/calls"
+                      },
+                      "description": {
+                        "type": "string",
+                        "example": "Dr. Woodward (Internal Medicine)",
+                        "description": "The internal description to help differentiate contacts"
+                      },
+                      "email": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "createdAt": {
+                    "type": "string",
+                    "description": "When the alert was triggered (ISO timestamp)",
+                    "example": "2019-02-01T19:37:00.000Z"
+                  },
+                  "isRead": {
+                    "type": "boolean",
+                    "description": "True if the alert has been addressed by a user"
+                  },
+                  "snoozedAt": {
+                    "type": "string",
+                    "description": "When the alert was snoozed (ISO timestamp)",
+                    "example": "2019-02-18T10:00:00-06:00"
+                  },
+                  "snoozedUntil": {
+                    "type": "string",
+                    "description": "When the alert will no longer be snoozed (ISO timestamp)",
+                    "example": "2019-02-25T10:00:09-06:00"
+                  },
+                  "patient": {
+                    "allOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "firstName": {
+                            "description": "The first name of the patient.",
+                            "type": "string",
+                            "example": "John"
+                          },
+                          "middleInitial": {
+                            "description": "The middle initial of the patient.",
+                            "type": "string",
+                            "example": "M"
+                          },
+                          "lastName": {
+                            "description": "The last name of the patient.",
+                            "type": "string",
+                            "example": "Smith"
+                          },
+                          "phone": {
+                            "description": "The phone number of the patient.",
+                            "type": "string",
+                            "pattern": "^\\d{10}$",
+                            "example": "5551234567"
+                          }
+                        },
+                        "required": [
+                          "firstName",
+                          "lastName",
+                          "phone"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "example": 623,
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "id"
+                        ]
+                      }
+                    ]
+                  }
+                }
               }
             }
-          ],
-          "apps": {
-            "epx{appname}": {
-              "alert": {
-                "total": 8,
-                "unread": 2,
-                "active": 2
+          }
+        },
+        "contacts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "example": 53
               },
-              "category": 1,
-              "contactId": 81,
-              "engagement": {
-                "responded": 10,
-                "total": 14,
-                "rate": 0.714285
+              "displayName": {
+                "type": "string",
+                "example": "Your Nurse Carly",
+                "description": "The patient-facing name used in text messages/calls"
               },
-              "schedule": {
-                "start": "2019-02-05T10:00:09-06:00",
-                "end": "2019-03-05T10:00:09-06:00",
-                "times": [
-                  "09:00",
-                  "17:30"
-                ],
-                "days": [
-                  1,
-                  3,
-                  5
-                ],
-                "method": "message",
-                "tz": "US/Central",
-                "patientId": 372,
-                "contactId": 39,
-                "id": 14,
-                "isCanceled": true,
-                "canceledAt": "string"
+              "description": {
+                "type": "string",
+                "example": "Dr. Woodward (Internal Medicine)",
+                "description": "The internal description to help differentiate contacts"
+              },
+              "email": {
+                "type": "string"
               }
             }
-          },
-          "category": 2,
-          "patient": {
-            "firstName": "John",
-            "middleInitial": "M",
-            "lastName": "Smith",
-            "phone": "5551234567",
-            "id": 623
+          }
+        },
+        "patientIds": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "description": "IDs of the patients that are included in the results"
+          }
+        },
+        "patients": {
+          "type": "object",
+          "properties": {
+            "danger": {
+              "type": "object",
+              "properties": {
+                "page": {
+                  "type": "integer"
+                },
+                "limit": {
+                  "type": "integer"
+                },
+                "total": {
+                  "type": "integer"
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "alerts": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 2543
+                            },
+                            "app": {
+                              "type": "string",
+                              "example": "epxcopd"
+                            },
+                            "body": {
+                              "type": "string",
+                              "example": "Patient Brionna has responded that she is having trouble breathing."
+                            },
+                            "contact": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": 53
+                                },
+                                "displayName": {
+                                  "type": "string",
+                                  "example": "Your Nurse Carly",
+                                  "description": "The patient-facing name used in text messages/calls"
+                                },
+                                "description": {
+                                  "type": "string",
+                                  "example": "Dr. Woodward (Internal Medicine)",
+                                  "description": "The internal description to help differentiate contacts"
+                                },
+                                "email": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "createdAt": {
+                              "type": "string",
+                              "description": "When the alert was triggered (ISO timestamp)",
+                              "example": "2019-02-01T19:37:00.000Z"
+                            },
+                            "isRead": {
+                              "type": "boolean",
+                              "description": "True if the alert has been addressed by a user"
+                            },
+                            "snoozedAt": {
+                              "type": "string",
+                              "description": "When the alert was snoozed (ISO timestamp)",
+                              "example": "2019-02-18T10:00:00-06:00"
+                            },
+                            "snoozedUntil": {
+                              "type": "string",
+                              "description": "When the alert will no longer be snoozed (ISO timestamp)",
+                              "example": "2019-02-25T10:00:09-06:00"
+                            },
+                            "patient": {
+                              "allOf": [
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "firstName": {
+                                      "description": "The first name of the patient.",
+                                      "type": "string",
+                                      "example": "John"
+                                    },
+                                    "middleInitial": {
+                                      "description": "The middle initial of the patient.",
+                                      "type": "string",
+                                      "example": "M"
+                                    },
+                                    "lastName": {
+                                      "description": "The last name of the patient.",
+                                      "type": "string",
+                                      "example": "Smith"
+                                    },
+                                    "phone": {
+                                      "description": "The phone number of the patient.",
+                                      "type": "string",
+                                      "pattern": "^\\d{10}$",
+                                      "example": "5551234567"
+                                    }
+                                  },
+                                  "required": [
+                                    "firstName",
+                                    "lastName",
+                                    "phone"
+                                  ]
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "example": 623,
+                                      "type": "number"
+                                    }
+                                  },
+                                  "required": [
+                                    "id"
+                                  ]
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      },
+                      "apps": {
+                        "type": "object",
+                        "properties": {
+                          "epx{appname}": {
+                            "type": "object",
+                            "properties": {
+                              "alert": {
+                                "type": "object",
+                                "properties": {
+                                  "total": {
+                                    "type": "integer",
+                                    "example": 8,
+                                    "description": "The total amount of alerts triggered by this patient in the given timeframe"
+                                  },
+                                  "unread": {
+                                    "type": "integer",
+                                    "example": 2,
+                                    "description": "The amount of unresolved alerts for the patient in the given timeframe"
+                                  },
+                                  "active": {
+                                    "type": "integer",
+                                    "example": 2
+                                  }
+                                }
+                              },
+                              "category": {
+                                "type": "integer",
+                                "example": 1,
+                                "description": "The current category for the corresponding app. 1: danger 2: warning 3: success 4: unresponsive 5: empty 6: inactive"
+                              },
+                              "contactId": {
+                                "type": "integer",
+                                "example": 81,
+                                "description": "The ID of the patient's contact for this app"
+                              },
+                              "engagement": {
+                                "type": "object",
+                                "properties": {
+                                  "responded": {
+                                    "type": "integer",
+                                    "description": "The amount of sessions the patient responded to for the corresponding app (in the set timeframe)",
+                                    "example": 10
+                                  },
+                                  "total": {
+                                    "type": "integer",
+                                    "description": "The total amount of sessions the patient had for the corresponding app (in the set timeframe)",
+                                    "example": 14
+                                  },
+                                  "rate": {
+                                    "type": "number",
+                                    "example": ".714285",
+                                    "description": "The response rate for this app (in the set timeframe)"
+                                  }
+                                }
+                              },
+                              "schedule": {
+                                "allOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "start": {
+                                        "type": "string",
+                                        "description": "The start date of the intervention",
+                                        "example": "2019-02-05T10:00:09-06:00"
+                                      },
+                                      "end": {
+                                        "type": "string",
+                                        "description": "The end date of the intervention (optional)",
+                                        "example": "2019-03-05T10:00:09-06:00"
+                                      },
+                                      "times": {
+                                        "type": "array",
+                                        "description": "The times that the patient would prefer to receive messages (24-hour time)",
+                                        "example": [
+                                          "09:00",
+                                          "17:30"
+                                        ],
+                                        "items": {
+                                          "type": "string"
+                                        }
+                                      },
+                                      "days": {
+                                        "description": "Days of the week that the sessions will occur (0: Sunday... 6: Saturday)",
+                                        "example": [
+                                          1,
+                                          3,
+                                          5
+                                        ],
+                                        "type": "array",
+                                        "items": {
+                                          "type": "integer",
+                                          "minimum": 0,
+                                          "maximum": 6
+                                        }
+                                      },
+                                      "method": {
+                                        "type": "string",
+                                        "description": "The method in which the patient will be contacted.",
+                                        "enum": [
+                                          "message",
+                                          "call"
+                                        ]
+                                      },
+                                      "tz": {
+                                        "type": "string",
+                                        "description": "The timezone of the schedule",
+                                        "example": "US/Central"
+                                      },
+                                      "patientId": {
+                                        "type": "integer",
+                                        "description": "The ID of the patient who will receive the intervention",
+                                        "example": 1638
+                                      },
+                                      "contactId": {
+                                        "type": "integer",
+                                        "description": "The ID of the contact that will be assigned to the intervention",
+                                        "example": 76
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "id": {
+                                        "type": "integer",
+                                        "example": 14
+                                      },
+                                      "isCanceled": {
+                                        "type": "boolean",
+                                        "description": "If true, the patient will not longer receive calls/messages"
+                                      },
+                                      "canceledAt": {
+                                        "type": "string",
+                                        "description": "The time that the schedule was canceled"
+                                      },
+                                      "patientId": {
+                                        "type": "integer",
+                                        "example": 372,
+                                        "description": "The ID of the patient"
+                                      },
+                                      "contactId": {
+                                        "type": "integer",
+                                        "description": "The ID of the contact associated to this schedule",
+                                        "example": 39
+                                      }
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "category": {
+                        "type": "integer",
+                        "example": 2,
+                        "description": "The current primary category for the patient (patients can be in more than one category at a time). 1: danger 2: warning 3: success 4: unresponsive 5: empty 6: inactive 7: snoozed 8: completed 9: paused 10: recent"
+                      },
+                      "patient": {
+                        "allOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "firstName": {
+                                "description": "The first name of the patient.",
+                                "type": "string",
+                                "example": "John"
+                              },
+                              "middleInitial": {
+                                "description": "The middle initial of the patient.",
+                                "type": "string",
+                                "example": "M"
+                              },
+                              "lastName": {
+                                "description": "The last name of the patient.",
+                                "type": "string",
+                                "example": "Smith"
+                              },
+                              "phone": {
+                                "description": "The phone number of the patient.",
+                                "type": "string",
+                                "pattern": "^\\d{10}$",
+                                "example": "5551234567"
+                              }
+                            },
+                            "required": [
+                              "firstName",
+                              "lastName",
+                              "phone"
+                            ]
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "example": 623,
+                                "type": "number"
+                              }
+                            },
+                            "required": [
+                              "id"
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         }
-      ]
+      }
     }
-  }
+  ]
 }
 ```
 
-<h3 id="get-triage-information-about-patients-responses">Responses</h3>
+<h3 id="post__triage_data_-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|Retrieved Triage Data|Inline|
 
-<h3 id="get-triage-information-about-patients-responseschema">Response Schema</h3>
+<h3 id="post__triage_data_-responseschema">Response Schema</h3>
 
 #### Enumerated Values
 
 |Property|Value|
 |---|---|
 |status|OK|
-|method|message|
-|method|call|
 
 <aside class="success">
 This operation does not require authentication
 </aside>
 
-## Get triage information about a single patient
-
-> Code samples
-
-```shell
-curl --request POST \
-  --url https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/triage/data_single/ \
-  --header 'accept: application/json' \
-  --header 'content-type: application/json' \
-  --data '{"id":150,"start":"2019-01-18T10:22:09-06:00","end":"2019-02-18T10:22:09-06:00","tz":"US/Central"}'
-```
-
-```javascript
-var data = JSON.stringify({
-  "id": 150,
-  "start": "2019-01-18T10:22:09-06:00",
-  "end": "2019-02-18T10:22:09-06:00",
-  "tz": "US/Central"
-});
-
-var xhr = new XMLHttpRequest();
-xhr.withCredentials = true;
-
-xhr.addEventListener("readystatechange", function () {
-  if (this.readyState === this.DONE) {
-    console.log(this.responseText);
-  }
-});
-
-xhr.open("POST", "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/triage/data_single/");
-xhr.setRequestHeader("content-type", "application/json");
-xhr.setRequestHeader("accept", "application/json");
-
-xhr.send(data);
-```
-
-```ruby
-require 'uri'
-require 'net/http'
-
-url = URI("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/triage/data_single/")
-
-http = Net::HTTP.new(url.host, url.port)
-http.use_ssl = true
-http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-request = Net::HTTP::Post.new(url)
-request["content-type"] = 'application/json'
-request["accept"] = 'application/json'
-request.body = "{\"id\":150,\"start\":\"2019-01-18T10:22:09-06:00\",\"end\":\"2019-02-18T10:22:09-06:00\",\"tz\":\"US/Central\"}"
-
-response = http.request(request)
-puts response.read_body
-```
-
-```python
-import http.client
-
-conn = http.client.HTTPSConnection("virtserver.swaggerhub.com")
-
-payload = "{\"id\":150,\"start\":\"2019-01-18T10:22:09-06:00\",\"end\":\"2019-02-18T10:22:09-06:00\",\"tz\":\"US/Central\"}"
-
-headers = {
-    'content-type': "application/json",
-    'accept': "application/json"
-    }
-
-conn.request("POST", "/EpxHealth/Epharmix/1/triage/data_single/", payload, headers)
-
-res = conn.getresponse()
-data = res.read()
-
-print(data.decode("utf-8"))
-```
-
-```java
-HttpResponse<String> response = Unirest.post("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/triage/data_single/")
-  .header("content-type", "application/json")
-  .header("accept", "application/json")
-  .body("{\"id\":150,\"start\":\"2019-01-18T10:22:09-06:00\",\"end\":\"2019-02-18T10:22:09-06:00\",\"tz\":\"US/Central\"}")
-  .asString();
-```
-
-```go
-package main
-
-import (
-	"fmt"
-	"strings"
-	"net/http"
-	"io/ioutil"
-)
-
-func main() {
-
-	url := "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/triage/data_single/"
-
-	payload := strings.NewReader("{\"id\":150,\"start\":\"2019-01-18T10:22:09-06:00\",\"end\":\"2019-02-18T10:22:09-06:00\",\"tz\":\"US/Central\"}")
-
-	req, _ := http.NewRequest("POST", url, payload)
-
-	req.Header.Add("content-type", "application/json")
-	req.Header.Add("accept", "application/json")
-
-	res, _ := http.DefaultClient.Do(req)
-
-	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
-
-	fmt.Println(res)
-	fmt.Println(string(body))
-
-}
-```
+## post__triage_data_single_
 
 `POST /triage/data_single/`
+
+*Get triage information about a single patient*
 
 > Body parameter
 
 ```json
 {
-  "id": 150,
-  "start": "2019-01-18T10:22:09-06:00",
-  "end": "2019-02-18T10:22:09-06:00",
-  "tz": "US/Central"
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "example": 150,
+      "description": "the ID of the patient"
+    },
+    "start": {
+      "type": "string",
+      "example": "2019-01-18T10:22:09-06:00",
+      "description": "the start date of the timeframe, ISO format"
+    },
+    "end": {
+      "type": "string",
+      "example": "2019-02-18T10:22:09-06:00",
+      "description": "the end date of the timeframe, ISO format (optional)"
+    },
+    "tz": {
+      "type": "string",
+      "example": "US/Central"
+    }
+  }
 }
 ```
 
-<h3 id="get-triage-information-about-a-single-patient-parameters">Parameters</h3>
+<h3 id="post__triage_data_single_-parameters">Parameters</h3>
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
@@ -2081,95 +1769,368 @@ func main() {
 
 ```json
 {
-  "status": "OK",
-  "contacts": [
-    {
-      "id": 53,
-      "displayName": "Your Nurse Carly",
-      "description": "Dr. Woodward (Internal Medicine)",
-      "email": "string"
-    }
-  ],
-  "data": {
-    "alerts": [
-      {
-        "id": 2543,
-        "app": "epxcopd",
-        "body": "Patient Brionna has responded that she is having trouble breathing.",
-        "contact": {
-          "id": 53,
-          "displayName": "Your Nurse Carly",
-          "description": "Dr. Woodward (Internal Medicine)",
-          "email": "string"
-        },
-        "createdAt": "2019-02-01T19:37:00.000Z",
-        "isRead": true,
-        "snoozedAt": "2019-02-18T10:00:00-06:00",
-        "snoozedUntil": "2019-02-25T10:00:09-06:00",
-        "patient": {
-          "firstName": "John",
-          "middleInitial": "M",
-          "lastName": "Smith",
-          "phone": "5551234567",
-          "id": 623
-        }
-      }
-    ],
-    "apps": {
-      "epx{appname}": {
-        "alert": {
-          "total": 8,
-          "unread": 2,
-          "active": 2
-        },
-        "category": 1,
-        "contactId": 81,
-        "engagement": {
-          "responded": 10,
-          "total": 14,
-          "rate": 0.714285
-        },
-        "schedule": {
-          "start": "2019-02-05T10:00:09-06:00",
-          "end": "2019-03-05T10:00:09-06:00",
-          "times": [
-            "09:00",
-            "17:30"
-          ],
-          "days": [
-            1,
-            3,
-            5
-          ],
-          "method": "message",
-          "tz": "US/Central",
-          "patientId": 372,
-          "contactId": 39,
-          "id": 14,
-          "isCanceled": true,
-          "canceledAt": "string"
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "OK"
+      ]
+    },
+    "contacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 53
+          },
+          "displayName": {
+            "type": "string",
+            "example": "Your Nurse Carly",
+            "description": "The patient-facing name used in text messages/calls"
+          },
+          "description": {
+            "type": "string",
+            "example": "Dr. Woodward (Internal Medicine)",
+            "description": "The internal description to help differentiate contacts"
+          },
+          "email": {
+            "type": "string"
+          }
         }
       }
     },
-    "category": 2,
-    "patient": {
-      "firstName": "John",
-      "middleInitial": "M",
-      "lastName": "Smith",
-      "phone": "5551234567",
-      "id": 623
+    "data": {
+      "type": "object",
+      "properties": {
+        "alerts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "example": 2543
+              },
+              "app": {
+                "type": "string",
+                "example": "epxcopd"
+              },
+              "body": {
+                "type": "string",
+                "example": "Patient Brionna has responded that she is having trouble breathing."
+              },
+              "contact": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "example": 53
+                  },
+                  "displayName": {
+                    "type": "string",
+                    "example": "Your Nurse Carly",
+                    "description": "The patient-facing name used in text messages/calls"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "Dr. Woodward (Internal Medicine)",
+                    "description": "The internal description to help differentiate contacts"
+                  },
+                  "email": {
+                    "type": "string"
+                  }
+                }
+              },
+              "createdAt": {
+                "type": "string",
+                "description": "When the alert was triggered (ISO timestamp)",
+                "example": "2019-02-01T19:37:00.000Z"
+              },
+              "isRead": {
+                "type": "boolean",
+                "description": "True if the alert has been addressed by a user"
+              },
+              "snoozedAt": {
+                "type": "string",
+                "description": "When the alert was snoozed (ISO timestamp)",
+                "example": "2019-02-18T10:00:00-06:00"
+              },
+              "snoozedUntil": {
+                "type": "string",
+                "description": "When the alert will no longer be snoozed (ISO timestamp)",
+                "example": "2019-02-25T10:00:09-06:00"
+              },
+              "patient": {
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "firstName": {
+                        "description": "The first name of the patient.",
+                        "type": "string",
+                        "example": "John"
+                      },
+                      "middleInitial": {
+                        "description": "The middle initial of the patient.",
+                        "type": "string",
+                        "example": "M"
+                      },
+                      "lastName": {
+                        "description": "The last name of the patient.",
+                        "type": "string",
+                        "example": "Smith"
+                      },
+                      "phone": {
+                        "description": "The phone number of the patient.",
+                        "type": "string",
+                        "pattern": "^\\d{10}$",
+                        "example": "5551234567"
+                      }
+                    },
+                    "required": [
+                      "firstName",
+                      "lastName",
+                      "phone"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "example": 623,
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "id"
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "apps": {
+          "type": "object",
+          "properties": {
+            "epx{appname}": {
+              "type": "object",
+              "properties": {
+                "alert": {
+                  "type": "object",
+                  "properties": {
+                    "total": {
+                      "type": "integer",
+                      "example": 8,
+                      "description": "The total amount of alerts triggered by this patient in the given timeframe"
+                    },
+                    "unread": {
+                      "type": "integer",
+                      "example": 2,
+                      "description": "The amount of unresolved alerts for the patient in the given timeframe"
+                    },
+                    "active": {
+                      "type": "integer",
+                      "example": 2
+                    }
+                  }
+                },
+                "category": {
+                  "type": "integer",
+                  "example": 1,
+                  "description": "The current category for the corresponding app. 1: danger 2: warning 3: success 4: unresponsive 5: empty 6: inactive"
+                },
+                "contactId": {
+                  "type": "integer",
+                  "example": 81,
+                  "description": "The ID of the patient's contact for this app"
+                },
+                "engagement": {
+                  "type": "object",
+                  "properties": {
+                    "responded": {
+                      "type": "integer",
+                      "description": "The amount of sessions the patient responded to for the corresponding app (in the set timeframe)",
+                      "example": 10
+                    },
+                    "total": {
+                      "type": "integer",
+                      "description": "The total amount of sessions the patient had for the corresponding app (in the set timeframe)",
+                      "example": 14
+                    },
+                    "rate": {
+                      "type": "number",
+                      "example": ".714285",
+                      "description": "The response rate for this app (in the set timeframe)"
+                    }
+                  }
+                },
+                "schedule": {
+                  "allOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "start": {
+                          "type": "string",
+                          "description": "The start date of the intervention",
+                          "example": "2019-02-05T10:00:09-06:00"
+                        },
+                        "end": {
+                          "type": "string",
+                          "description": "The end date of the intervention (optional)",
+                          "example": "2019-03-05T10:00:09-06:00"
+                        },
+                        "times": {
+                          "type": "array",
+                          "description": "The times that the patient would prefer to receive messages (24-hour time)",
+                          "example": [
+                            "09:00",
+                            "17:30"
+                          ],
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "days": {
+                          "description": "Days of the week that the sessions will occur (0: Sunday... 6: Saturday)",
+                          "example": [
+                            1,
+                            3,
+                            5
+                          ],
+                          "type": "array",
+                          "items": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 6
+                          }
+                        },
+                        "method": {
+                          "type": "string",
+                          "description": "The method in which the patient will be contacted.",
+                          "enum": [
+                            "message",
+                            "call"
+                          ]
+                        },
+                        "tz": {
+                          "type": "string",
+                          "description": "The timezone of the schedule",
+                          "example": "US/Central"
+                        },
+                        "patientId": {
+                          "type": "integer",
+                          "description": "The ID of the patient who will receive the intervention",
+                          "example": 1638
+                        },
+                        "contactId": {
+                          "type": "integer",
+                          "description": "The ID of the contact that will be assigned to the intervention",
+                          "example": 76
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 14
+                        },
+                        "isCanceled": {
+                          "type": "boolean",
+                          "description": "If true, the patient will not longer receive calls/messages"
+                        },
+                        "canceledAt": {
+                          "type": "string",
+                          "description": "The time that the schedule was canceled"
+                        },
+                        "patientId": {
+                          "type": "integer",
+                          "example": 372,
+                          "description": "The ID of the patient"
+                        },
+                        "contactId": {
+                          "type": "integer",
+                          "description": "The ID of the contact associated to this schedule",
+                          "example": 39
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "category": {
+          "type": "integer",
+          "example": 2,
+          "description": "The current primary category for the patient (patients can be in more than one category at a time). 1: danger 2: warning 3: success 4: unresponsive 5: empty 6: inactive 7: snoozed 8: completed 9: paused 10: recent"
+        },
+        "patient": {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "firstName": {
+                  "description": "The first name of the patient.",
+                  "type": "string",
+                  "example": "John"
+                },
+                "middleInitial": {
+                  "description": "The middle initial of the patient.",
+                  "type": "string",
+                  "example": "M"
+                },
+                "lastName": {
+                  "description": "The last name of the patient.",
+                  "type": "string",
+                  "example": "Smith"
+                },
+                "phone": {
+                  "description": "The phone number of the patient.",
+                  "type": "string",
+                  "pattern": "^\\d{10}$",
+                  "example": "5551234567"
+                }
+              },
+              "required": [
+                "firstName",
+                "lastName",
+                "phone"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "example": 623,
+                  "type": "number"
+                }
+              },
+              "required": [
+                "id"
+              ]
+            }
+          ]
+        }
+      }
     }
   }
 }
 ```
 
-<h3 id="get-triage-information-about-a-single-patient-responses">Responses</h3>
+<h3 id="post__triage_data_single_-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|Retrieved Triage Data|Inline|
 
-<h3 id="get-triage-information-about-a-single-patient-responseschema">Response Schema</h3>
+<h3 id="post__triage_data_single_-responseschema">Response Schema</h3>
 
 Status Code **200**
 
@@ -2177,96 +2138,42 @@ Status Code **200**
 |---|---|---|---|---|
 |» status|string|false|none|none|
 |» contacts|[[ContactObject](#schemacontactobject)]|false|none|none|
-|»» id|integer|false|none|none|
-|»» displayName|string|false|none|The patient-facing name used in text messages/calls|
-|»» description|string|false|none|The internal description to help differentiate contacts|
-|»» email|string|false|none|none|
-|» data|[TriageCategoryResult](#schematriagecategoryresult)|false|none|none|
-|»» alerts|[[AlertObject](#schemaalertobject)]|false|none|none|
-|»»» id|integer|false|none|none|
-|»»» app|string|false|none|none|
-|»»» body|string|false|none|none|
-|»»» contact|[ContactObject](#schemacontactobject)|false|none|none|
-|»»» createdAt|string|false|none|When the alert was triggered (ISO timestamp)|
-|»»» isRead|boolean|false|none|True if the alert has been addressed by a user|
-|»»» snoozedAt|string|false|none|When the alert was snoozed (ISO timestamp)|
-|»»» snoozedUntil|string|false|none|When the alert will no longer be snoozed (ISO timestamp)|
-|»»» patient|any|false|none|none|
 
 *allOf*
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|»»»» *anonymous*|[PatientParams](#schemapatientparams)|false|none|none|
-|»»»»» firstName|string|true|none|The first name of the patient.|
-|»»»»» middleInitial|string|false|none|The middle initial of the patient.|
-|»»»»» lastName|string|true|none|The last name of the patient.|
-|»»»»» phone|string|true|none|The phone number of the patient.|
 
 *and*
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|»»»» *anonymous*|object|false|none|none|
-|»»»»» id|number|true|none|none|
 
 *continued*
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|»»»» apps|object|false|none|none|
-|»»»»» epx{appname}|object|false|none|none|
-|»»»»»» alert|object|false|none|none|
-|»»»»»»» total|integer|false|none|The total amount of alerts triggered by this patient in the given timeframe|
-|»»»»»»» unread|integer|false|none|The amount of unresolved alerts for the patient in the given timeframe|
-|»»»»»»» active|integer|false|none|none|
-|»»»»»» category|integer|false|none|The current category for the corresponding app. 1: danger 2: warning 3: success 4: unresponsive 5: empty 6: inactive|
-|»»»»»» contactId|integer|false|none|The ID of the patient's contact for this app|
-|»»»»»» engagement|object|false|none|none|
-|»»»»»»» responded|integer|false|none|The amount of sessions the patient responded to for the corresponding app (in the set timeframe)|
-|»»»»»»» total|integer|false|none|The total amount of sessions the patient had for the corresponding app (in the set timeframe)|
-|»»»»»»» rate|number|false|none|The response rate for this app (in the set timeframe)|
-|»»»»»» schedule|any|false|none|none|
 
 *allOf*
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|»»»»»»» *anonymous*|[ScheduleParams](#schemascheduleparams)|false|none|none|
-|»»»»»»»» start|string|false|none|The start date of the intervention|
-|»»»»»»»» end|string|false|none|The end date of the intervention (optional)|
-|»»»»»»»» times|[string]|false|none|The times that the patient would prefer to receive messages (24-hour time)|
-|»»»»»»»» days|[integer]|false|none|Days of the week that the sessions will occur (0: Sunday... 6: Saturday)|
-|»»»»»»»» method|string|false|none|The method in which the patient will be contacted.|
-|»»»»»»»» tz|string|false|none|The timezone of the schedule|
-|»»»»»»»» patientId|integer|false|none|The ID of the patient who will receive the intervention|
-|»»»»»»»» contactId|integer|false|none|The ID of the contact that will be assigned to the intervention|
 
 *and*
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|»»»»»»» *anonymous*|object|false|none|none|
-|»»»»»»»» id|integer|false|none|none|
-|»»»»»»»» isCanceled|boolean|false|none|If true, the patient will not longer receive calls/messages|
-|»»»»»»»» canceledAt|string|false|none|The time that the schedule was canceled|
-|»»»»»»»» patientId|integer|false|none|The ID of the patient|
-|»»»»»»»» contactId|integer|false|none|The ID of the contact associated to this schedule|
 
 *continued*
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|»»»»»»» category|integer|false|none|The current primary category for the patient (patients can be in more than one category at a time). 1: danger 2: warning 3: success 4: unresponsive 5: empty 6: inactive 7: snoozed 8: completed 9: paused 10: recent|
-|»»»»»»» patient|any|false|none|none|
 
 #### Enumerated Values
 
 |Property|Value|
 |---|---|
 |status|OK|
-|method|message|
-|method|call|
 
 <aside class="success">
 This operation does not require authentication
@@ -2274,169 +2181,91 @@ This operation does not require authentication
 
 <h1 id="epharmix-platform-api-alerts">Alerts</h1>
 
-## Fetch data about alerts
-
-> Code samples
-
-```shell
-curl --request POST \
-  --url https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/alert/data/ \
-  --header 'accept: application/json' \
-  --header 'content-type: application/json' \
-  --data '{"tz":"US/Eastern","limit":30,"page":5,"contactIds":[13,15,16],"patientIds":[1321,1522,1618],"apps":["epxcopd","epxdiabetes"],"unreadOnly":true,"snoozedOnly":true,"start":"2019-01-18T10:22:09-06:00","end":"2019-02-05T10:22:09-06:00"}'
-```
-
-```javascript
-var data = JSON.stringify({
-  "tz": "US/Eastern",
-  "limit": 30,
-  "page": 5,
-  "contactIds": [
-    13,
-    15,
-    16
-  ],
-  "patientIds": [
-    1321,
-    1522,
-    1618
-  ],
-  "apps": [
-    "epxcopd",
-    "epxdiabetes"
-  ],
-  "unreadOnly": true,
-  "snoozedOnly": true,
-  "start": "2019-01-18T10:22:09-06:00",
-  "end": "2019-02-05T10:22:09-06:00"
-});
-
-var xhr = new XMLHttpRequest();
-xhr.withCredentials = true;
-
-xhr.addEventListener("readystatechange", function () {
-  if (this.readyState === this.DONE) {
-    console.log(this.responseText);
-  }
-});
-
-xhr.open("POST", "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/alert/data/");
-xhr.setRequestHeader("content-type", "application/json");
-xhr.setRequestHeader("accept", "application/json");
-
-xhr.send(data);
-```
-
-```ruby
-require 'uri'
-require 'net/http'
-
-url = URI("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/alert/data/")
-
-http = Net::HTTP.new(url.host, url.port)
-http.use_ssl = true
-http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-request = Net::HTTP::Post.new(url)
-request["content-type"] = 'application/json'
-request["accept"] = 'application/json'
-request.body = "{\"tz\":\"US/Eastern\",\"limit\":30,\"page\":5,\"contactIds\":[13,15,16],\"patientIds\":[1321,1522,1618],\"apps\":[\"epxcopd\",\"epxdiabetes\"],\"unreadOnly\":true,\"snoozedOnly\":true,\"start\":\"2019-01-18T10:22:09-06:00\",\"end\":\"2019-02-05T10:22:09-06:00\"}"
-
-response = http.request(request)
-puts response.read_body
-```
-
-```python
-import http.client
-
-conn = http.client.HTTPSConnection("virtserver.swaggerhub.com")
-
-payload = "{\"tz\":\"US/Eastern\",\"limit\":30,\"page\":5,\"contactIds\":[13,15,16],\"patientIds\":[1321,1522,1618],\"apps\":[\"epxcopd\",\"epxdiabetes\"],\"unreadOnly\":true,\"snoozedOnly\":true,\"start\":\"2019-01-18T10:22:09-06:00\",\"end\":\"2019-02-05T10:22:09-06:00\"}"
-
-headers = {
-    'content-type': "application/json",
-    'accept': "application/json"
-    }
-
-conn.request("POST", "/EpxHealth/Epharmix/1/alert/data/", payload, headers)
-
-res = conn.getresponse()
-data = res.read()
-
-print(data.decode("utf-8"))
-```
-
-```java
-HttpResponse<String> response = Unirest.post("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/alert/data/")
-  .header("content-type", "application/json")
-  .header("accept", "application/json")
-  .body("{\"tz\":\"US/Eastern\",\"limit\":30,\"page\":5,\"contactIds\":[13,15,16],\"patientIds\":[1321,1522,1618],\"apps\":[\"epxcopd\",\"epxdiabetes\"],\"unreadOnly\":true,\"snoozedOnly\":true,\"start\":\"2019-01-18T10:22:09-06:00\",\"end\":\"2019-02-05T10:22:09-06:00\"}")
-  .asString();
-```
-
-```go
-package main
-
-import (
-	"fmt"
-	"strings"
-	"net/http"
-	"io/ioutil"
-)
-
-func main() {
-
-	url := "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/alert/data/"
-
-	payload := strings.NewReader("{\"tz\":\"US/Eastern\",\"limit\":30,\"page\":5,\"contactIds\":[13,15,16],\"patientIds\":[1321,1522,1618],\"apps\":[\"epxcopd\",\"epxdiabetes\"],\"unreadOnly\":true,\"snoozedOnly\":true,\"start\":\"2019-01-18T10:22:09-06:00\",\"end\":\"2019-02-05T10:22:09-06:00\"}")
-
-	req, _ := http.NewRequest("POST", url, payload)
-
-	req.Header.Add("content-type", "application/json")
-	req.Header.Add("accept", "application/json")
-
-	res, _ := http.DefaultClient.Do(req)
-
-	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
-
-	fmt.Println(res)
-	fmt.Println(string(body))
-
-}
-```
+## post__alert_data_
 
 `POST /alert/data/`
+
+*Fetch data about alerts*
 
 > Body parameter
 
 ```json
 {
-  "tz": "US/Eastern",
-  "limit": 30,
-  "page": 5,
-  "contactIds": [
-    13,
-    15,
-    16
-  ],
-  "patientIds": [
-    1321,
-    1522,
-    1618
-  ],
-  "apps": [
-    "epxcopd",
-    "epxdiabetes"
-  ],
-  "unreadOnly": true,
-  "snoozedOnly": true,
-  "start": "2019-01-18T10:22:09-06:00",
-  "end": "2019-02-05T10:22:09-06:00"
+  "type": "object",
+  "properties": {
+    "tz": {
+      "type": "string",
+      "example": "US/Eastern",
+      "description": "The timezone"
+    },
+    "limit": {
+      "type": "integer",
+      "maximum": 100,
+      "example": 30,
+      "description": "If set, will return this amount of alerts per page"
+    },
+    "page": {
+      "type": "integer",
+      "example": 5
+    },
+    "contactIds": {
+      "type": "array",
+      "description": "If set, will only return alerts from the designated contact's patients",
+      "example": [
+        13,
+        15,
+        16
+      ],
+      "items": {
+        "type": "integer"
+      }
+    },
+    "patientIds": {
+      "type": "array",
+      "description": "If set, will only return alerts from the designated patients",
+      "example": [
+        1321,
+        1522,
+        1618
+      ],
+      "items": {
+        "type": "integer"
+      }
+    },
+    "apps": {
+      "type": "array",
+      "description": "If set, will only return alerts from the specified apps",
+      "example": [
+        "epxcopd",
+        "epxdiabetes"
+      ],
+      "items": {
+        "type": "string"
+      }
+    },
+    "unreadOnly": {
+      "type": "boolean",
+      "description": "If true, will only return alerts that have not been resolved."
+    },
+    "snoozedOnly": {
+      "type": "boolean",
+      "description": "If true, will only return alerts that are currently snoozed"
+    },
+    "start": {
+      "type": "string",
+      "description": "The start date of the alerts being fetched.",
+      "example": "2019-01-18T10:22:09-06:00"
+    },
+    "end": {
+      "type": "string",
+      "description": "The end date of the alerts being fetched.",
+      "example": "2019-02-05T10:22:09-06:00"
+    }
+  }
 }
 ```
 
-<h3 id="fetch-data-about-alerts-parameters">Parameters</h3>
+<h3 id="post__alert_data_-parameters">Parameters</h3>
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
@@ -2458,41 +2287,133 @@ func main() {
 
 ```json
 {
-  "status": "OK",
-  "alerts": [
-    {
-      "id": 2543,
-      "app": "epxcopd",
-      "body": "Patient Brionna has responded that she is having trouble breathing.",
-      "contact": {
-        "id": 53,
-        "displayName": "Your Nurse Carly",
-        "description": "Dr. Woodward (Internal Medicine)",
-        "email": "string"
-      },
-      "createdAt": "2019-02-01T19:37:00.000Z",
-      "isRead": true,
-      "snoozedAt": "2019-02-18T10:00:00-06:00",
-      "snoozedUntil": "2019-02-25T10:00:09-06:00",
-      "patient": {
-        "firstName": "John",
-        "middleInitial": "M",
-        "lastName": "Smith",
-        "phone": "5551234567",
-        "id": 623
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "OK"
+      ]
+    },
+    "alerts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 2543
+          },
+          "app": {
+            "type": "string",
+            "example": "epxcopd"
+          },
+          "body": {
+            "type": "string",
+            "example": "Patient Brionna has responded that she is having trouble breathing."
+          },
+          "contact": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "example": 53
+              },
+              "displayName": {
+                "type": "string",
+                "example": "Your Nurse Carly",
+                "description": "The patient-facing name used in text messages/calls"
+              },
+              "description": {
+                "type": "string",
+                "example": "Dr. Woodward (Internal Medicine)",
+                "description": "The internal description to help differentiate contacts"
+              },
+              "email": {
+                "type": "string"
+              }
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "When the alert was triggered (ISO timestamp)",
+            "example": "2019-02-01T19:37:00.000Z"
+          },
+          "isRead": {
+            "type": "boolean",
+            "description": "True if the alert has been addressed by a user"
+          },
+          "snoozedAt": {
+            "type": "string",
+            "description": "When the alert was snoozed (ISO timestamp)",
+            "example": "2019-02-18T10:00:00-06:00"
+          },
+          "snoozedUntil": {
+            "type": "string",
+            "description": "When the alert will no longer be snoozed (ISO timestamp)",
+            "example": "2019-02-25T10:00:09-06:00"
+          },
+          "patient": {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "description": "The first name of the patient.",
+                    "type": "string",
+                    "example": "John"
+                  },
+                  "middleInitial": {
+                    "description": "The middle initial of the patient.",
+                    "type": "string",
+                    "example": "M"
+                  },
+                  "lastName": {
+                    "description": "The last name of the patient.",
+                    "type": "string",
+                    "example": "Smith"
+                  },
+                  "phone": {
+                    "description": "The phone number of the patient.",
+                    "type": "string",
+                    "pattern": "^\\d{10}$",
+                    "example": "5551234567"
+                  }
+                },
+                "required": [
+                  "firstName",
+                  "lastName",
+                  "phone"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "example": 623,
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "id"
+                ]
+              }
+            ]
+          }
+        }
       }
     }
-  ]
+  }
 }
 ```
 
-<h3 id="fetch-data-about-alerts-responses">Responses</h3>
+<h3 id="post__alert_data_-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|Retrieved Alert Data|Inline|
 
-<h3 id="fetch-data-about-alerts-responseschema">Response Schema</h3>
+<h3 id="post__alert_data_-responseschema">Response Schema</h3>
 
 Status Code **200**
 
@@ -2500,36 +2421,16 @@ Status Code **200**
 |---|---|---|---|---|
 |» status|string|false|none|none|
 |» alerts|[[AlertObject](#schemaalertobject)]|false|none|none|
-|»» id|integer|false|none|none|
-|»» app|string|false|none|none|
-|»» body|string|false|none|none|
-|»» contact|[ContactObject](#schemacontactobject)|false|none|none|
-|»»» id|integer|false|none|none|
-|»»» displayName|string|false|none|The patient-facing name used in text messages/calls|
-|»»» description|string|false|none|The internal description to help differentiate contacts|
-|»»» email|string|false|none|none|
-|»» createdAt|string|false|none|When the alert was triggered (ISO timestamp)|
-|»» isRead|boolean|false|none|True if the alert has been addressed by a user|
-|»» snoozedAt|string|false|none|When the alert was snoozed (ISO timestamp)|
-|»» snoozedUntil|string|false|none|When the alert will no longer be snoozed (ISO timestamp)|
-|»» patient|any|false|none|none|
 
 *allOf*
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|»»» *anonymous*|[PatientParams](#schemapatientparams)|false|none|none|
-|»»»» firstName|string|true|none|The first name of the patient.|
-|»»»» middleInitial|string|false|none|The middle initial of the patient.|
-|»»»» lastName|string|true|none|The last name of the patient.|
-|»»»» phone|string|true|none|The phone number of the patient.|
 
 *and*
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|»»» *anonymous*|object|false|none|none|
-|»»»» id|number|true|none|none|
 
 #### Enumerated Values
 
@@ -2541,143 +2442,50 @@ Status Code **200**
 This operation does not require authentication
 </aside>
 
-## Snooze alerts
-
-> Code samples
-
-```shell
-curl --request POST \
-  --url https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/alert/snooze/ \
-  --header 'accept: application/json' \
-  --header 'content-type: application/json' \
-  --data '{"tz":"US/Eastern","reason":"Patient has been asked to update medication, will check back in a week","snoozeUntil":"2019-02-15T10:22:09-06:00","ids":[5722,5725,5729]}'
-```
-
-```javascript
-var data = JSON.stringify({
-  "tz": "US/Eastern",
-  "reason": "Patient has been asked to update medication, will check back in a week",
-  "snoozeUntil": "2019-02-15T10:22:09-06:00",
-  "ids": [
-    5722,
-    5725,
-    5729
-  ]
-});
-
-var xhr = new XMLHttpRequest();
-xhr.withCredentials = true;
-
-xhr.addEventListener("readystatechange", function () {
-  if (this.readyState === this.DONE) {
-    console.log(this.responseText);
-  }
-});
-
-xhr.open("POST", "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/alert/snooze/");
-xhr.setRequestHeader("content-type", "application/json");
-xhr.setRequestHeader("accept", "application/json");
-
-xhr.send(data);
-```
-
-```ruby
-require 'uri'
-require 'net/http'
-
-url = URI("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/alert/snooze/")
-
-http = Net::HTTP.new(url.host, url.port)
-http.use_ssl = true
-http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-request = Net::HTTP::Post.new(url)
-request["content-type"] = 'application/json'
-request["accept"] = 'application/json'
-request.body = "{\"tz\":\"US/Eastern\",\"reason\":\"Patient has been asked to update medication, will check back in a week\",\"snoozeUntil\":\"2019-02-15T10:22:09-06:00\",\"ids\":[5722,5725,5729]}"
-
-response = http.request(request)
-puts response.read_body
-```
-
-```python
-import http.client
-
-conn = http.client.HTTPSConnection("virtserver.swaggerhub.com")
-
-payload = "{\"tz\":\"US/Eastern\",\"reason\":\"Patient has been asked to update medication, will check back in a week\",\"snoozeUntil\":\"2019-02-15T10:22:09-06:00\",\"ids\":[5722,5725,5729]}"
-
-headers = {
-    'content-type': "application/json",
-    'accept': "application/json"
-    }
-
-conn.request("POST", "/EpxHealth/Epharmix/1/alert/snooze/", payload, headers)
-
-res = conn.getresponse()
-data = res.read()
-
-print(data.decode("utf-8"))
-```
-
-```java
-HttpResponse<String> response = Unirest.post("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/alert/snooze/")
-  .header("content-type", "application/json")
-  .header("accept", "application/json")
-  .body("{\"tz\":\"US/Eastern\",\"reason\":\"Patient has been asked to update medication, will check back in a week\",\"snoozeUntil\":\"2019-02-15T10:22:09-06:00\",\"ids\":[5722,5725,5729]}")
-  .asString();
-```
-
-```go
-package main
-
-import (
-	"fmt"
-	"strings"
-	"net/http"
-	"io/ioutil"
-)
-
-func main() {
-
-	url := "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/alert/snooze/"
-
-	payload := strings.NewReader("{\"tz\":\"US/Eastern\",\"reason\":\"Patient has been asked to update medication, will check back in a week\",\"snoozeUntil\":\"2019-02-15T10:22:09-06:00\",\"ids\":[5722,5725,5729]}")
-
-	req, _ := http.NewRequest("POST", url, payload)
-
-	req.Header.Add("content-type", "application/json")
-	req.Header.Add("accept", "application/json")
-
-	res, _ := http.DefaultClient.Do(req)
-
-	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
-
-	fmt.Println(res)
-	fmt.Println(string(body))
-
-}
-```
+## post__alert_snooze_
 
 `POST /alert/snooze/`
+
+*Snooze alerts*
 
 > Body parameter
 
 ```json
 {
-  "tz": "US/Eastern",
-  "reason": "Patient has been asked to update medication, will check back in a week",
-  "snoozeUntil": "2019-02-15T10:22:09-06:00",
-  "ids": [
-    5722,
-    5725,
-    5729
-  ]
+  "type": "object",
+  "properties": {
+    "tz": {
+      "type": "string",
+      "example": "US/Eastern",
+      "description": "The timezone"
+    },
+    "reason": {
+      "type": "string",
+      "description": "The reason why the alerts have been snoozed",
+      "example": "Patient has been asked to update medication, will check back in a week"
+    },
+    "snoozeUntil": {
+      "type": "string",
+      "description": "The time when the alert will no longer be snoozed",
+      "example": "2019-02-15T10:22:09-06:00"
+    },
+    "ids": {
+      "type": "array",
+      "description": "The IDs of the alerts that will be snoozed",
+      "example": [
+        5722,
+        5725,
+        5729
+      ],
+      "items": {
+        "type": "integer"
+      }
+    }
+  }
 }
 ```
 
-<h3 id="snooze-alerts-parameters">Parameters</h3>
+<h3 id="post__alert_snooze_-parameters">Parameters</h3>
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
@@ -2693,41 +2501,133 @@ func main() {
 
 ```json
 {
-  "status": "OK",
-  "alerts": [
-    {
-      "id": 2543,
-      "app": "epxcopd",
-      "body": "Patient Brionna has responded that she is having trouble breathing.",
-      "contact": {
-        "id": 53,
-        "displayName": "Your Nurse Carly",
-        "description": "Dr. Woodward (Internal Medicine)",
-        "email": "string"
-      },
-      "createdAt": "2019-02-01T19:37:00.000Z",
-      "isRead": true,
-      "snoozedAt": "2019-02-18T10:00:00-06:00",
-      "snoozedUntil": "2019-02-25T10:00:09-06:00",
-      "patient": {
-        "firstName": "John",
-        "middleInitial": "M",
-        "lastName": "Smith",
-        "phone": "5551234567",
-        "id": 623
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "OK"
+      ]
+    },
+    "alerts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 2543
+          },
+          "app": {
+            "type": "string",
+            "example": "epxcopd"
+          },
+          "body": {
+            "type": "string",
+            "example": "Patient Brionna has responded that she is having trouble breathing."
+          },
+          "contact": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "example": 53
+              },
+              "displayName": {
+                "type": "string",
+                "example": "Your Nurse Carly",
+                "description": "The patient-facing name used in text messages/calls"
+              },
+              "description": {
+                "type": "string",
+                "example": "Dr. Woodward (Internal Medicine)",
+                "description": "The internal description to help differentiate contacts"
+              },
+              "email": {
+                "type": "string"
+              }
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "When the alert was triggered (ISO timestamp)",
+            "example": "2019-02-01T19:37:00.000Z"
+          },
+          "isRead": {
+            "type": "boolean",
+            "description": "True if the alert has been addressed by a user"
+          },
+          "snoozedAt": {
+            "type": "string",
+            "description": "When the alert was snoozed (ISO timestamp)",
+            "example": "2019-02-18T10:00:00-06:00"
+          },
+          "snoozedUntil": {
+            "type": "string",
+            "description": "When the alert will no longer be snoozed (ISO timestamp)",
+            "example": "2019-02-25T10:00:09-06:00"
+          },
+          "patient": {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "description": "The first name of the patient.",
+                    "type": "string",
+                    "example": "John"
+                  },
+                  "middleInitial": {
+                    "description": "The middle initial of the patient.",
+                    "type": "string",
+                    "example": "M"
+                  },
+                  "lastName": {
+                    "description": "The last name of the patient.",
+                    "type": "string",
+                    "example": "Smith"
+                  },
+                  "phone": {
+                    "description": "The phone number of the patient.",
+                    "type": "string",
+                    "pattern": "^\\d{10}$",
+                    "example": "5551234567"
+                  }
+                },
+                "required": [
+                  "firstName",
+                  "lastName",
+                  "phone"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "example": 623,
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "id"
+                ]
+              }
+            ]
+          }
+        }
       }
     }
-  ]
+  }
 }
 ```
 
-<h3 id="snooze-alerts-responses">Responses</h3>
+<h3 id="post__alert_snooze_-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|Alerts Snoozed|Inline|
 
-<h3 id="snooze-alerts-responseschema">Response Schema</h3>
+<h3 id="post__alert_snooze_-responseschema">Response Schema</h3>
 
 Status Code **200**
 
@@ -2735,36 +2635,16 @@ Status Code **200**
 |---|---|---|---|---|
 |» status|string|false|none|none|
 |» alerts|[[AlertObject](#schemaalertobject)]|false|none|none|
-|»» id|integer|false|none|none|
-|»» app|string|false|none|none|
-|»» body|string|false|none|none|
-|»» contact|[ContactObject](#schemacontactobject)|false|none|none|
-|»»» id|integer|false|none|none|
-|»»» displayName|string|false|none|The patient-facing name used in text messages/calls|
-|»»» description|string|false|none|The internal description to help differentiate contacts|
-|»»» email|string|false|none|none|
-|»» createdAt|string|false|none|When the alert was triggered (ISO timestamp)|
-|»» isRead|boolean|false|none|True if the alert has been addressed by a user|
-|»» snoozedAt|string|false|none|When the alert was snoozed (ISO timestamp)|
-|»» snoozedUntil|string|false|none|When the alert will no longer be snoozed (ISO timestamp)|
-|»» patient|any|false|none|none|
 
 *allOf*
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|»»» *anonymous*|[PatientParams](#schemapatientparams)|false|none|none|
-|»»»» firstName|string|true|none|The first name of the patient.|
-|»»»» middleInitial|string|false|none|The middle initial of the patient.|
-|»»»» lastName|string|true|none|The last name of the patient.|
-|»»»» phone|string|true|none|The phone number of the patient.|
 
 *and*
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|»»» *anonymous*|object|false|none|none|
-|»»»» id|number|true|none|none|
 
 #### Enumerated Values
 
@@ -2776,141 +2656,44 @@ Status Code **200**
 This operation does not require authentication
 </aside>
 
-## Change the resolved (isRead) value for alerts
-
-> Code samples
-
-```shell
-curl --request POST \
-  --url https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/alert/set_status/ \
-  --header 'accept: application/json' \
-  --header 'content-type: application/json' \
-  --data '{"reason":"Patient has been asked to update medication, will check back in a week","status":true,"ids":[5722,5725,5729]}'
-```
-
-```javascript
-var data = JSON.stringify({
-  "reason": "Patient has been asked to update medication, will check back in a week",
-  "status": true,
-  "ids": [
-    5722,
-    5725,
-    5729
-  ]
-});
-
-var xhr = new XMLHttpRequest();
-xhr.withCredentials = true;
-
-xhr.addEventListener("readystatechange", function () {
-  if (this.readyState === this.DONE) {
-    console.log(this.responseText);
-  }
-});
-
-xhr.open("POST", "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/alert/set_status/");
-xhr.setRequestHeader("content-type", "application/json");
-xhr.setRequestHeader("accept", "application/json");
-
-xhr.send(data);
-```
-
-```ruby
-require 'uri'
-require 'net/http'
-
-url = URI("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/alert/set_status/")
-
-http = Net::HTTP.new(url.host, url.port)
-http.use_ssl = true
-http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-request = Net::HTTP::Post.new(url)
-request["content-type"] = 'application/json'
-request["accept"] = 'application/json'
-request.body = "{\"reason\":\"Patient has been asked to update medication, will check back in a week\",\"status\":true,\"ids\":[5722,5725,5729]}"
-
-response = http.request(request)
-puts response.read_body
-```
-
-```python
-import http.client
-
-conn = http.client.HTTPSConnection("virtserver.swaggerhub.com")
-
-payload = "{\"reason\":\"Patient has been asked to update medication, will check back in a week\",\"status\":true,\"ids\":[5722,5725,5729]}"
-
-headers = {
-    'content-type': "application/json",
-    'accept': "application/json"
-    }
-
-conn.request("POST", "/EpxHealth/Epharmix/1/alert/set_status/", payload, headers)
-
-res = conn.getresponse()
-data = res.read()
-
-print(data.decode("utf-8"))
-```
-
-```java
-HttpResponse<String> response = Unirest.post("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/alert/set_status/")
-  .header("content-type", "application/json")
-  .header("accept", "application/json")
-  .body("{\"reason\":\"Patient has been asked to update medication, will check back in a week\",\"status\":true,\"ids\":[5722,5725,5729]}")
-  .asString();
-```
-
-```go
-package main
-
-import (
-	"fmt"
-	"strings"
-	"net/http"
-	"io/ioutil"
-)
-
-func main() {
-
-	url := "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/alert/set_status/"
-
-	payload := strings.NewReader("{\"reason\":\"Patient has been asked to update medication, will check back in a week\",\"status\":true,\"ids\":[5722,5725,5729]}")
-
-	req, _ := http.NewRequest("POST", url, payload)
-
-	req.Header.Add("content-type", "application/json")
-	req.Header.Add("accept", "application/json")
-
-	res, _ := http.DefaultClient.Do(req)
-
-	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
-
-	fmt.Println(res)
-	fmt.Println(string(body))
-
-}
-```
+## post__alert_set_status_
 
 `POST /alert/set_status/`
+
+*Change the resolved (isRead) value for alerts*
 
 > Body parameter
 
 ```json
 {
-  "reason": "Patient has been asked to update medication, will check back in a week",
-  "status": true,
-  "ids": [
-    5722,
-    5725,
-    5729
-  ]
+  "type": "object",
+  "properties": {
+    "reason": {
+      "type": "string",
+      "description": "The reason why the alerts have been resolved",
+      "example": "Patient has been asked to update medication, will check back in a week"
+    },
+    "status": {
+      "type": "boolean",
+      "description": "If true, the alerts will be marked as resolved (isRead). If false, will set to unresolved."
+    },
+    "ids": {
+      "type": "array",
+      "description": "The IDs of the alerts that will be resolved",
+      "example": [
+        5722,
+        5725,
+        5729
+      ],
+      "items": {
+        "type": "integer"
+      }
+    }
+  }
 }
 ```
 
-<h3 id="change-the-resolved-(isread)-value-for-alerts-parameters">Parameters</h3>
+<h3 id="post__alert_set_status_-parameters">Parameters</h3>
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
@@ -2925,41 +2708,133 @@ func main() {
 
 ```json
 {
-  "status": "OK",
-  "alerts": [
-    {
-      "id": 2543,
-      "app": "epxcopd",
-      "body": "Patient Brionna has responded that she is having trouble breathing.",
-      "contact": {
-        "id": 53,
-        "displayName": "Your Nurse Carly",
-        "description": "Dr. Woodward (Internal Medicine)",
-        "email": "string"
-      },
-      "createdAt": "2019-02-01T19:37:00.000Z",
-      "isRead": true,
-      "snoozedAt": "2019-02-18T10:00:00-06:00",
-      "snoozedUntil": "2019-02-25T10:00:09-06:00",
-      "patient": {
-        "firstName": "John",
-        "middleInitial": "M",
-        "lastName": "Smith",
-        "phone": "5551234567",
-        "id": 623
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "OK"
+      ]
+    },
+    "alerts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 2543
+          },
+          "app": {
+            "type": "string",
+            "example": "epxcopd"
+          },
+          "body": {
+            "type": "string",
+            "example": "Patient Brionna has responded that she is having trouble breathing."
+          },
+          "contact": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "example": 53
+              },
+              "displayName": {
+                "type": "string",
+                "example": "Your Nurse Carly",
+                "description": "The patient-facing name used in text messages/calls"
+              },
+              "description": {
+                "type": "string",
+                "example": "Dr. Woodward (Internal Medicine)",
+                "description": "The internal description to help differentiate contacts"
+              },
+              "email": {
+                "type": "string"
+              }
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "When the alert was triggered (ISO timestamp)",
+            "example": "2019-02-01T19:37:00.000Z"
+          },
+          "isRead": {
+            "type": "boolean",
+            "description": "True if the alert has been addressed by a user"
+          },
+          "snoozedAt": {
+            "type": "string",
+            "description": "When the alert was snoozed (ISO timestamp)",
+            "example": "2019-02-18T10:00:00-06:00"
+          },
+          "snoozedUntil": {
+            "type": "string",
+            "description": "When the alert will no longer be snoozed (ISO timestamp)",
+            "example": "2019-02-25T10:00:09-06:00"
+          },
+          "patient": {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "description": "The first name of the patient.",
+                    "type": "string",
+                    "example": "John"
+                  },
+                  "middleInitial": {
+                    "description": "The middle initial of the patient.",
+                    "type": "string",
+                    "example": "M"
+                  },
+                  "lastName": {
+                    "description": "The last name of the patient.",
+                    "type": "string",
+                    "example": "Smith"
+                  },
+                  "phone": {
+                    "description": "The phone number of the patient.",
+                    "type": "string",
+                    "pattern": "^\\d{10}$",
+                    "example": "5551234567"
+                  }
+                },
+                "required": [
+                  "firstName",
+                  "lastName",
+                  "phone"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "example": 623,
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "id"
+                ]
+              }
+            ]
+          }
+        }
       }
     }
-  ]
+  }
 }
 ```
 
-<h3 id="change-the-resolved-(isread)-value-for-alerts-responses">Responses</h3>
+<h3 id="post__alert_set_status_-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|Alert Statuses Updated|Inline|
 
-<h3 id="change-the-resolved-(isread)-value-for-alerts-responseschema">Response Schema</h3>
+<h3 id="post__alert_set_status_-responseschema">Response Schema</h3>
 
 Status Code **200**
 
@@ -2967,36 +2842,16 @@ Status Code **200**
 |---|---|---|---|---|
 |» status|string|false|none|none|
 |» alerts|[[AlertObject](#schemaalertobject)]|false|none|none|
-|»» id|integer|false|none|none|
-|»» app|string|false|none|none|
-|»» body|string|false|none|none|
-|»» contact|[ContactObject](#schemacontactobject)|false|none|none|
-|»»» id|integer|false|none|none|
-|»»» displayName|string|false|none|The patient-facing name used in text messages/calls|
-|»»» description|string|false|none|The internal description to help differentiate contacts|
-|»»» email|string|false|none|none|
-|»» createdAt|string|false|none|When the alert was triggered (ISO timestamp)|
-|»» isRead|boolean|false|none|True if the alert has been addressed by a user|
-|»» snoozedAt|string|false|none|When the alert was snoozed (ISO timestamp)|
-|»» snoozedUntil|string|false|none|When the alert will no longer be snoozed (ISO timestamp)|
-|»» patient|any|false|none|none|
 
 *allOf*
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|»»» *anonymous*|[PatientParams](#schemapatientparams)|false|none|none|
-|»»»» firstName|string|true|none|The first name of the patient.|
-|»»»» middleInitial|string|false|none|The middle initial of the patient.|
-|»»»» lastName|string|true|none|The last name of the patient.|
-|»»»» phone|string|true|none|The phone number of the patient.|
 
 *and*
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|»»» *anonymous*|object|false|none|none|
-|»»»» id|number|true|none|none|
 
 #### Enumerated Values
 
@@ -3010,136 +2865,11 @@ This operation does not require authentication
 
 <h1 id="epharmix-platform-api-interventions">Interventions</h1>
 
-## EpxDiabetes: Create a schedule for the patient
-
-> Code samples
-
-```shell
-curl --request POST \
-  --url https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxdiabetes/create/ \
-  --header 'accept: application/json' \
-  --header 'content-type: application/json' \
-  --data '{"start":"2019-02-05T10:00:09-06:00","end":"2019-03-05T10:00:09-06:00","times":["09:00","17:30"],"days":[1,3,5],"method":"message","tz":"US/Central","patientId":1638,"contactId":76,"language":"en","isFixed":true,"mode":"D"}'
-```
-
-```javascript
-var data = JSON.stringify({
-  "start": "2019-02-05T10:00:09-06:00",
-  "end": "2019-03-05T10:00:09-06:00",
-  "times": [
-    "09:00",
-    "17:30"
-  ],
-  "days": [
-    1,
-    3,
-    5
-  ],
-  "method": "message",
-  "tz": "US/Central",
-  "patientId": 1638,
-  "contactId": 76,
-  "language": "en",
-  "isFixed": true,
-  "mode": "D"
-});
-
-var xhr = new XMLHttpRequest();
-xhr.withCredentials = true;
-
-xhr.addEventListener("readystatechange", function () {
-  if (this.readyState === this.DONE) {
-    console.log(this.responseText);
-  }
-});
-
-xhr.open("POST", "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxdiabetes/create/");
-xhr.setRequestHeader("content-type", "application/json");
-xhr.setRequestHeader("accept", "application/json");
-
-xhr.send(data);
-```
-
-```ruby
-require 'uri'
-require 'net/http'
-
-url = URI("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxdiabetes/create/")
-
-http = Net::HTTP.new(url.host, url.port)
-http.use_ssl = true
-http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-request = Net::HTTP::Post.new(url)
-request["content-type"] = 'application/json'
-request["accept"] = 'application/json'
-request.body = "{\"start\":\"2019-02-05T10:00:09-06:00\",\"end\":\"2019-03-05T10:00:09-06:00\",\"times\":[\"09:00\",\"17:30\"],\"days\":[1,3,5],\"method\":\"message\",\"tz\":\"US/Central\",\"patientId\":1638,\"contactId\":76,\"language\":\"en\",\"isFixed\":true,\"mode\":\"D\"}"
-
-response = http.request(request)
-puts response.read_body
-```
-
-```python
-import http.client
-
-conn = http.client.HTTPSConnection("virtserver.swaggerhub.com")
-
-payload = "{\"start\":\"2019-02-05T10:00:09-06:00\",\"end\":\"2019-03-05T10:00:09-06:00\",\"times\":[\"09:00\",\"17:30\"],\"days\":[1,3,5],\"method\":\"message\",\"tz\":\"US/Central\",\"patientId\":1638,\"contactId\":76,\"language\":\"en\",\"isFixed\":true,\"mode\":\"D\"}"
-
-headers = {
-    'content-type': "application/json",
-    'accept': "application/json"
-    }
-
-conn.request("POST", "/EpxHealth/Epharmix/1/epxdiabetes/create/", payload, headers)
-
-res = conn.getresponse()
-data = res.read()
-
-print(data.decode("utf-8"))
-```
-
-```java
-HttpResponse<String> response = Unirest.post("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxdiabetes/create/")
-  .header("content-type", "application/json")
-  .header("accept", "application/json")
-  .body("{\"start\":\"2019-02-05T10:00:09-06:00\",\"end\":\"2019-03-05T10:00:09-06:00\",\"times\":[\"09:00\",\"17:30\"],\"days\":[1,3,5],\"method\":\"message\",\"tz\":\"US/Central\",\"patientId\":1638,\"contactId\":76,\"language\":\"en\",\"isFixed\":true,\"mode\":\"D\"}")
-  .asString();
-```
-
-```go
-package main
-
-import (
-	"fmt"
-	"strings"
-	"net/http"
-	"io/ioutil"
-)
-
-func main() {
-
-	url := "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxdiabetes/create/"
-
-	payload := strings.NewReader("{\"start\":\"2019-02-05T10:00:09-06:00\",\"end\":\"2019-03-05T10:00:09-06:00\",\"times\":[\"09:00\",\"17:30\"],\"days\":[1,3,5],\"method\":\"message\",\"tz\":\"US/Central\",\"patientId\":1638,\"contactId\":76,\"language\":\"en\",\"isFixed\":true,\"mode\":\"D\"}")
-
-	req, _ := http.NewRequest("POST", url, payload)
-
-	req.Header.Add("content-type", "application/json")
-	req.Header.Add("accept", "application/json")
-
-	res, _ := http.DefaultClient.Do(req)
-
-	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
-
-	fmt.Println(res)
-	fmt.Println(string(body))
-
-}
-```
+## post__epxdiabetes_create_
 
 `POST /epxdiabetes/create/`
+
+*EpxDiabetes: Create a schedule for the patient*
 
 Enrolls a patient into the Epharmix EpxDiabetes intervention.
 
@@ -3147,28 +2877,106 @@ Enrolls a patient into the Epharmix EpxDiabetes intervention.
 
 ```json
 {
-  "start": "2019-02-05T10:00:09-06:00",
-  "end": "2019-03-05T10:00:09-06:00",
-  "times": [
-    "09:00",
-    "17:30"
-  ],
-  "days": [
-    1,
-    3,
-    5
-  ],
-  "method": "message",
-  "tz": "US/Central",
-  "patientId": 1638,
-  "contactId": 76,
-  "language": "en",
-  "isFixed": true,
-  "mode": "D"
+  "allOf": [
+    {
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "string",
+          "description": "The start date of the intervention",
+          "example": "2019-02-05T10:00:09-06:00"
+        },
+        "end": {
+          "type": "string",
+          "description": "The end date of the intervention (optional)",
+          "example": "2019-03-05T10:00:09-06:00"
+        },
+        "times": {
+          "type": "array",
+          "description": "The times that the patient would prefer to receive messages (24-hour time)",
+          "example": [
+            "09:00",
+            "17:30"
+          ],
+          "items": {
+            "type": "string"
+          }
+        },
+        "days": {
+          "description": "Days of the week that the sessions will occur (0: Sunday... 6: Saturday)",
+          "example": [
+            1,
+            3,
+            5
+          ],
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 6
+          }
+        },
+        "method": {
+          "type": "string",
+          "description": "The method in which the patient will be contacted.",
+          "enum": [
+            "message",
+            "call"
+          ]
+        },
+        "tz": {
+          "type": "string",
+          "description": "The timezone of the schedule",
+          "example": "US/Central"
+        },
+        "patientId": {
+          "type": "integer",
+          "description": "The ID of the patient who will receive the intervention",
+          "example": 1638
+        },
+        "contactId": {
+          "type": "integer",
+          "description": "The ID of the contact that will be assigned to the intervention",
+          "example": 76
+        }
+      }
+    },
+    {
+      "type": "object",
+      "properties": {
+        "language": {
+          "type": "string",
+          "description": "The language of messages/calls to the patient",
+          "enum": [
+            "en",
+            "es"
+          ]
+        },
+        "isFixed": {
+          "type": "boolean",
+          "description": "If true, the message will be on a fixed frequency of your choice. If false, the patient will be on \"smart schedule\", with the frequency based on their responses."
+        },
+        "mode": {
+          "type": "string",
+          "description": "Only required if schedule is fixed. Sets the frequency of sessions.",
+          "enum": [
+            "T",
+            "P",
+            "D",
+            "B",
+            "W",
+            "C",
+            "Q"
+          ],
+          "example": "D"
+        }
+      }
+    }
+  ]
 }
 ```
 
-<h3 id="epxdiabetes:-create-a-schedule-for-the-patient-parameters">Parameters</h3>
+<h3 id="post__epxdiabetes_create_-parameters">Parameters</h3>
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
@@ -3180,36 +2988,91 @@ Enrolls a patient into the Epharmix EpxDiabetes intervention.
 
 ```json
 {
-  "status": "OK",
-  "schedule": [
-    {
-      "start": "2019-02-05T10:00:09-06:00",
-      "end": "2019-03-05T10:00:09-06:00",
-      "times": [
-        "09:00",
-        "17:30"
-      ],
-      "days": [
-        1,
-        3,
-        5
-      ],
-      "method": "message",
-      "tz": "US/Central",
-      "patientId": 1638,
-      "contactId": 76
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "OK"
+      ]
+    },
+    "schedule": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "start": {
+            "type": "string",
+            "description": "The start date of the intervention",
+            "example": "2019-02-05T10:00:09-06:00"
+          },
+          "end": {
+            "type": "string",
+            "description": "The end date of the intervention (optional)",
+            "example": "2019-03-05T10:00:09-06:00"
+          },
+          "times": {
+            "type": "array",
+            "description": "The times that the patient would prefer to receive messages (24-hour time)",
+            "example": [
+              "09:00",
+              "17:30"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "days": {
+            "description": "Days of the week that the sessions will occur (0: Sunday... 6: Saturday)",
+            "example": [
+              1,
+              3,
+              5
+            ],
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 6
+            }
+          },
+          "method": {
+            "type": "string",
+            "description": "The method in which the patient will be contacted.",
+            "enum": [
+              "message",
+              "call"
+            ]
+          },
+          "tz": {
+            "type": "string",
+            "description": "The timezone of the schedule",
+            "example": "US/Central"
+          },
+          "patientId": {
+            "type": "integer",
+            "description": "The ID of the patient who will receive the intervention",
+            "example": 1638
+          },
+          "contactId": {
+            "type": "integer",
+            "description": "The ID of the contact that will be assigned to the intervention",
+            "example": 76
+          }
+        }
+      }
     }
-  ]
+  }
 }
 ```
 
-<h3 id="epxdiabetes:-create-a-schedule-for-the-patient-responses">Responses</h3>
+<h3 id="post__epxdiabetes_create_-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |201|[Created](https://tools.ietf.org/html/rfc7231#section-6.3.2)|EpxDiabetes Schedule Created|Inline|
 
-<h3 id="epxdiabetes:-create-a-schedule-for-the-patient-responseschema">Response Schema</h3>
+<h3 id="post__epxdiabetes_create_-responseschema">Response Schema</h3>
 
 Status Code **201**
 
@@ -3217,184 +3080,123 @@ Status Code **201**
 |---|---|---|---|---|
 |» status|string|false|none|none|
 |» schedule|[[ScheduleParams](#schemascheduleparams)]|false|none|none|
-|»» start|string|false|none|The start date of the intervention|
-|»» end|string|false|none|The end date of the intervention (optional)|
-|»» times|[string]|false|none|The times that the patient would prefer to receive messages (24-hour time)|
-|»» days|[integer]|false|none|Days of the week that the sessions will occur (0: Sunday... 6: Saturday)|
-|»» method|string|false|none|The method in which the patient will be contacted.|
-|»» tz|string|false|none|The timezone of the schedule|
-|»» patientId|integer|false|none|The ID of the patient who will receive the intervention|
-|»» contactId|integer|false|none|The ID of the contact that will be assigned to the intervention|
 
 #### Enumerated Values
 
 |Property|Value|
 |---|---|
 |status|OK|
-|method|message|
-|method|call|
 
 <aside class="success">
 This operation does not require authentication
 </aside>
 
-## EpxDiabetes: Edit a schedule for a patient
-
-> Code samples
-
-```shell
-curl --request POST \
-  --url https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxdiabetes/edit/ \
-  --header 'accept: application/json' \
-  --header 'content-type: application/json' \
-  --data '{"start":"2019-02-05T10:00:09-06:00","end":"2019-03-05T10:00:09-06:00","times":["09:00","17:30"],"days":[1,3,5],"method":"message","tz":"US/Central","patientId":1638,"contactId":76,"id":681,"isFixed":true,"mode":"T"}'
-```
-
-```javascript
-var data = JSON.stringify({
-  "start": "2019-02-05T10:00:09-06:00",
-  "end": "2019-03-05T10:00:09-06:00",
-  "times": [
-    "09:00",
-    "17:30"
-  ],
-  "days": [
-    1,
-    3,
-    5
-  ],
-  "method": "message",
-  "tz": "US/Central",
-  "patientId": 1638,
-  "contactId": 76,
-  "id": 681,
-  "isFixed": true,
-  "mode": "T"
-});
-
-var xhr = new XMLHttpRequest();
-xhr.withCredentials = true;
-
-xhr.addEventListener("readystatechange", function () {
-  if (this.readyState === this.DONE) {
-    console.log(this.responseText);
-  }
-});
-
-xhr.open("POST", "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxdiabetes/edit/");
-xhr.setRequestHeader("content-type", "application/json");
-xhr.setRequestHeader("accept", "application/json");
-
-xhr.send(data);
-```
-
-```ruby
-require 'uri'
-require 'net/http'
-
-url = URI("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxdiabetes/edit/")
-
-http = Net::HTTP.new(url.host, url.port)
-http.use_ssl = true
-http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-request = Net::HTTP::Post.new(url)
-request["content-type"] = 'application/json'
-request["accept"] = 'application/json'
-request.body = "{\"start\":\"2019-02-05T10:00:09-06:00\",\"end\":\"2019-03-05T10:00:09-06:00\",\"times\":[\"09:00\",\"17:30\"],\"days\":[1,3,5],\"method\":\"message\",\"tz\":\"US/Central\",\"patientId\":1638,\"contactId\":76,\"id\":681,\"isFixed\":true,\"mode\":\"T\"}"
-
-response = http.request(request)
-puts response.read_body
-```
-
-```python
-import http.client
-
-conn = http.client.HTTPSConnection("virtserver.swaggerhub.com")
-
-payload = "{\"start\":\"2019-02-05T10:00:09-06:00\",\"end\":\"2019-03-05T10:00:09-06:00\",\"times\":[\"09:00\",\"17:30\"],\"days\":[1,3,5],\"method\":\"message\",\"tz\":\"US/Central\",\"patientId\":1638,\"contactId\":76,\"id\":681,\"isFixed\":true,\"mode\":\"T\"}"
-
-headers = {
-    'content-type': "application/json",
-    'accept': "application/json"
-    }
-
-conn.request("POST", "/EpxHealth/Epharmix/1/epxdiabetes/edit/", payload, headers)
-
-res = conn.getresponse()
-data = res.read()
-
-print(data.decode("utf-8"))
-```
-
-```java
-HttpResponse<String> response = Unirest.post("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxdiabetes/edit/")
-  .header("content-type", "application/json")
-  .header("accept", "application/json")
-  .body("{\"start\":\"2019-02-05T10:00:09-06:00\",\"end\":\"2019-03-05T10:00:09-06:00\",\"times\":[\"09:00\",\"17:30\"],\"days\":[1,3,5],\"method\":\"message\",\"tz\":\"US/Central\",\"patientId\":1638,\"contactId\":76,\"id\":681,\"isFixed\":true,\"mode\":\"T\"}")
-  .asString();
-```
-
-```go
-package main
-
-import (
-	"fmt"
-	"strings"
-	"net/http"
-	"io/ioutil"
-)
-
-func main() {
-
-	url := "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxdiabetes/edit/"
-
-	payload := strings.NewReader("{\"start\":\"2019-02-05T10:00:09-06:00\",\"end\":\"2019-03-05T10:00:09-06:00\",\"times\":[\"09:00\",\"17:30\"],\"days\":[1,3,5],\"method\":\"message\",\"tz\":\"US/Central\",\"patientId\":1638,\"contactId\":76,\"id\":681,\"isFixed\":true,\"mode\":\"T\"}")
-
-	req, _ := http.NewRequest("POST", url, payload)
-
-	req.Header.Add("content-type", "application/json")
-	req.Header.Add("accept", "application/json")
-
-	res, _ := http.DefaultClient.Do(req)
-
-	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
-
-	fmt.Println(res)
-	fmt.Println(string(body))
-
-}
-```
+## post__epxdiabetes_edit_
 
 `POST /epxdiabetes/edit/`
+
+*EpxDiabetes: Edit a schedule for a patient*
 
 > Body parameter
 
 ```json
 {
-  "start": "2019-02-05T10:00:09-06:00",
-  "end": "2019-03-05T10:00:09-06:00",
-  "times": [
-    "09:00",
-    "17:30"
-  ],
-  "days": [
-    1,
-    3,
-    5
-  ],
-  "method": "message",
-  "tz": "US/Central",
-  "patientId": 1638,
-  "contactId": 76,
-  "id": 681,
-  "isFixed": true,
-  "mode": "T"
+  "allOf": [
+    {
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "string",
+          "description": "The start date of the intervention",
+          "example": "2019-02-05T10:00:09-06:00"
+        },
+        "end": {
+          "type": "string",
+          "description": "The end date of the intervention (optional)",
+          "example": "2019-03-05T10:00:09-06:00"
+        },
+        "times": {
+          "type": "array",
+          "description": "The times that the patient would prefer to receive messages (24-hour time)",
+          "example": [
+            "09:00",
+            "17:30"
+          ],
+          "items": {
+            "type": "string"
+          }
+        },
+        "days": {
+          "description": "Days of the week that the sessions will occur (0: Sunday... 6: Saturday)",
+          "example": [
+            1,
+            3,
+            5
+          ],
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 6
+          }
+        },
+        "method": {
+          "type": "string",
+          "description": "The method in which the patient will be contacted.",
+          "enum": [
+            "message",
+            "call"
+          ]
+        },
+        "tz": {
+          "type": "string",
+          "description": "The timezone of the schedule",
+          "example": "US/Central"
+        },
+        "patientId": {
+          "type": "integer",
+          "description": "The ID of the patient who will receive the intervention",
+          "example": 1638
+        },
+        "contactId": {
+          "type": "integer",
+          "description": "The ID of the contact that will be assigned to the intervention",
+          "example": 76
+        }
+      }
+    },
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "The ID of the schedule being edited",
+          "example": 681
+        },
+        "isFixed": {
+          "type": "boolean",
+          "description": "If true, the message will be on a fixed frequency of your choice. If false, the patient will be on \"smart schedule\", with the frequency based on their responses."
+        },
+        "mode": {
+          "type": "string",
+          "description": "Only required if schedule is fixed. Sets the frequency of sessions.",
+          "enum": [
+            "T",
+            "P",
+            "D",
+            "B",
+            "W",
+            "C",
+            "Q"
+          ]
+        }
+      }
+    }
+  ]
 }
 ```
 
-<h3 id="epxdiabetes:-edit-a-schedule-for-a-patient-parameters">Parameters</h3>
+<h3 id="post__epxdiabetes_edit_-parameters">Parameters</h3>
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
@@ -3406,39 +3208,122 @@ func main() {
 
 ```json
 {
-  "status": "OK",
-  "schedule": [
-    {
-      "start": "2019-02-05T10:00:09-06:00",
-      "end": "2019-03-05T10:00:09-06:00",
-      "times": [
-        "09:00",
-        "17:30"
-      ],
-      "days": [
-        1,
-        3,
-        5
-      ],
-      "method": "message",
-      "tz": "US/Central",
-      "patientId": 372,
-      "contactId": 39,
-      "id": 14,
-      "isCanceled": true,
-      "canceledAt": "string"
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "OK"
+      ]
+    },
+    "schedule": {
+      "type": "array",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "start": {
+                "type": "string",
+                "description": "The start date of the intervention",
+                "example": "2019-02-05T10:00:09-06:00"
+              },
+              "end": {
+                "type": "string",
+                "description": "The end date of the intervention (optional)",
+                "example": "2019-03-05T10:00:09-06:00"
+              },
+              "times": {
+                "type": "array",
+                "description": "The times that the patient would prefer to receive messages (24-hour time)",
+                "example": [
+                  "09:00",
+                  "17:30"
+                ],
+                "items": {
+                  "type": "string"
+                }
+              },
+              "days": {
+                "description": "Days of the week that the sessions will occur (0: Sunday... 6: Saturday)",
+                "example": [
+                  1,
+                  3,
+                  5
+                ],
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 6
+                }
+              },
+              "method": {
+                "type": "string",
+                "description": "The method in which the patient will be contacted.",
+                "enum": [
+                  "message",
+                  "call"
+                ]
+              },
+              "tz": {
+                "type": "string",
+                "description": "The timezone of the schedule",
+                "example": "US/Central"
+              },
+              "patientId": {
+                "type": "integer",
+                "description": "The ID of the patient who will receive the intervention",
+                "example": 1638
+              },
+              "contactId": {
+                "type": "integer",
+                "description": "The ID of the contact that will be assigned to the intervention",
+                "example": 76
+              }
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "example": 14
+              },
+              "isCanceled": {
+                "type": "boolean",
+                "description": "If true, the patient will not longer receive calls/messages"
+              },
+              "canceledAt": {
+                "type": "string",
+                "description": "The time that the schedule was canceled"
+              },
+              "patientId": {
+                "type": "integer",
+                "example": 372,
+                "description": "The ID of the patient"
+              },
+              "contactId": {
+                "type": "integer",
+                "description": "The ID of the contact associated to this schedule",
+                "example": 39
+              }
+            }
+          }
+        ]
+      }
     }
-  ]
+  }
 }
 ```
 
-<h3 id="epxdiabetes:-edit-a-schedule-for-a-patient-responses">Responses</h3>
+<h3 id="post__epxdiabetes_edit_-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|EpxDiabetes Schedule Edited|Inline|
 
-<h3 id="epxdiabetes:-edit-a-schedule-for-a-patient-responseschema">Response Schema</h3>
+<h3 id="post__epxdiabetes_edit_-responseschema">Response Schema</h3>
 
 Status Code **200**
 
@@ -3451,162 +3336,44 @@ Status Code **200**
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|»» *anonymous*|[ScheduleParams](#schemascheduleparams)|false|none|none|
-|»»» start|string|false|none|The start date of the intervention|
-|»»» end|string|false|none|The end date of the intervention (optional)|
-|»»» times|[string]|false|none|The times that the patient would prefer to receive messages (24-hour time)|
-|»»» days|[integer]|false|none|Days of the week that the sessions will occur (0: Sunday... 6: Saturday)|
-|»»» method|string|false|none|The method in which the patient will be contacted.|
-|»»» tz|string|false|none|The timezone of the schedule|
-|»»» patientId|integer|false|none|The ID of the patient who will receive the intervention|
-|»»» contactId|integer|false|none|The ID of the contact that will be assigned to the intervention|
 
 *and*
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|»» *anonymous*|object|false|none|none|
-|»»» id|integer|false|none|none|
-|»»» isCanceled|boolean|false|none|If true, the patient will not longer receive calls/messages|
-|»»» canceledAt|string|false|none|The time that the schedule was canceled|
-|»»» patientId|integer|false|none|The ID of the patient|
-|»»» contactId|integer|false|none|The ID of the contact associated to this schedule|
 
 #### Enumerated Values
 
 |Property|Value|
 |---|---|
 |status|OK|
-|method|message|
-|method|call|
 
 <aside class="success">
 This operation does not require authentication
 </aside>
 
-## EpxDiabetes: Cancel a schedule for a patient
-
-> Code samples
-
-```shell
-curl --request POST \
-  --url https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxdiabetes/cancel/ \
-  --header 'accept: application/json' \
-  --header 'content-type: application/json' \
-  --data '{"id":681}'
-```
-
-```javascript
-var data = JSON.stringify({
-  "id": 681
-});
-
-var xhr = new XMLHttpRequest();
-xhr.withCredentials = true;
-
-xhr.addEventListener("readystatechange", function () {
-  if (this.readyState === this.DONE) {
-    console.log(this.responseText);
-  }
-});
-
-xhr.open("POST", "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxdiabetes/cancel/");
-xhr.setRequestHeader("content-type", "application/json");
-xhr.setRequestHeader("accept", "application/json");
-
-xhr.send(data);
-```
-
-```ruby
-require 'uri'
-require 'net/http'
-
-url = URI("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxdiabetes/cancel/")
-
-http = Net::HTTP.new(url.host, url.port)
-http.use_ssl = true
-http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-request = Net::HTTP::Post.new(url)
-request["content-type"] = 'application/json'
-request["accept"] = 'application/json'
-request.body = "{\"id\":681}"
-
-response = http.request(request)
-puts response.read_body
-```
-
-```python
-import http.client
-
-conn = http.client.HTTPSConnection("virtserver.swaggerhub.com")
-
-payload = "{\"id\":681}"
-
-headers = {
-    'content-type': "application/json",
-    'accept': "application/json"
-    }
-
-conn.request("POST", "/EpxHealth/Epharmix/1/epxdiabetes/cancel/", payload, headers)
-
-res = conn.getresponse()
-data = res.read()
-
-print(data.decode("utf-8"))
-```
-
-```java
-HttpResponse<String> response = Unirest.post("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxdiabetes/cancel/")
-  .header("content-type", "application/json")
-  .header("accept", "application/json")
-  .body("{\"id\":681}")
-  .asString();
-```
-
-```go
-package main
-
-import (
-	"fmt"
-	"strings"
-	"net/http"
-	"io/ioutil"
-)
-
-func main() {
-
-	url := "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxdiabetes/cancel/"
-
-	payload := strings.NewReader("{\"id\":681}")
-
-	req, _ := http.NewRequest("POST", url, payload)
-
-	req.Header.Add("content-type", "application/json")
-	req.Header.Add("accept", "application/json")
-
-	res, _ := http.DefaultClient.Do(req)
-
-	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
-
-	fmt.Println(res)
-	fmt.Println(string(body))
-
-}
-```
+## post__epxdiabetes_cancel_
 
 `POST /epxdiabetes/cancel/`
+
+*EpxDiabetes: Cancel a schedule for a patient*
 
 > Body parameter
 
 ```json
 {
-  "id": 681
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "description": "The ID of the schedule being canceled",
+      "example": 681
+    }
+  }
 }
 ```
 
-<h3 id="epxdiabetes:-cancel-a-schedule-for-a-patient-parameters">Parameters</h3>
+<h3 id="post__epxdiabetes_cancel_-parameters">Parameters</h3>
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
@@ -3619,39 +3386,122 @@ func main() {
 
 ```json
 {
-  "status": "OK",
-  "schedule": [
-    {
-      "start": "2019-02-05T10:00:09-06:00",
-      "end": "2019-03-05T10:00:09-06:00",
-      "times": [
-        "09:00",
-        "17:30"
-      ],
-      "days": [
-        1,
-        3,
-        5
-      ],
-      "method": "message",
-      "tz": "US/Central",
-      "patientId": 372,
-      "contactId": 39,
-      "id": 14,
-      "isCanceled": true,
-      "canceledAt": "string"
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "OK"
+      ]
+    },
+    "schedule": {
+      "type": "array",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "start": {
+                "type": "string",
+                "description": "The start date of the intervention",
+                "example": "2019-02-05T10:00:09-06:00"
+              },
+              "end": {
+                "type": "string",
+                "description": "The end date of the intervention (optional)",
+                "example": "2019-03-05T10:00:09-06:00"
+              },
+              "times": {
+                "type": "array",
+                "description": "The times that the patient would prefer to receive messages (24-hour time)",
+                "example": [
+                  "09:00",
+                  "17:30"
+                ],
+                "items": {
+                  "type": "string"
+                }
+              },
+              "days": {
+                "description": "Days of the week that the sessions will occur (0: Sunday... 6: Saturday)",
+                "example": [
+                  1,
+                  3,
+                  5
+                ],
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 6
+                }
+              },
+              "method": {
+                "type": "string",
+                "description": "The method in which the patient will be contacted.",
+                "enum": [
+                  "message",
+                  "call"
+                ]
+              },
+              "tz": {
+                "type": "string",
+                "description": "The timezone of the schedule",
+                "example": "US/Central"
+              },
+              "patientId": {
+                "type": "integer",
+                "description": "The ID of the patient who will receive the intervention",
+                "example": 1638
+              },
+              "contactId": {
+                "type": "integer",
+                "description": "The ID of the contact that will be assigned to the intervention",
+                "example": 76
+              }
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "example": 14
+              },
+              "isCanceled": {
+                "type": "boolean",
+                "description": "If true, the patient will not longer receive calls/messages"
+              },
+              "canceledAt": {
+                "type": "string",
+                "description": "The time that the schedule was canceled"
+              },
+              "patientId": {
+                "type": "integer",
+                "example": 372,
+                "description": "The ID of the patient"
+              },
+              "contactId": {
+                "type": "integer",
+                "description": "The ID of the contact associated to this schedule",
+                "example": 39
+              }
+            }
+          }
+        ]
+      }
     }
-  ]
+  }
 }
 ```
 
-<h3 id="epxdiabetes:-cancel-a-schedule-for-a-patient-responses">Responses</h3>
+<h3 id="post__epxdiabetes_cancel_-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|EpxDiabetes Schedule Canceled|Inline|
 
-<h3 id="epxdiabetes:-cancel-a-schedule-for-a-patient-responseschema">Response Schema</h3>
+<h3 id="post__epxdiabetes_cancel_-responseschema">Response Schema</h3>
 
 Status Code **200**
 
@@ -3664,162 +3514,44 @@ Status Code **200**
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|»» *anonymous*|[ScheduleParams](#schemascheduleparams)|false|none|none|
-|»»» start|string|false|none|The start date of the intervention|
-|»»» end|string|false|none|The end date of the intervention (optional)|
-|»»» times|[string]|false|none|The times that the patient would prefer to receive messages (24-hour time)|
-|»»» days|[integer]|false|none|Days of the week that the sessions will occur (0: Sunday... 6: Saturday)|
-|»»» method|string|false|none|The method in which the patient will be contacted.|
-|»»» tz|string|false|none|The timezone of the schedule|
-|»»» patientId|integer|false|none|The ID of the patient who will receive the intervention|
-|»»» contactId|integer|false|none|The ID of the contact that will be assigned to the intervention|
 
 *and*
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|»» *anonymous*|object|false|none|none|
-|»»» id|integer|false|none|none|
-|»»» isCanceled|boolean|false|none|If true, the patient will not longer receive calls/messages|
-|»»» canceledAt|string|false|none|The time that the schedule was canceled|
-|»»» patientId|integer|false|none|The ID of the patient|
-|»»» contactId|integer|false|none|The ID of the contact associated to this schedule|
 
 #### Enumerated Values
 
 |Property|Value|
 |---|---|
 |status|OK|
-|method|message|
-|method|call|
 
 <aside class="success">
 This operation does not require authentication
 </aside>
 
-## EpxDiabetes: get epxdiabetes data for a patient
-
-> Code samples
-
-```shell
-curl --request POST \
-  --url https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxdiabetes/data/ \
-  --header 'accept: application/json' \
-  --header 'content-type: application/json' \
-  --data '{"patient":2645}'
-```
-
-```javascript
-var data = JSON.stringify({
-  "patient": 2645
-});
-
-var xhr = new XMLHttpRequest();
-xhr.withCredentials = true;
-
-xhr.addEventListener("readystatechange", function () {
-  if (this.readyState === this.DONE) {
-    console.log(this.responseText);
-  }
-});
-
-xhr.open("POST", "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxdiabetes/data/");
-xhr.setRequestHeader("content-type", "application/json");
-xhr.setRequestHeader("accept", "application/json");
-
-xhr.send(data);
-```
-
-```ruby
-require 'uri'
-require 'net/http'
-
-url = URI("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxdiabetes/data/")
-
-http = Net::HTTP.new(url.host, url.port)
-http.use_ssl = true
-http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-request = Net::HTTP::Post.new(url)
-request["content-type"] = 'application/json'
-request["accept"] = 'application/json'
-request.body = "{\"patient\":2645}"
-
-response = http.request(request)
-puts response.read_body
-```
-
-```python
-import http.client
-
-conn = http.client.HTTPSConnection("virtserver.swaggerhub.com")
-
-payload = "{\"patient\":2645}"
-
-headers = {
-    'content-type': "application/json",
-    'accept': "application/json"
-    }
-
-conn.request("POST", "/EpxHealth/Epharmix/1/epxdiabetes/data/", payload, headers)
-
-res = conn.getresponse()
-data = res.read()
-
-print(data.decode("utf-8"))
-```
-
-```java
-HttpResponse<String> response = Unirest.post("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxdiabetes/data/")
-  .header("content-type", "application/json")
-  .header("accept", "application/json")
-  .body("{\"patient\":2645}")
-  .asString();
-```
-
-```go
-package main
-
-import (
-	"fmt"
-	"strings"
-	"net/http"
-	"io/ioutil"
-)
-
-func main() {
-
-	url := "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxdiabetes/data/"
-
-	payload := strings.NewReader("{\"patient\":2645}")
-
-	req, _ := http.NewRequest("POST", url, payload)
-
-	req.Header.Add("content-type", "application/json")
-	req.Header.Add("accept", "application/json")
-
-	res, _ := http.DefaultClient.Do(req)
-
-	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
-
-	fmt.Println(res)
-	fmt.Println(string(body))
-
-}
-```
+## post__epxdiabetes_data_
 
 `POST /epxdiabetes/data/`
+
+*EpxDiabetes: get epxdiabetes data for a patient*
 
 > Body parameter
 
 ```json
 {
-  "patient": 2645
+  "type": "object",
+  "properties": {
+    "patient": {
+      "type": "integer",
+      "description": "The ID of the patient",
+      "example": 2645
+    }
+  }
 }
 ```
 
-<h3 id="epxdiabetes:-get-epxdiabetes-data-for-a-patient-parameters">Parameters</h3>
+<h3 id="post__epxdiabetes_data_-parameters">Parameters</h3>
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
@@ -3832,50 +3564,166 @@ func main() {
 
 ```json
 {
-  "status": "OK",
-  "sessions": [
-    {
-      "time": "2019-02-15T10:22:09-06:00",
-      "respondedAt": "2019-02-15T10:22:15-55:00",
-      "bloodSugar": 125,
-      "hasEaten": true,
-      "isCanceled": true,
-      "schedule": {
-        "start": "2019-02-05T10:00:09-06:00",
-        "end": "2019-03-05T10:00:09-06:00",
-        "times": [
-          "09:00",
-          "17:30"
-        ],
-        "days": [
-          1,
-          3,
-          5
-        ],
-        "method": "message",
-        "tz": "US/Central",
-        "patientId": 1638,
-        "contactId": 76
-      },
-      "patient": {
-        "firstName": "John",
-        "middleInitial": "M",
-        "lastName": "Smith",
-        "phone": "5551234567",
-        "id": 623
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "OK"
+      ]
+    },
+    "sessions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "time": {
+            "type": "string",
+            "description": "The time of the session",
+            "example": "2019-02-15T10:22:09-06:00"
+          },
+          "respondedAt": {
+            "type": "string",
+            "description": "If set, it is the time that the patient first responded to the session. If null, the patient has not yet responded.",
+            "example": "2019-02-15T10:22:15-55:00"
+          },
+          "bloodSugar": {
+            "type": "integer",
+            "description": "The patient's blood sugar",
+            "example": 125
+          },
+          "hasEaten": {
+            "type": "boolean",
+            "description": "If true, the patient ate within 2 hours of taking the blood sugar reading"
+          },
+          "isCanceled": {
+            "type": "boolean",
+            "description": "If true, the session was canceled"
+          },
+          "schedule": {
+            "type": "object",
+            "properties": {
+              "start": {
+                "type": "string",
+                "description": "The start date of the intervention",
+                "example": "2019-02-05T10:00:09-06:00"
+              },
+              "end": {
+                "type": "string",
+                "description": "The end date of the intervention (optional)",
+                "example": "2019-03-05T10:00:09-06:00"
+              },
+              "times": {
+                "type": "array",
+                "description": "The times that the patient would prefer to receive messages (24-hour time)",
+                "example": [
+                  "09:00",
+                  "17:30"
+                ],
+                "items": {
+                  "type": "string"
+                }
+              },
+              "days": {
+                "description": "Days of the week that the sessions will occur (0: Sunday... 6: Saturday)",
+                "example": [
+                  1,
+                  3,
+                  5
+                ],
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 6
+                }
+              },
+              "method": {
+                "type": "string",
+                "description": "The method in which the patient will be contacted.",
+                "enum": [
+                  "message",
+                  "call"
+                ]
+              },
+              "tz": {
+                "type": "string",
+                "description": "The timezone of the schedule",
+                "example": "US/Central"
+              },
+              "patientId": {
+                "type": "integer",
+                "description": "The ID of the patient who will receive the intervention",
+                "example": 1638
+              },
+              "contactId": {
+                "type": "integer",
+                "description": "The ID of the contact that will be assigned to the intervention",
+                "example": 76
+              }
+            }
+          },
+          "patient": {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "description": "The first name of the patient.",
+                    "type": "string",
+                    "example": "John"
+                  },
+                  "middleInitial": {
+                    "description": "The middle initial of the patient.",
+                    "type": "string",
+                    "example": "M"
+                  },
+                  "lastName": {
+                    "description": "The last name of the patient.",
+                    "type": "string",
+                    "example": "Smith"
+                  },
+                  "phone": {
+                    "description": "The phone number of the patient.",
+                    "type": "string",
+                    "pattern": "^\\d{10}$",
+                    "example": "5551234567"
+                  }
+                },
+                "required": [
+                  "firstName",
+                  "lastName",
+                  "phone"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "example": 623,
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "id"
+                ]
+              }
+            ]
+          }
+        }
       }
     }
-  ]
+  }
 }
 ```
 
-<h3 id="epxdiabetes:-get-epxdiabetes-data-for-a-patient-responses">Responses</h3>
+<h3 id="post__epxdiabetes_data_-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|EpxDiabetes Session Data|Inline|
 
-<h3 id="epxdiabetes:-get-epxdiabetes-data-for-a-patient-responseschema">Response Schema</h3>
+<h3 id="post__epxdiabetes_data_-responseschema">Response Schema</h3>
 
 Status Code **200**
 
@@ -3888,205 +3736,138 @@ Status Code **200**
 |»» bloodSugar|integer|false|none|The patient's blood sugar|
 |»» hasEaten|boolean|false|none|If true, the patient ate within 2 hours of taking the blood sugar reading|
 |»» isCanceled|boolean|false|none|If true, the session was canceled|
-|»» schedule|[ScheduleParams](#schemascheduleparams)|false|none|none|
-|»»» start|string|false|none|The start date of the intervention|
-|»»» end|string|false|none|The end date of the intervention (optional)|
-|»»» times|[string]|false|none|The times that the patient would prefer to receive messages (24-hour time)|
-|»»» days|[integer]|false|none|Days of the week that the sessions will occur (0: Sunday... 6: Saturday)|
-|»»» method|string|false|none|The method in which the patient will be contacted.|
-|»»» tz|string|false|none|The timezone of the schedule|
-|»»» patientId|integer|false|none|The ID of the patient who will receive the intervention|
-|»»» contactId|integer|false|none|The ID of the contact that will be assigned to the intervention|
-|»» patient|any|false|none|none|
 
 *allOf*
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|»»» *anonymous*|[PatientParams](#schemapatientparams)|false|none|none|
-|»»»» firstName|string|true|none|The first name of the patient.|
-|»»»» middleInitial|string|false|none|The middle initial of the patient.|
-|»»»» lastName|string|true|none|The last name of the patient.|
-|»»»» phone|string|true|none|The phone number of the patient.|
 
 *and*
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|»»» *anonymous*|object|false|none|none|
-|»»»» id|number|true|none|none|
 
 #### Enumerated Values
 
 |Property|Value|
 |---|---|
 |status|OK|
-|method|message|
-|method|call|
 
 <aside class="success">
 This operation does not require authentication
 </aside>
 
-## EpxHypertension: Create an epxhypertension schedule for a patient
-
-> Code samples
-
-```shell
-curl --request POST \
-  --url https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxhyper/create/ \
-  --header 'accept: application/json' \
-  --header 'content-type: application/json' \
-  --data '{"start":"2019-02-05T10:00:09-06:00","end":"2019-03-05T10:00:09-06:00","times":["09:00","17:30"],"days":[1,3,5],"method":"message","tz":"US/Central","patientId":1638,"contactId":76,"language":"en","isFixed":true,"mode":"D","hasMedInstruction":true}'
-```
-
-```javascript
-var data = JSON.stringify({
-  "start": "2019-02-05T10:00:09-06:00",
-  "end": "2019-03-05T10:00:09-06:00",
-  "times": [
-    "09:00",
-    "17:30"
-  ],
-  "days": [
-    1,
-    3,
-    5
-  ],
-  "method": "message",
-  "tz": "US/Central",
-  "patientId": 1638,
-  "contactId": 76,
-  "language": "en",
-  "isFixed": true,
-  "mode": "D",
-  "hasMedInstruction": true
-});
-
-var xhr = new XMLHttpRequest();
-xhr.withCredentials = true;
-
-xhr.addEventListener("readystatechange", function () {
-  if (this.readyState === this.DONE) {
-    console.log(this.responseText);
-  }
-});
-
-xhr.open("POST", "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxhyper/create/");
-xhr.setRequestHeader("content-type", "application/json");
-xhr.setRequestHeader("accept", "application/json");
-
-xhr.send(data);
-```
-
-```ruby
-require 'uri'
-require 'net/http'
-
-url = URI("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxhyper/create/")
-
-http = Net::HTTP.new(url.host, url.port)
-http.use_ssl = true
-http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-request = Net::HTTP::Post.new(url)
-request["content-type"] = 'application/json'
-request["accept"] = 'application/json'
-request.body = "{\"start\":\"2019-02-05T10:00:09-06:00\",\"end\":\"2019-03-05T10:00:09-06:00\",\"times\":[\"09:00\",\"17:30\"],\"days\":[1,3,5],\"method\":\"message\",\"tz\":\"US/Central\",\"patientId\":1638,\"contactId\":76,\"language\":\"en\",\"isFixed\":true,\"mode\":\"D\",\"hasMedInstruction\":true}"
-
-response = http.request(request)
-puts response.read_body
-```
-
-```python
-import http.client
-
-conn = http.client.HTTPSConnection("virtserver.swaggerhub.com")
-
-payload = "{\"start\":\"2019-02-05T10:00:09-06:00\",\"end\":\"2019-03-05T10:00:09-06:00\",\"times\":[\"09:00\",\"17:30\"],\"days\":[1,3,5],\"method\":\"message\",\"tz\":\"US/Central\",\"patientId\":1638,\"contactId\":76,\"language\":\"en\",\"isFixed\":true,\"mode\":\"D\",\"hasMedInstruction\":true}"
-
-headers = {
-    'content-type': "application/json",
-    'accept': "application/json"
-    }
-
-conn.request("POST", "/EpxHealth/Epharmix/1/epxhyper/create/", payload, headers)
-
-res = conn.getresponse()
-data = res.read()
-
-print(data.decode("utf-8"))
-```
-
-```java
-HttpResponse<String> response = Unirest.post("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxhyper/create/")
-  .header("content-type", "application/json")
-  .header("accept", "application/json")
-  .body("{\"start\":\"2019-02-05T10:00:09-06:00\",\"end\":\"2019-03-05T10:00:09-06:00\",\"times\":[\"09:00\",\"17:30\"],\"days\":[1,3,5],\"method\":\"message\",\"tz\":\"US/Central\",\"patientId\":1638,\"contactId\":76,\"language\":\"en\",\"isFixed\":true,\"mode\":\"D\",\"hasMedInstruction\":true}")
-  .asString();
-```
-
-```go
-package main
-
-import (
-	"fmt"
-	"strings"
-	"net/http"
-	"io/ioutil"
-)
-
-func main() {
-
-	url := "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxhyper/create/"
-
-	payload := strings.NewReader("{\"start\":\"2019-02-05T10:00:09-06:00\",\"end\":\"2019-03-05T10:00:09-06:00\",\"times\":[\"09:00\",\"17:30\"],\"days\":[1,3,5],\"method\":\"message\",\"tz\":\"US/Central\",\"patientId\":1638,\"contactId\":76,\"language\":\"en\",\"isFixed\":true,\"mode\":\"D\",\"hasMedInstruction\":true}")
-
-	req, _ := http.NewRequest("POST", url, payload)
-
-	req.Header.Add("content-type", "application/json")
-	req.Header.Add("accept", "application/json")
-
-	res, _ := http.DefaultClient.Do(req)
-
-	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
-
-	fmt.Println(res)
-	fmt.Println(string(body))
-
-}
-```
+## post__epxhyper_create_
 
 `POST /epxhyper/create/`
+
+*EpxHypertension: Create an epxhypertension schedule for a patient*
 
 > Body parameter
 
 ```json
 {
-  "start": "2019-02-05T10:00:09-06:00",
-  "end": "2019-03-05T10:00:09-06:00",
-  "times": [
-    "09:00",
-    "17:30"
-  ],
-  "days": [
-    1,
-    3,
-    5
-  ],
-  "method": "message",
-  "tz": "US/Central",
-  "patientId": 1638,
-  "contactId": 76,
-  "language": "en",
-  "isFixed": true,
-  "mode": "D",
-  "hasMedInstruction": true
+  "allOf": [
+    {
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "string",
+          "description": "The start date of the intervention",
+          "example": "2019-02-05T10:00:09-06:00"
+        },
+        "end": {
+          "type": "string",
+          "description": "The end date of the intervention (optional)",
+          "example": "2019-03-05T10:00:09-06:00"
+        },
+        "times": {
+          "type": "array",
+          "description": "The times that the patient would prefer to receive messages (24-hour time)",
+          "example": [
+            "09:00",
+            "17:30"
+          ],
+          "items": {
+            "type": "string"
+          }
+        },
+        "days": {
+          "description": "Days of the week that the sessions will occur (0: Sunday... 6: Saturday)",
+          "example": [
+            1,
+            3,
+            5
+          ],
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 6
+          }
+        },
+        "method": {
+          "type": "string",
+          "description": "The method in which the patient will be contacted.",
+          "enum": [
+            "message",
+            "call"
+          ]
+        },
+        "tz": {
+          "type": "string",
+          "description": "The timezone of the schedule",
+          "example": "US/Central"
+        },
+        "patientId": {
+          "type": "integer",
+          "description": "The ID of the patient who will receive the intervention",
+          "example": 1638
+        },
+        "contactId": {
+          "type": "integer",
+          "description": "The ID of the contact that will be assigned to the intervention",
+          "example": 76
+        }
+      }
+    },
+    {
+      "type": "object",
+      "properties": {
+        "language": {
+          "type": "string",
+          "description": "The language of messages/calls to the patient",
+          "enum": [
+            "en",
+            "es"
+          ]
+        },
+        "isFixed": {
+          "type": "boolean",
+          "description": "If true, the message will be on a fixed frequency of your choice. If false, the patient will be on \"smart schedule\", with the frequency based on their responses."
+        },
+        "mode": {
+          "type": "string",
+          "description": "Only required if schedule is fixed. Sets the frequency of sessions.",
+          "enum": [
+            "T",
+            "D",
+            "B",
+            "C"
+          ],
+          "example": "D"
+        },
+        "hasMedInstruction": {
+          "type": "boolean",
+          "description": "If true, the patient will be asked about taking their medication when the blood pressure is critical."
+        }
+      }
+    }
+  ]
 }
 ```
 
-<h3 id="epxhypertension:-create-an-epxhypertension-schedule-for-a-patient-parameters">Parameters</h3>
+<h3 id="post__epxhyper_create_-parameters">Parameters</h3>
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
@@ -4098,39 +3879,122 @@ func main() {
 
 ```json
 {
-  "status": "OK",
-  "schedule": [
-    {
-      "start": "2019-02-05T10:00:09-06:00",
-      "end": "2019-03-05T10:00:09-06:00",
-      "times": [
-        "09:00",
-        "17:30"
-      ],
-      "days": [
-        1,
-        3,
-        5
-      ],
-      "method": "message",
-      "tz": "US/Central",
-      "patientId": 372,
-      "contactId": 39,
-      "id": 14,
-      "isCanceled": true,
-      "canceledAt": "string"
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "OK"
+      ]
+    },
+    "schedule": {
+      "type": "array",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "start": {
+                "type": "string",
+                "description": "The start date of the intervention",
+                "example": "2019-02-05T10:00:09-06:00"
+              },
+              "end": {
+                "type": "string",
+                "description": "The end date of the intervention (optional)",
+                "example": "2019-03-05T10:00:09-06:00"
+              },
+              "times": {
+                "type": "array",
+                "description": "The times that the patient would prefer to receive messages (24-hour time)",
+                "example": [
+                  "09:00",
+                  "17:30"
+                ],
+                "items": {
+                  "type": "string"
+                }
+              },
+              "days": {
+                "description": "Days of the week that the sessions will occur (0: Sunday... 6: Saturday)",
+                "example": [
+                  1,
+                  3,
+                  5
+                ],
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 6
+                }
+              },
+              "method": {
+                "type": "string",
+                "description": "The method in which the patient will be contacted.",
+                "enum": [
+                  "message",
+                  "call"
+                ]
+              },
+              "tz": {
+                "type": "string",
+                "description": "The timezone of the schedule",
+                "example": "US/Central"
+              },
+              "patientId": {
+                "type": "integer",
+                "description": "The ID of the patient who will receive the intervention",
+                "example": 1638
+              },
+              "contactId": {
+                "type": "integer",
+                "description": "The ID of the contact that will be assigned to the intervention",
+                "example": 76
+              }
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "example": 14
+              },
+              "isCanceled": {
+                "type": "boolean",
+                "description": "If true, the patient will not longer receive calls/messages"
+              },
+              "canceledAt": {
+                "type": "string",
+                "description": "The time that the schedule was canceled"
+              },
+              "patientId": {
+                "type": "integer",
+                "example": 372,
+                "description": "The ID of the patient"
+              },
+              "contactId": {
+                "type": "integer",
+                "description": "The ID of the contact associated to this schedule",
+                "example": 39
+              }
+            }
+          }
+        ]
+      }
     }
-  ]
+  }
 }
 ```
 
-<h3 id="epxhypertension:-create-an-epxhypertension-schedule-for-a-patient-responses">Responses</h3>
+<h3 id="post__epxhyper_create_-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |201|[Created](https://tools.ietf.org/html/rfc7231#section-6.3.2)|EpxHypertension Schedule Created|Inline|
 
-<h3 id="epxhypertension:-create-an-epxhypertension-schedule-for-a-patient-responseschema">Response Schema</h3>
+<h3 id="post__epxhyper_create_-responseschema">Response Schema</h3>
 
 Status Code **201**
 
@@ -4143,198 +4007,129 @@ Status Code **201**
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|»» *anonymous*|[ScheduleParams](#schemascheduleparams)|false|none|none|
-|»»» start|string|false|none|The start date of the intervention|
-|»»» end|string|false|none|The end date of the intervention (optional)|
-|»»» times|[string]|false|none|The times that the patient would prefer to receive messages (24-hour time)|
-|»»» days|[integer]|false|none|Days of the week that the sessions will occur (0: Sunday... 6: Saturday)|
-|»»» method|string|false|none|The method in which the patient will be contacted.|
-|»»» tz|string|false|none|The timezone of the schedule|
-|»»» patientId|integer|false|none|The ID of the patient who will receive the intervention|
-|»»» contactId|integer|false|none|The ID of the contact that will be assigned to the intervention|
 
 *and*
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|»» *anonymous*|object|false|none|none|
-|»»» id|integer|false|none|none|
-|»»» isCanceled|boolean|false|none|If true, the patient will not longer receive calls/messages|
-|»»» canceledAt|string|false|none|The time that the schedule was canceled|
-|»»» patientId|integer|false|none|The ID of the patient|
-|»»» contactId|integer|false|none|The ID of the contact associated to this schedule|
 
 #### Enumerated Values
 
 |Property|Value|
 |---|---|
 |status|OK|
-|method|message|
-|method|call|
 
 <aside class="success">
 This operation does not require authentication
 </aside>
 
-## EpxHypertension: Edit an epxhypertension schedule for a patient
-
-> Code samples
-
-```shell
-curl --request POST \
-  --url https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxhyper/edit/ \
-  --header 'accept: application/json' \
-  --header 'content-type: application/json' \
-  --data '{"start":"2019-02-05T10:00:09-06:00","end":"2019-03-05T10:00:09-06:00","times":["09:00","17:30"],"days":[1,3,5],"method":"message","tz":"US/Central","patientId":1638,"contactId":76,"id":681,"isFixed":true,"mode":"T","hasMedInstruction":true}'
-```
-
-```javascript
-var data = JSON.stringify({
-  "start": "2019-02-05T10:00:09-06:00",
-  "end": "2019-03-05T10:00:09-06:00",
-  "times": [
-    "09:00",
-    "17:30"
-  ],
-  "days": [
-    1,
-    3,
-    5
-  ],
-  "method": "message",
-  "tz": "US/Central",
-  "patientId": 1638,
-  "contactId": 76,
-  "id": 681,
-  "isFixed": true,
-  "mode": "T",
-  "hasMedInstruction": true
-});
-
-var xhr = new XMLHttpRequest();
-xhr.withCredentials = true;
-
-xhr.addEventListener("readystatechange", function () {
-  if (this.readyState === this.DONE) {
-    console.log(this.responseText);
-  }
-});
-
-xhr.open("POST", "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxhyper/edit/");
-xhr.setRequestHeader("content-type", "application/json");
-xhr.setRequestHeader("accept", "application/json");
-
-xhr.send(data);
-```
-
-```ruby
-require 'uri'
-require 'net/http'
-
-url = URI("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxhyper/edit/")
-
-http = Net::HTTP.new(url.host, url.port)
-http.use_ssl = true
-http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-request = Net::HTTP::Post.new(url)
-request["content-type"] = 'application/json'
-request["accept"] = 'application/json'
-request.body = "{\"start\":\"2019-02-05T10:00:09-06:00\",\"end\":\"2019-03-05T10:00:09-06:00\",\"times\":[\"09:00\",\"17:30\"],\"days\":[1,3,5],\"method\":\"message\",\"tz\":\"US/Central\",\"patientId\":1638,\"contactId\":76,\"id\":681,\"isFixed\":true,\"mode\":\"T\",\"hasMedInstruction\":true}"
-
-response = http.request(request)
-puts response.read_body
-```
-
-```python
-import http.client
-
-conn = http.client.HTTPSConnection("virtserver.swaggerhub.com")
-
-payload = "{\"start\":\"2019-02-05T10:00:09-06:00\",\"end\":\"2019-03-05T10:00:09-06:00\",\"times\":[\"09:00\",\"17:30\"],\"days\":[1,3,5],\"method\":\"message\",\"tz\":\"US/Central\",\"patientId\":1638,\"contactId\":76,\"id\":681,\"isFixed\":true,\"mode\":\"T\",\"hasMedInstruction\":true}"
-
-headers = {
-    'content-type': "application/json",
-    'accept': "application/json"
-    }
-
-conn.request("POST", "/EpxHealth/Epharmix/1/epxhyper/edit/", payload, headers)
-
-res = conn.getresponse()
-data = res.read()
-
-print(data.decode("utf-8"))
-```
-
-```java
-HttpResponse<String> response = Unirest.post("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxhyper/edit/")
-  .header("content-type", "application/json")
-  .header("accept", "application/json")
-  .body("{\"start\":\"2019-02-05T10:00:09-06:00\",\"end\":\"2019-03-05T10:00:09-06:00\",\"times\":[\"09:00\",\"17:30\"],\"days\":[1,3,5],\"method\":\"message\",\"tz\":\"US/Central\",\"patientId\":1638,\"contactId\":76,\"id\":681,\"isFixed\":true,\"mode\":\"T\",\"hasMedInstruction\":true}")
-  .asString();
-```
-
-```go
-package main
-
-import (
-	"fmt"
-	"strings"
-	"net/http"
-	"io/ioutil"
-)
-
-func main() {
-
-	url := "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxhyper/edit/"
-
-	payload := strings.NewReader("{\"start\":\"2019-02-05T10:00:09-06:00\",\"end\":\"2019-03-05T10:00:09-06:00\",\"times\":[\"09:00\",\"17:30\"],\"days\":[1,3,5],\"method\":\"message\",\"tz\":\"US/Central\",\"patientId\":1638,\"contactId\":76,\"id\":681,\"isFixed\":true,\"mode\":\"T\",\"hasMedInstruction\":true}")
-
-	req, _ := http.NewRequest("POST", url, payload)
-
-	req.Header.Add("content-type", "application/json")
-	req.Header.Add("accept", "application/json")
-
-	res, _ := http.DefaultClient.Do(req)
-
-	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
-
-	fmt.Println(res)
-	fmt.Println(string(body))
-
-}
-```
+## post__epxhyper_edit_
 
 `POST /epxhyper/edit/`
+
+*EpxHypertension: Edit an epxhypertension schedule for a patient*
 
 > Body parameter
 
 ```json
 {
-  "start": "2019-02-05T10:00:09-06:00",
-  "end": "2019-03-05T10:00:09-06:00",
-  "times": [
-    "09:00",
-    "17:30"
-  ],
-  "days": [
-    1,
-    3,
-    5
-  ],
-  "method": "message",
-  "tz": "US/Central",
-  "patientId": 1638,
-  "contactId": 76,
-  "id": 681,
-  "isFixed": true,
-  "mode": "T",
-  "hasMedInstruction": true
+  "allOf": [
+    {
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "string",
+          "description": "The start date of the intervention",
+          "example": "2019-02-05T10:00:09-06:00"
+        },
+        "end": {
+          "type": "string",
+          "description": "The end date of the intervention (optional)",
+          "example": "2019-03-05T10:00:09-06:00"
+        },
+        "times": {
+          "type": "array",
+          "description": "The times that the patient would prefer to receive messages (24-hour time)",
+          "example": [
+            "09:00",
+            "17:30"
+          ],
+          "items": {
+            "type": "string"
+          }
+        },
+        "days": {
+          "description": "Days of the week that the sessions will occur (0: Sunday... 6: Saturday)",
+          "example": [
+            1,
+            3,
+            5
+          ],
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 6
+          }
+        },
+        "method": {
+          "type": "string",
+          "description": "The method in which the patient will be contacted.",
+          "enum": [
+            "message",
+            "call"
+          ]
+        },
+        "tz": {
+          "type": "string",
+          "description": "The timezone of the schedule",
+          "example": "US/Central"
+        },
+        "patientId": {
+          "type": "integer",
+          "description": "The ID of the patient who will receive the intervention",
+          "example": 1638
+        },
+        "contactId": {
+          "type": "integer",
+          "description": "The ID of the contact that will be assigned to the intervention",
+          "example": 76
+        }
+      }
+    },
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "The ID of the schedule being edited",
+          "example": 681
+        },
+        "isFixed": {
+          "type": "boolean",
+          "description": "If true, the message will be on a fixed frequency of your choice. If false, the patient will be on \"smart schedule\", with the frequency based on their responses."
+        },
+        "mode": {
+          "type": "string",
+          "description": "Only required if schedule is fixed. Sets the frequency of sessions.",
+          "enum": [
+            "T",
+            "D",
+            "B",
+            "C"
+          ]
+        },
+        "hasMedInstruction": {
+          "type": "boolean",
+          "description": "If true, the patient will be asked about taking their medication when the blood pressure is critical."
+        }
+      }
+    }
+  ]
 }
 ```
 
-<h3 id="epxhypertension:-edit-an-epxhypertension-schedule-for-a-patient-parameters">Parameters</h3>
+<h3 id="post__epxhyper_edit_-parameters">Parameters</h3>
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
@@ -4346,39 +4141,122 @@ func main() {
 
 ```json
 {
-  "status": "OK",
-  "schedule": [
-    {
-      "start": "2019-02-05T10:00:09-06:00",
-      "end": "2019-03-05T10:00:09-06:00",
-      "times": [
-        "09:00",
-        "17:30"
-      ],
-      "days": [
-        1,
-        3,
-        5
-      ],
-      "method": "message",
-      "tz": "US/Central",
-      "patientId": 372,
-      "contactId": 39,
-      "id": 14,
-      "isCanceled": true,
-      "canceledAt": "string"
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "OK"
+      ]
+    },
+    "schedule": {
+      "type": "array",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "start": {
+                "type": "string",
+                "description": "The start date of the intervention",
+                "example": "2019-02-05T10:00:09-06:00"
+              },
+              "end": {
+                "type": "string",
+                "description": "The end date of the intervention (optional)",
+                "example": "2019-03-05T10:00:09-06:00"
+              },
+              "times": {
+                "type": "array",
+                "description": "The times that the patient would prefer to receive messages (24-hour time)",
+                "example": [
+                  "09:00",
+                  "17:30"
+                ],
+                "items": {
+                  "type": "string"
+                }
+              },
+              "days": {
+                "description": "Days of the week that the sessions will occur (0: Sunday... 6: Saturday)",
+                "example": [
+                  1,
+                  3,
+                  5
+                ],
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 6
+                }
+              },
+              "method": {
+                "type": "string",
+                "description": "The method in which the patient will be contacted.",
+                "enum": [
+                  "message",
+                  "call"
+                ]
+              },
+              "tz": {
+                "type": "string",
+                "description": "The timezone of the schedule",
+                "example": "US/Central"
+              },
+              "patientId": {
+                "type": "integer",
+                "description": "The ID of the patient who will receive the intervention",
+                "example": 1638
+              },
+              "contactId": {
+                "type": "integer",
+                "description": "The ID of the contact that will be assigned to the intervention",
+                "example": 76
+              }
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "example": 14
+              },
+              "isCanceled": {
+                "type": "boolean",
+                "description": "If true, the patient will not longer receive calls/messages"
+              },
+              "canceledAt": {
+                "type": "string",
+                "description": "The time that the schedule was canceled"
+              },
+              "patientId": {
+                "type": "integer",
+                "example": 372,
+                "description": "The ID of the patient"
+              },
+              "contactId": {
+                "type": "integer",
+                "description": "The ID of the contact associated to this schedule",
+                "example": 39
+              }
+            }
+          }
+        ]
+      }
     }
-  ]
+  }
 }
 ```
 
-<h3 id="epxhypertension:-edit-an-epxhypertension-schedule-for-a-patient-responses">Responses</h3>
+<h3 id="post__epxhyper_edit_-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|EpxHypertension Schedule Edited|Inline|
 
-<h3 id="epxhypertension:-edit-an-epxhypertension-schedule-for-a-patient-responseschema">Response Schema</h3>
+<h3 id="post__epxhyper_edit_-responseschema">Response Schema</h3>
 
 Status Code **200**
 
@@ -4391,162 +4269,44 @@ Status Code **200**
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|»» *anonymous*|[ScheduleParams](#schemascheduleparams)|false|none|none|
-|»»» start|string|false|none|The start date of the intervention|
-|»»» end|string|false|none|The end date of the intervention (optional)|
-|»»» times|[string]|false|none|The times that the patient would prefer to receive messages (24-hour time)|
-|»»» days|[integer]|false|none|Days of the week that the sessions will occur (0: Sunday... 6: Saturday)|
-|»»» method|string|false|none|The method in which the patient will be contacted.|
-|»»» tz|string|false|none|The timezone of the schedule|
-|»»» patientId|integer|false|none|The ID of the patient who will receive the intervention|
-|»»» contactId|integer|false|none|The ID of the contact that will be assigned to the intervention|
 
 *and*
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|»» *anonymous*|object|false|none|none|
-|»»» id|integer|false|none|none|
-|»»» isCanceled|boolean|false|none|If true, the patient will not longer receive calls/messages|
-|»»» canceledAt|string|false|none|The time that the schedule was canceled|
-|»»» patientId|integer|false|none|The ID of the patient|
-|»»» contactId|integer|false|none|The ID of the contact associated to this schedule|
 
 #### Enumerated Values
 
 |Property|Value|
 |---|---|
 |status|OK|
-|method|message|
-|method|call|
 
 <aside class="success">
 This operation does not require authentication
 </aside>
 
-## EpxHypertension: Cancel an EpxHypertension schedule for a patient
-
-> Code samples
-
-```shell
-curl --request POST \
-  --url https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxhyper/cancel/ \
-  --header 'accept: application/json' \
-  --header 'content-type: application/json' \
-  --data '{"id":681}'
-```
-
-```javascript
-var data = JSON.stringify({
-  "id": 681
-});
-
-var xhr = new XMLHttpRequest();
-xhr.withCredentials = true;
-
-xhr.addEventListener("readystatechange", function () {
-  if (this.readyState === this.DONE) {
-    console.log(this.responseText);
-  }
-});
-
-xhr.open("POST", "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxhyper/cancel/");
-xhr.setRequestHeader("content-type", "application/json");
-xhr.setRequestHeader("accept", "application/json");
-
-xhr.send(data);
-```
-
-```ruby
-require 'uri'
-require 'net/http'
-
-url = URI("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxhyper/cancel/")
-
-http = Net::HTTP.new(url.host, url.port)
-http.use_ssl = true
-http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-request = Net::HTTP::Post.new(url)
-request["content-type"] = 'application/json'
-request["accept"] = 'application/json'
-request.body = "{\"id\":681}"
-
-response = http.request(request)
-puts response.read_body
-```
-
-```python
-import http.client
-
-conn = http.client.HTTPSConnection("virtserver.swaggerhub.com")
-
-payload = "{\"id\":681}"
-
-headers = {
-    'content-type': "application/json",
-    'accept': "application/json"
-    }
-
-conn.request("POST", "/EpxHealth/Epharmix/1/epxhyper/cancel/", payload, headers)
-
-res = conn.getresponse()
-data = res.read()
-
-print(data.decode("utf-8"))
-```
-
-```java
-HttpResponse<String> response = Unirest.post("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxhyper/cancel/")
-  .header("content-type", "application/json")
-  .header("accept", "application/json")
-  .body("{\"id\":681}")
-  .asString();
-```
-
-```go
-package main
-
-import (
-	"fmt"
-	"strings"
-	"net/http"
-	"io/ioutil"
-)
-
-func main() {
-
-	url := "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxhyper/cancel/"
-
-	payload := strings.NewReader("{\"id\":681}")
-
-	req, _ := http.NewRequest("POST", url, payload)
-
-	req.Header.Add("content-type", "application/json")
-	req.Header.Add("accept", "application/json")
-
-	res, _ := http.DefaultClient.Do(req)
-
-	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
-
-	fmt.Println(res)
-	fmt.Println(string(body))
-
-}
-```
+## post__epxhyper_cancel_
 
 `POST /epxhyper/cancel/`
+
+*EpxHypertension: Cancel an EpxHypertension schedule for a patient*
 
 > Body parameter
 
 ```json
 {
-  "id": 681
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "description": "The ID of the schedule being canceled",
+      "example": 681
+    }
+  }
 }
 ```
 
-<h3 id="epxhypertension:-cancel-an-epxhypertension-schedule-for-a-patient-parameters">Parameters</h3>
+<h3 id="post__epxhyper_cancel_-parameters">Parameters</h3>
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
@@ -4559,39 +4319,122 @@ func main() {
 
 ```json
 {
-  "status": "OK",
-  "schedule": [
-    {
-      "start": "2019-02-05T10:00:09-06:00",
-      "end": "2019-03-05T10:00:09-06:00",
-      "times": [
-        "09:00",
-        "17:30"
-      ],
-      "days": [
-        1,
-        3,
-        5
-      ],
-      "method": "message",
-      "tz": "US/Central",
-      "patientId": 372,
-      "contactId": 39,
-      "id": 14,
-      "isCanceled": true,
-      "canceledAt": "string"
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "OK"
+      ]
+    },
+    "schedule": {
+      "type": "array",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "start": {
+                "type": "string",
+                "description": "The start date of the intervention",
+                "example": "2019-02-05T10:00:09-06:00"
+              },
+              "end": {
+                "type": "string",
+                "description": "The end date of the intervention (optional)",
+                "example": "2019-03-05T10:00:09-06:00"
+              },
+              "times": {
+                "type": "array",
+                "description": "The times that the patient would prefer to receive messages (24-hour time)",
+                "example": [
+                  "09:00",
+                  "17:30"
+                ],
+                "items": {
+                  "type": "string"
+                }
+              },
+              "days": {
+                "description": "Days of the week that the sessions will occur (0: Sunday... 6: Saturday)",
+                "example": [
+                  1,
+                  3,
+                  5
+                ],
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 6
+                }
+              },
+              "method": {
+                "type": "string",
+                "description": "The method in which the patient will be contacted.",
+                "enum": [
+                  "message",
+                  "call"
+                ]
+              },
+              "tz": {
+                "type": "string",
+                "description": "The timezone of the schedule",
+                "example": "US/Central"
+              },
+              "patientId": {
+                "type": "integer",
+                "description": "The ID of the patient who will receive the intervention",
+                "example": 1638
+              },
+              "contactId": {
+                "type": "integer",
+                "description": "The ID of the contact that will be assigned to the intervention",
+                "example": 76
+              }
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "example": 14
+              },
+              "isCanceled": {
+                "type": "boolean",
+                "description": "If true, the patient will not longer receive calls/messages"
+              },
+              "canceledAt": {
+                "type": "string",
+                "description": "The time that the schedule was canceled"
+              },
+              "patientId": {
+                "type": "integer",
+                "example": 372,
+                "description": "The ID of the patient"
+              },
+              "contactId": {
+                "type": "integer",
+                "description": "The ID of the contact associated to this schedule",
+                "example": 39
+              }
+            }
+          }
+        ]
+      }
     }
-  ]
+  }
 }
 ```
 
-<h3 id="epxhypertension:-cancel-an-epxhypertension-schedule-for-a-patient-responses">Responses</h3>
+<h3 id="post__epxhyper_cancel_-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|EpxHypertension Schedule Canceled|Inline|
 
-<h3 id="epxhypertension:-cancel-an-epxhypertension-schedule-for-a-patient-responseschema">Response Schema</h3>
+<h3 id="post__epxhyper_cancel_-responseschema">Response Schema</h3>
 
 Status Code **200**
 
@@ -4604,162 +4447,44 @@ Status Code **200**
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|»» *anonymous*|[ScheduleParams](#schemascheduleparams)|false|none|none|
-|»»» start|string|false|none|The start date of the intervention|
-|»»» end|string|false|none|The end date of the intervention (optional)|
-|»»» times|[string]|false|none|The times that the patient would prefer to receive messages (24-hour time)|
-|»»» days|[integer]|false|none|Days of the week that the sessions will occur (0: Sunday... 6: Saturday)|
-|»»» method|string|false|none|The method in which the patient will be contacted.|
-|»»» tz|string|false|none|The timezone of the schedule|
-|»»» patientId|integer|false|none|The ID of the patient who will receive the intervention|
-|»»» contactId|integer|false|none|The ID of the contact that will be assigned to the intervention|
 
 *and*
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|»» *anonymous*|object|false|none|none|
-|»»» id|integer|false|none|none|
-|»»» isCanceled|boolean|false|none|If true, the patient will not longer receive calls/messages|
-|»»» canceledAt|string|false|none|The time that the schedule was canceled|
-|»»» patientId|integer|false|none|The ID of the patient|
-|»»» contactId|integer|false|none|The ID of the contact associated to this schedule|
 
 #### Enumerated Values
 
 |Property|Value|
 |---|---|
 |status|OK|
-|method|message|
-|method|call|
 
 <aside class="success">
 This operation does not require authentication
 </aside>
 
-## EpxHypertension: Get EpxHypertension data for a patient
-
-> Code samples
-
-```shell
-curl --request POST \
-  --url https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxhyper/data/ \
-  --header 'accept: application/json' \
-  --header 'content-type: application/json' \
-  --data '{"patient":2645}'
-```
-
-```javascript
-var data = JSON.stringify({
-  "patient": 2645
-});
-
-var xhr = new XMLHttpRequest();
-xhr.withCredentials = true;
-
-xhr.addEventListener("readystatechange", function () {
-  if (this.readyState === this.DONE) {
-    console.log(this.responseText);
-  }
-});
-
-xhr.open("POST", "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxhyper/data/");
-xhr.setRequestHeader("content-type", "application/json");
-xhr.setRequestHeader("accept", "application/json");
-
-xhr.send(data);
-```
-
-```ruby
-require 'uri'
-require 'net/http'
-
-url = URI("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxhyper/data/")
-
-http = Net::HTTP.new(url.host, url.port)
-http.use_ssl = true
-http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-request = Net::HTTP::Post.new(url)
-request["content-type"] = 'application/json'
-request["accept"] = 'application/json'
-request.body = "{\"patient\":2645}"
-
-response = http.request(request)
-puts response.read_body
-```
-
-```python
-import http.client
-
-conn = http.client.HTTPSConnection("virtserver.swaggerhub.com")
-
-payload = "{\"patient\":2645}"
-
-headers = {
-    'content-type': "application/json",
-    'accept': "application/json"
-    }
-
-conn.request("POST", "/EpxHealth/Epharmix/1/epxhyper/data/", payload, headers)
-
-res = conn.getresponse()
-data = res.read()
-
-print(data.decode("utf-8"))
-```
-
-```java
-HttpResponse<String> response = Unirest.post("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxhyper/data/")
-  .header("content-type", "application/json")
-  .header("accept", "application/json")
-  .body("{\"patient\":2645}")
-  .asString();
-```
-
-```go
-package main
-
-import (
-	"fmt"
-	"strings"
-	"net/http"
-	"io/ioutil"
-)
-
-func main() {
-
-	url := "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxhyper/data/"
-
-	payload := strings.NewReader("{\"patient\":2645}")
-
-	req, _ := http.NewRequest("POST", url, payload)
-
-	req.Header.Add("content-type", "application/json")
-	req.Header.Add("accept", "application/json")
-
-	res, _ := http.DefaultClient.Do(req)
-
-	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
-
-	fmt.Println(res)
-	fmt.Println(string(body))
-
-}
-```
+## post__epxhyper_data_
 
 `POST /epxhyper/data/`
+
+*EpxHypertension: Get EpxHypertension data for a patient*
 
 > Body parameter
 
 ```json
 {
-  "patient": 2645
+  "type": "object",
+  "properties": {
+    "patient": {
+      "type": "integer",
+      "description": "The ID of the patient",
+      "example": 2645
+    }
+  }
 }
 ```
 
-<h3 id="epxhypertension:-get-epxhypertension-data-for-a-patient-parameters">Parameters</h3>
+<h3 id="post__epxhyper_data_-parameters">Parameters</h3>
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
@@ -4772,51 +4497,171 @@ func main() {
 
 ```json
 {
-  "status": "OK",
-  "sessions": [
-    {
-      "time": "2019-02-15T10:22:09-06:00",
-      "respondedAt": "2019-02-15T10:22:15-55:00",
-      "upper": 110,
-      "lower": 80,
-      "tookMedication": true,
-      "isCanceled": true,
-      "schedule": {
-        "start": "2019-02-05T10:00:09-06:00",
-        "end": "2019-03-05T10:00:09-06:00",
-        "times": [
-          "09:00",
-          "17:30"
-        ],
-        "days": [
-          1,
-          3,
-          5
-        ],
-        "method": "message",
-        "tz": "US/Central",
-        "patientId": 1638,
-        "contactId": 76
-      },
-      "patient": {
-        "firstName": "John",
-        "middleInitial": "M",
-        "lastName": "Smith",
-        "phone": "5551234567",
-        "id": 623
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "OK"
+      ]
+    },
+    "sessions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "time": {
+            "type": "string",
+            "description": "The time of the session",
+            "example": "2019-02-15T10:22:09-06:00"
+          },
+          "respondedAt": {
+            "type": "string",
+            "description": "If set, it is the time that the patient first responded to the session. If null, the patient has not yet responded.",
+            "example": "2019-02-15T10:22:15-55:00"
+          },
+          "upper": {
+            "type": "integer",
+            "description": "The patient's upper (systolic) blood pressure",
+            "example": 110
+          },
+          "lower": {
+            "type": "integer",
+            "description": "The patient's lower (diastolic) blood pressure",
+            "example": 80
+          },
+          "tookMedication": {
+            "type": "boolean",
+            "description": "If true, the patient has followed their doctor's medication instructions for the day"
+          },
+          "isCanceled": {
+            "type": "boolean",
+            "description": "If true, the session was canceled"
+          },
+          "schedule": {
+            "type": "object",
+            "properties": {
+              "start": {
+                "type": "string",
+                "description": "The start date of the intervention",
+                "example": "2019-02-05T10:00:09-06:00"
+              },
+              "end": {
+                "type": "string",
+                "description": "The end date of the intervention (optional)",
+                "example": "2019-03-05T10:00:09-06:00"
+              },
+              "times": {
+                "type": "array",
+                "description": "The times that the patient would prefer to receive messages (24-hour time)",
+                "example": [
+                  "09:00",
+                  "17:30"
+                ],
+                "items": {
+                  "type": "string"
+                }
+              },
+              "days": {
+                "description": "Days of the week that the sessions will occur (0: Sunday... 6: Saturday)",
+                "example": [
+                  1,
+                  3,
+                  5
+                ],
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 6
+                }
+              },
+              "method": {
+                "type": "string",
+                "description": "The method in which the patient will be contacted.",
+                "enum": [
+                  "message",
+                  "call"
+                ]
+              },
+              "tz": {
+                "type": "string",
+                "description": "The timezone of the schedule",
+                "example": "US/Central"
+              },
+              "patientId": {
+                "type": "integer",
+                "description": "The ID of the patient who will receive the intervention",
+                "example": 1638
+              },
+              "contactId": {
+                "type": "integer",
+                "description": "The ID of the contact that will be assigned to the intervention",
+                "example": 76
+              }
+            }
+          },
+          "patient": {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "description": "The first name of the patient.",
+                    "type": "string",
+                    "example": "John"
+                  },
+                  "middleInitial": {
+                    "description": "The middle initial of the patient.",
+                    "type": "string",
+                    "example": "M"
+                  },
+                  "lastName": {
+                    "description": "The last name of the patient.",
+                    "type": "string",
+                    "example": "Smith"
+                  },
+                  "phone": {
+                    "description": "The phone number of the patient.",
+                    "type": "string",
+                    "pattern": "^\\d{10}$",
+                    "example": "5551234567"
+                  }
+                },
+                "required": [
+                  "firstName",
+                  "lastName",
+                  "phone"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "example": 623,
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "id"
+                ]
+              }
+            ]
+          }
+        }
       }
     }
-  ]
+  }
 }
 ```
 
-<h3 id="epxhypertension:-get-epxhypertension-data-for-a-patient-responses">Responses</h3>
+<h3 id="post__epxhyper_data_-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|EpxHypertension Session Data|Inline|
 
-<h3 id="epxhypertension:-get-epxhypertension-data-for-a-patient-responseschema">Response Schema</h3>
+<h3 id="post__epxhyper_data_-responseschema">Response Schema</h3>
 
 Status Code **200**
 
@@ -4830,205 +4675,137 @@ Status Code **200**
 |»» lower|integer|false|none|The patient's lower (diastolic) blood pressure|
 |»» tookMedication|boolean|false|none|If true, the patient has followed their doctor's medication instructions for the day|
 |»» isCanceled|boolean|false|none|If true, the session was canceled|
-|»» schedule|[ScheduleParams](#schemascheduleparams)|false|none|none|
-|»»» start|string|false|none|The start date of the intervention|
-|»»» end|string|false|none|The end date of the intervention (optional)|
-|»»» times|[string]|false|none|The times that the patient would prefer to receive messages (24-hour time)|
-|»»» days|[integer]|false|none|Days of the week that the sessions will occur (0: Sunday... 6: Saturday)|
-|»»» method|string|false|none|The method in which the patient will be contacted.|
-|»»» tz|string|false|none|The timezone of the schedule|
-|»»» patientId|integer|false|none|The ID of the patient who will receive the intervention|
-|»»» contactId|integer|false|none|The ID of the contact that will be assigned to the intervention|
-|»» patient|any|false|none|none|
 
 *allOf*
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|»»» *anonymous*|[PatientParams](#schemapatientparams)|false|none|none|
-|»»»» firstName|string|true|none|The first name of the patient.|
-|»»»» middleInitial|string|false|none|The middle initial of the patient.|
-|»»»» lastName|string|true|none|The last name of the patient.|
-|»»»» phone|string|true|none|The phone number of the patient.|
 
 *and*
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|»»» *anonymous*|object|false|none|none|
-|»»»» id|number|true|none|none|
 
 #### Enumerated Values
 
 |Property|Value|
 |---|---|
 |status|OK|
-|method|message|
-|method|call|
 
 <aside class="success">
 This operation does not require authentication
 </aside>
 
-## EpxCopd: Create an EpxCOPD schedule for a patient
-
-> Code samples
-
-```shell
-curl --request POST \
-  --url https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxcopd/create/ \
-  --header 'accept: application/json' \
-  --header 'content-type: application/json' \
-  --data '{"start":"2019-02-05T10:00:09-06:00","end":"2019-03-05T10:00:09-06:00","times":["09:00","17:30"],"days":[1,3,5],"method":"message","tz":"US/Central","patientId":1638,"contactId":76,"language":"en","isFixed":true,"mode":"D","shouldAskSymptoms":true}'
-```
-
-```javascript
-var data = JSON.stringify({
-  "start": "2019-02-05T10:00:09-06:00",
-  "end": "2019-03-05T10:00:09-06:00",
-  "times": [
-    "09:00",
-    "17:30"
-  ],
-  "days": [
-    1,
-    3,
-    5
-  ],
-  "method": "message",
-  "tz": "US/Central",
-  "patientId": 1638,
-  "contactId": 76,
-  "language": "en",
-  "isFixed": true,
-  "mode": "D",
-  "shouldAskSymptoms": true
-});
-
-var xhr = new XMLHttpRequest();
-xhr.withCredentials = true;
-
-xhr.addEventListener("readystatechange", function () {
-  if (this.readyState === this.DONE) {
-    console.log(this.responseText);
-  }
-});
-
-xhr.open("POST", "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxcopd/create/");
-xhr.setRequestHeader("content-type", "application/json");
-xhr.setRequestHeader("accept", "application/json");
-
-xhr.send(data);
-```
-
-```ruby
-require 'uri'
-require 'net/http'
-
-url = URI("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxcopd/create/")
-
-http = Net::HTTP.new(url.host, url.port)
-http.use_ssl = true
-http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-request = Net::HTTP::Post.new(url)
-request["content-type"] = 'application/json'
-request["accept"] = 'application/json'
-request.body = "{\"start\":\"2019-02-05T10:00:09-06:00\",\"end\":\"2019-03-05T10:00:09-06:00\",\"times\":[\"09:00\",\"17:30\"],\"days\":[1,3,5],\"method\":\"message\",\"tz\":\"US/Central\",\"patientId\":1638,\"contactId\":76,\"language\":\"en\",\"isFixed\":true,\"mode\":\"D\",\"shouldAskSymptoms\":true}"
-
-response = http.request(request)
-puts response.read_body
-```
-
-```python
-import http.client
-
-conn = http.client.HTTPSConnection("virtserver.swaggerhub.com")
-
-payload = "{\"start\":\"2019-02-05T10:00:09-06:00\",\"end\":\"2019-03-05T10:00:09-06:00\",\"times\":[\"09:00\",\"17:30\"],\"days\":[1,3,5],\"method\":\"message\",\"tz\":\"US/Central\",\"patientId\":1638,\"contactId\":76,\"language\":\"en\",\"isFixed\":true,\"mode\":\"D\",\"shouldAskSymptoms\":true}"
-
-headers = {
-    'content-type': "application/json",
-    'accept': "application/json"
-    }
-
-conn.request("POST", "/EpxHealth/Epharmix/1/epxcopd/create/", payload, headers)
-
-res = conn.getresponse()
-data = res.read()
-
-print(data.decode("utf-8"))
-```
-
-```java
-HttpResponse<String> response = Unirest.post("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxcopd/create/")
-  .header("content-type", "application/json")
-  .header("accept", "application/json")
-  .body("{\"start\":\"2019-02-05T10:00:09-06:00\",\"end\":\"2019-03-05T10:00:09-06:00\",\"times\":[\"09:00\",\"17:30\"],\"days\":[1,3,5],\"method\":\"message\",\"tz\":\"US/Central\",\"patientId\":1638,\"contactId\":76,\"language\":\"en\",\"isFixed\":true,\"mode\":\"D\",\"shouldAskSymptoms\":true}")
-  .asString();
-```
-
-```go
-package main
-
-import (
-	"fmt"
-	"strings"
-	"net/http"
-	"io/ioutil"
-)
-
-func main() {
-
-	url := "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxcopd/create/"
-
-	payload := strings.NewReader("{\"start\":\"2019-02-05T10:00:09-06:00\",\"end\":\"2019-03-05T10:00:09-06:00\",\"times\":[\"09:00\",\"17:30\"],\"days\":[1,3,5],\"method\":\"message\",\"tz\":\"US/Central\",\"patientId\":1638,\"contactId\":76,\"language\":\"en\",\"isFixed\":true,\"mode\":\"D\",\"shouldAskSymptoms\":true}")
-
-	req, _ := http.NewRequest("POST", url, payload)
-
-	req.Header.Add("content-type", "application/json")
-	req.Header.Add("accept", "application/json")
-
-	res, _ := http.DefaultClient.Do(req)
-
-	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
-
-	fmt.Println(res)
-	fmt.Println(string(body))
-
-}
-```
+## post__epxcopd_create_
 
 `POST /epxcopd/create/`
+
+*EpxCopd: Create an EpxCOPD schedule for a patient*
 
 > Body parameter
 
 ```json
 {
-  "start": "2019-02-05T10:00:09-06:00",
-  "end": "2019-03-05T10:00:09-06:00",
-  "times": [
-    "09:00",
-    "17:30"
-  ],
-  "days": [
-    1,
-    3,
-    5
-  ],
-  "method": "message",
-  "tz": "US/Central",
-  "patientId": 1638,
-  "contactId": 76,
-  "language": "en",
-  "isFixed": true,
-  "mode": "D",
-  "shouldAskSymptoms": true
+  "allOf": [
+    {
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "string",
+          "description": "The start date of the intervention",
+          "example": "2019-02-05T10:00:09-06:00"
+        },
+        "end": {
+          "type": "string",
+          "description": "The end date of the intervention (optional)",
+          "example": "2019-03-05T10:00:09-06:00"
+        },
+        "times": {
+          "type": "array",
+          "description": "The times that the patient would prefer to receive messages (24-hour time)",
+          "example": [
+            "09:00",
+            "17:30"
+          ],
+          "items": {
+            "type": "string"
+          }
+        },
+        "days": {
+          "description": "Days of the week that the sessions will occur (0: Sunday... 6: Saturday)",
+          "example": [
+            1,
+            3,
+            5
+          ],
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 6
+          }
+        },
+        "method": {
+          "type": "string",
+          "description": "The method in which the patient will be contacted.",
+          "enum": [
+            "message",
+            "call"
+          ]
+        },
+        "tz": {
+          "type": "string",
+          "description": "The timezone of the schedule",
+          "example": "US/Central"
+        },
+        "patientId": {
+          "type": "integer",
+          "description": "The ID of the patient who will receive the intervention",
+          "example": 1638
+        },
+        "contactId": {
+          "type": "integer",
+          "description": "The ID of the contact that will be assigned to the intervention",
+          "example": 76
+        }
+      }
+    },
+    {
+      "type": "object",
+      "properties": {
+        "language": {
+          "type": "string",
+          "description": "The language of messages/calls to the patient",
+          "enum": [
+            "en",
+            "es"
+          ]
+        },
+        "isFixed": {
+          "type": "boolean",
+          "description": "If true, the message will be on a fixed frequency of your choice. If false, the patient will be on \"smart schedule\", with the frequency based on their responses."
+        },
+        "mode": {
+          "type": "string",
+          "description": "Only required if schedule is fixed. Sets the frequency of sessions.",
+          "enum": [
+            "D",
+            "B",
+            "W"
+          ],
+          "example": "D"
+        },
+        "shouldAskSymptoms": {
+          "type": "boolean",
+          "description": "If true, the patient will be asked about symptoms other than just their difficulty breathing."
+        }
+      }
+    }
+  ]
 }
 ```
 
-<h3 id="epxcopd:-create-an-epxcopd-schedule-for-a-patient-parameters">Parameters</h3>
+<h3 id="post__epxcopd_create_-parameters">Parameters</h3>
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
@@ -5040,39 +4817,122 @@ func main() {
 
 ```json
 {
-  "status": "OK",
-  "schedule": [
-    {
-      "start": "2019-02-05T10:00:09-06:00",
-      "end": "2019-03-05T10:00:09-06:00",
-      "times": [
-        "09:00",
-        "17:30"
-      ],
-      "days": [
-        1,
-        3,
-        5
-      ],
-      "method": "message",
-      "tz": "US/Central",
-      "patientId": 372,
-      "contactId": 39,
-      "id": 14,
-      "isCanceled": true,
-      "canceledAt": "string"
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "OK"
+      ]
+    },
+    "schedule": {
+      "type": "array",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "start": {
+                "type": "string",
+                "description": "The start date of the intervention",
+                "example": "2019-02-05T10:00:09-06:00"
+              },
+              "end": {
+                "type": "string",
+                "description": "The end date of the intervention (optional)",
+                "example": "2019-03-05T10:00:09-06:00"
+              },
+              "times": {
+                "type": "array",
+                "description": "The times that the patient would prefer to receive messages (24-hour time)",
+                "example": [
+                  "09:00",
+                  "17:30"
+                ],
+                "items": {
+                  "type": "string"
+                }
+              },
+              "days": {
+                "description": "Days of the week that the sessions will occur (0: Sunday... 6: Saturday)",
+                "example": [
+                  1,
+                  3,
+                  5
+                ],
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 6
+                }
+              },
+              "method": {
+                "type": "string",
+                "description": "The method in which the patient will be contacted.",
+                "enum": [
+                  "message",
+                  "call"
+                ]
+              },
+              "tz": {
+                "type": "string",
+                "description": "The timezone of the schedule",
+                "example": "US/Central"
+              },
+              "patientId": {
+                "type": "integer",
+                "description": "The ID of the patient who will receive the intervention",
+                "example": 1638
+              },
+              "contactId": {
+                "type": "integer",
+                "description": "The ID of the contact that will be assigned to the intervention",
+                "example": 76
+              }
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "example": 14
+              },
+              "isCanceled": {
+                "type": "boolean",
+                "description": "If true, the patient will not longer receive calls/messages"
+              },
+              "canceledAt": {
+                "type": "string",
+                "description": "The time that the schedule was canceled"
+              },
+              "patientId": {
+                "type": "integer",
+                "example": 372,
+                "description": "The ID of the patient"
+              },
+              "contactId": {
+                "type": "integer",
+                "description": "The ID of the contact associated to this schedule",
+                "example": 39
+              }
+            }
+          }
+        ]
+      }
     }
-  ]
+  }
 }
 ```
 
-<h3 id="epxcopd:-create-an-epxcopd-schedule-for-a-patient-responses">Responses</h3>
+<h3 id="post__epxcopd_create_-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |201|[Created](https://tools.ietf.org/html/rfc7231#section-6.3.2)|EpxCOPD Schedule Created|Inline|
 
-<h3 id="epxcopd:-create-an-epxcopd-schedule-for-a-patient-responseschema">Response Schema</h3>
+<h3 id="post__epxcopd_create_-responseschema">Response Schema</h3>
 
 Status Code **201**
 
@@ -5085,198 +4945,129 @@ Status Code **201**
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|»» *anonymous*|[ScheduleParams](#schemascheduleparams)|false|none|none|
-|»»» start|string|false|none|The start date of the intervention|
-|»»» end|string|false|none|The end date of the intervention (optional)|
-|»»» times|[string]|false|none|The times that the patient would prefer to receive messages (24-hour time)|
-|»»» days|[integer]|false|none|Days of the week that the sessions will occur (0: Sunday... 6: Saturday)|
-|»»» method|string|false|none|The method in which the patient will be contacted.|
-|»»» tz|string|false|none|The timezone of the schedule|
-|»»» patientId|integer|false|none|The ID of the patient who will receive the intervention|
-|»»» contactId|integer|false|none|The ID of the contact that will be assigned to the intervention|
 
 *and*
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|»» *anonymous*|object|false|none|none|
-|»»» id|integer|false|none|none|
-|»»» isCanceled|boolean|false|none|If true, the patient will not longer receive calls/messages|
-|»»» canceledAt|string|false|none|The time that the schedule was canceled|
-|»»» patientId|integer|false|none|The ID of the patient|
-|»»» contactId|integer|false|none|The ID of the contact associated to this schedule|
 
 #### Enumerated Values
 
 |Property|Value|
 |---|---|
 |status|OK|
-|method|message|
-|method|call|
 
 <aside class="success">
 This operation does not require authentication
 </aside>
 
-## EpxCopd: Edit an EpxCOPD schedule for a patient
-
-> Code samples
-
-```shell
-curl --request POST \
-  --url https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxcopd/edit/ \
-  --header 'accept: application/json' \
-  --header 'content-type: application/json' \
-  --data '{"start":"2019-02-05T10:00:09-06:00","end":"2019-03-05T10:00:09-06:00","times":["09:00","17:30"],"days":[1,3,5],"method":"message","tz":"US/Central","patientId":1638,"contactId":76,"id":681,"isFixed":true,"mode":"T","shouldAskSymptoms":true}'
-```
-
-```javascript
-var data = JSON.stringify({
-  "start": "2019-02-05T10:00:09-06:00",
-  "end": "2019-03-05T10:00:09-06:00",
-  "times": [
-    "09:00",
-    "17:30"
-  ],
-  "days": [
-    1,
-    3,
-    5
-  ],
-  "method": "message",
-  "tz": "US/Central",
-  "patientId": 1638,
-  "contactId": 76,
-  "id": 681,
-  "isFixed": true,
-  "mode": "T",
-  "shouldAskSymptoms": true
-});
-
-var xhr = new XMLHttpRequest();
-xhr.withCredentials = true;
-
-xhr.addEventListener("readystatechange", function () {
-  if (this.readyState === this.DONE) {
-    console.log(this.responseText);
-  }
-});
-
-xhr.open("POST", "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxcopd/edit/");
-xhr.setRequestHeader("content-type", "application/json");
-xhr.setRequestHeader("accept", "application/json");
-
-xhr.send(data);
-```
-
-```ruby
-require 'uri'
-require 'net/http'
-
-url = URI("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxcopd/edit/")
-
-http = Net::HTTP.new(url.host, url.port)
-http.use_ssl = true
-http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-request = Net::HTTP::Post.new(url)
-request["content-type"] = 'application/json'
-request["accept"] = 'application/json'
-request.body = "{\"start\":\"2019-02-05T10:00:09-06:00\",\"end\":\"2019-03-05T10:00:09-06:00\",\"times\":[\"09:00\",\"17:30\"],\"days\":[1,3,5],\"method\":\"message\",\"tz\":\"US/Central\",\"patientId\":1638,\"contactId\":76,\"id\":681,\"isFixed\":true,\"mode\":\"T\",\"shouldAskSymptoms\":true}"
-
-response = http.request(request)
-puts response.read_body
-```
-
-```python
-import http.client
-
-conn = http.client.HTTPSConnection("virtserver.swaggerhub.com")
-
-payload = "{\"start\":\"2019-02-05T10:00:09-06:00\",\"end\":\"2019-03-05T10:00:09-06:00\",\"times\":[\"09:00\",\"17:30\"],\"days\":[1,3,5],\"method\":\"message\",\"tz\":\"US/Central\",\"patientId\":1638,\"contactId\":76,\"id\":681,\"isFixed\":true,\"mode\":\"T\",\"shouldAskSymptoms\":true}"
-
-headers = {
-    'content-type': "application/json",
-    'accept': "application/json"
-    }
-
-conn.request("POST", "/EpxHealth/Epharmix/1/epxcopd/edit/", payload, headers)
-
-res = conn.getresponse()
-data = res.read()
-
-print(data.decode("utf-8"))
-```
-
-```java
-HttpResponse<String> response = Unirest.post("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxcopd/edit/")
-  .header("content-type", "application/json")
-  .header("accept", "application/json")
-  .body("{\"start\":\"2019-02-05T10:00:09-06:00\",\"end\":\"2019-03-05T10:00:09-06:00\",\"times\":[\"09:00\",\"17:30\"],\"days\":[1,3,5],\"method\":\"message\",\"tz\":\"US/Central\",\"patientId\":1638,\"contactId\":76,\"id\":681,\"isFixed\":true,\"mode\":\"T\",\"shouldAskSymptoms\":true}")
-  .asString();
-```
-
-```go
-package main
-
-import (
-	"fmt"
-	"strings"
-	"net/http"
-	"io/ioutil"
-)
-
-func main() {
-
-	url := "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxcopd/edit/"
-
-	payload := strings.NewReader("{\"start\":\"2019-02-05T10:00:09-06:00\",\"end\":\"2019-03-05T10:00:09-06:00\",\"times\":[\"09:00\",\"17:30\"],\"days\":[1,3,5],\"method\":\"message\",\"tz\":\"US/Central\",\"patientId\":1638,\"contactId\":76,\"id\":681,\"isFixed\":true,\"mode\":\"T\",\"shouldAskSymptoms\":true}")
-
-	req, _ := http.NewRequest("POST", url, payload)
-
-	req.Header.Add("content-type", "application/json")
-	req.Header.Add("accept", "application/json")
-
-	res, _ := http.DefaultClient.Do(req)
-
-	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
-
-	fmt.Println(res)
-	fmt.Println(string(body))
-
-}
-```
+## post__epxcopd_edit_
 
 `POST /epxcopd/edit/`
+
+*EpxCopd: Edit an EpxCOPD schedule for a patient*
 
 > Body parameter
 
 ```json
 {
-  "start": "2019-02-05T10:00:09-06:00",
-  "end": "2019-03-05T10:00:09-06:00",
-  "times": [
-    "09:00",
-    "17:30"
-  ],
-  "days": [
-    1,
-    3,
-    5
-  ],
-  "method": "message",
-  "tz": "US/Central",
-  "patientId": 1638,
-  "contactId": 76,
-  "id": 681,
-  "isFixed": true,
-  "mode": "T",
-  "shouldAskSymptoms": true
+  "allOf": [
+    {
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "string",
+          "description": "The start date of the intervention",
+          "example": "2019-02-05T10:00:09-06:00"
+        },
+        "end": {
+          "type": "string",
+          "description": "The end date of the intervention (optional)",
+          "example": "2019-03-05T10:00:09-06:00"
+        },
+        "times": {
+          "type": "array",
+          "description": "The times that the patient would prefer to receive messages (24-hour time)",
+          "example": [
+            "09:00",
+            "17:30"
+          ],
+          "items": {
+            "type": "string"
+          }
+        },
+        "days": {
+          "description": "Days of the week that the sessions will occur (0: Sunday... 6: Saturday)",
+          "example": [
+            1,
+            3,
+            5
+          ],
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 6
+          }
+        },
+        "method": {
+          "type": "string",
+          "description": "The method in which the patient will be contacted.",
+          "enum": [
+            "message",
+            "call"
+          ]
+        },
+        "tz": {
+          "type": "string",
+          "description": "The timezone of the schedule",
+          "example": "US/Central"
+        },
+        "patientId": {
+          "type": "integer",
+          "description": "The ID of the patient who will receive the intervention",
+          "example": 1638
+        },
+        "contactId": {
+          "type": "integer",
+          "description": "The ID of the contact that will be assigned to the intervention",
+          "example": 76
+        }
+      }
+    },
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "The ID of the schedule being edited",
+          "example": 681
+        },
+        "isFixed": {
+          "type": "boolean",
+          "description": "If true, the message will be on a fixed frequency of your choice. If false, the patient will be on \"smart schedule\", with the frequency based on their responses."
+        },
+        "mode": {
+          "type": "string",
+          "description": "Only required if schedule is fixed. Sets the frequency of sessions.",
+          "enum": [
+            "T",
+            "D",
+            "B",
+            "C"
+          ]
+        },
+        "shouldAskSymptoms": {
+          "type": "boolean",
+          "description": "If true, the patient will be asked about symptoms other than just their difficulty breathing."
+        }
+      }
+    }
+  ]
 }
 ```
 
-<h3 id="epxcopd:-edit-an-epxcopd-schedule-for-a-patient-parameters">Parameters</h3>
+<h3 id="post__epxcopd_edit_-parameters">Parameters</h3>
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
@@ -5288,39 +5079,122 @@ func main() {
 
 ```json
 {
-  "status": "OK",
-  "schedule": [
-    {
-      "start": "2019-02-05T10:00:09-06:00",
-      "end": "2019-03-05T10:00:09-06:00",
-      "times": [
-        "09:00",
-        "17:30"
-      ],
-      "days": [
-        1,
-        3,
-        5
-      ],
-      "method": "message",
-      "tz": "US/Central",
-      "patientId": 372,
-      "contactId": 39,
-      "id": 14,
-      "isCanceled": true,
-      "canceledAt": "string"
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "OK"
+      ]
+    },
+    "schedule": {
+      "type": "array",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "start": {
+                "type": "string",
+                "description": "The start date of the intervention",
+                "example": "2019-02-05T10:00:09-06:00"
+              },
+              "end": {
+                "type": "string",
+                "description": "The end date of the intervention (optional)",
+                "example": "2019-03-05T10:00:09-06:00"
+              },
+              "times": {
+                "type": "array",
+                "description": "The times that the patient would prefer to receive messages (24-hour time)",
+                "example": [
+                  "09:00",
+                  "17:30"
+                ],
+                "items": {
+                  "type": "string"
+                }
+              },
+              "days": {
+                "description": "Days of the week that the sessions will occur (0: Sunday... 6: Saturday)",
+                "example": [
+                  1,
+                  3,
+                  5
+                ],
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 6
+                }
+              },
+              "method": {
+                "type": "string",
+                "description": "The method in which the patient will be contacted.",
+                "enum": [
+                  "message",
+                  "call"
+                ]
+              },
+              "tz": {
+                "type": "string",
+                "description": "The timezone of the schedule",
+                "example": "US/Central"
+              },
+              "patientId": {
+                "type": "integer",
+                "description": "The ID of the patient who will receive the intervention",
+                "example": 1638
+              },
+              "contactId": {
+                "type": "integer",
+                "description": "The ID of the contact that will be assigned to the intervention",
+                "example": 76
+              }
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "example": 14
+              },
+              "isCanceled": {
+                "type": "boolean",
+                "description": "If true, the patient will not longer receive calls/messages"
+              },
+              "canceledAt": {
+                "type": "string",
+                "description": "The time that the schedule was canceled"
+              },
+              "patientId": {
+                "type": "integer",
+                "example": 372,
+                "description": "The ID of the patient"
+              },
+              "contactId": {
+                "type": "integer",
+                "description": "The ID of the contact associated to this schedule",
+                "example": 39
+              }
+            }
+          }
+        ]
+      }
     }
-  ]
+  }
 }
 ```
 
-<h3 id="epxcopd:-edit-an-epxcopd-schedule-for-a-patient-responses">Responses</h3>
+<h3 id="post__epxcopd_edit_-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|EpxCOPD Schedule Edited|Inline|
 
-<h3 id="epxcopd:-edit-an-epxcopd-schedule-for-a-patient-responseschema">Response Schema</h3>
+<h3 id="post__epxcopd_edit_-responseschema">Response Schema</h3>
 
 Status Code **200**
 
@@ -5333,162 +5207,44 @@ Status Code **200**
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|»» *anonymous*|[ScheduleParams](#schemascheduleparams)|false|none|none|
-|»»» start|string|false|none|The start date of the intervention|
-|»»» end|string|false|none|The end date of the intervention (optional)|
-|»»» times|[string]|false|none|The times that the patient would prefer to receive messages (24-hour time)|
-|»»» days|[integer]|false|none|Days of the week that the sessions will occur (0: Sunday... 6: Saturday)|
-|»»» method|string|false|none|The method in which the patient will be contacted.|
-|»»» tz|string|false|none|The timezone of the schedule|
-|»»» patientId|integer|false|none|The ID of the patient who will receive the intervention|
-|»»» contactId|integer|false|none|The ID of the contact that will be assigned to the intervention|
 
 *and*
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|»» *anonymous*|object|false|none|none|
-|»»» id|integer|false|none|none|
-|»»» isCanceled|boolean|false|none|If true, the patient will not longer receive calls/messages|
-|»»» canceledAt|string|false|none|The time that the schedule was canceled|
-|»»» patientId|integer|false|none|The ID of the patient|
-|»»» contactId|integer|false|none|The ID of the contact associated to this schedule|
 
 #### Enumerated Values
 
 |Property|Value|
 |---|---|
 |status|OK|
-|method|message|
-|method|call|
 
 <aside class="success">
 This operation does not require authentication
 </aside>
 
-## EpxCopd: Cancel an EpxCOPD schedule for a patient
-
-> Code samples
-
-```shell
-curl --request POST \
-  --url https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxcopd/cancel/ \
-  --header 'accept: application/json' \
-  --header 'content-type: application/json' \
-  --data '{"id":681}'
-```
-
-```javascript
-var data = JSON.stringify({
-  "id": 681
-});
-
-var xhr = new XMLHttpRequest();
-xhr.withCredentials = true;
-
-xhr.addEventListener("readystatechange", function () {
-  if (this.readyState === this.DONE) {
-    console.log(this.responseText);
-  }
-});
-
-xhr.open("POST", "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxcopd/cancel/");
-xhr.setRequestHeader("content-type", "application/json");
-xhr.setRequestHeader("accept", "application/json");
-
-xhr.send(data);
-```
-
-```ruby
-require 'uri'
-require 'net/http'
-
-url = URI("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxcopd/cancel/")
-
-http = Net::HTTP.new(url.host, url.port)
-http.use_ssl = true
-http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-request = Net::HTTP::Post.new(url)
-request["content-type"] = 'application/json'
-request["accept"] = 'application/json'
-request.body = "{\"id\":681}"
-
-response = http.request(request)
-puts response.read_body
-```
-
-```python
-import http.client
-
-conn = http.client.HTTPSConnection("virtserver.swaggerhub.com")
-
-payload = "{\"id\":681}"
-
-headers = {
-    'content-type': "application/json",
-    'accept': "application/json"
-    }
-
-conn.request("POST", "/EpxHealth/Epharmix/1/epxcopd/cancel/", payload, headers)
-
-res = conn.getresponse()
-data = res.read()
-
-print(data.decode("utf-8"))
-```
-
-```java
-HttpResponse<String> response = Unirest.post("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxcopd/cancel/")
-  .header("content-type", "application/json")
-  .header("accept", "application/json")
-  .body("{\"id\":681}")
-  .asString();
-```
-
-```go
-package main
-
-import (
-	"fmt"
-	"strings"
-	"net/http"
-	"io/ioutil"
-)
-
-func main() {
-
-	url := "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxcopd/cancel/"
-
-	payload := strings.NewReader("{\"id\":681}")
-
-	req, _ := http.NewRequest("POST", url, payload)
-
-	req.Header.Add("content-type", "application/json")
-	req.Header.Add("accept", "application/json")
-
-	res, _ := http.DefaultClient.Do(req)
-
-	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
-
-	fmt.Println(res)
-	fmt.Println(string(body))
-
-}
-```
+## post__epxcopd_cancel_
 
 `POST /epxcopd/cancel/`
+
+*EpxCopd: Cancel an EpxCOPD schedule for a patient*
 
 > Body parameter
 
 ```json
 {
-  "id": 681
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "description": "The ID of the schedule being canceled",
+      "example": 681
+    }
+  }
 }
 ```
 
-<h3 id="epxcopd:-cancel-an-epxcopd-schedule-for-a-patient-parameters">Parameters</h3>
+<h3 id="post__epxcopd_cancel_-parameters">Parameters</h3>
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
@@ -5501,39 +5257,122 @@ func main() {
 
 ```json
 {
-  "status": "OK",
-  "schedule": [
-    {
-      "start": "2019-02-05T10:00:09-06:00",
-      "end": "2019-03-05T10:00:09-06:00",
-      "times": [
-        "09:00",
-        "17:30"
-      ],
-      "days": [
-        1,
-        3,
-        5
-      ],
-      "method": "message",
-      "tz": "US/Central",
-      "patientId": 372,
-      "contactId": 39,
-      "id": 14,
-      "isCanceled": true,
-      "canceledAt": "string"
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "OK"
+      ]
+    },
+    "schedule": {
+      "type": "array",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "start": {
+                "type": "string",
+                "description": "The start date of the intervention",
+                "example": "2019-02-05T10:00:09-06:00"
+              },
+              "end": {
+                "type": "string",
+                "description": "The end date of the intervention (optional)",
+                "example": "2019-03-05T10:00:09-06:00"
+              },
+              "times": {
+                "type": "array",
+                "description": "The times that the patient would prefer to receive messages (24-hour time)",
+                "example": [
+                  "09:00",
+                  "17:30"
+                ],
+                "items": {
+                  "type": "string"
+                }
+              },
+              "days": {
+                "description": "Days of the week that the sessions will occur (0: Sunday... 6: Saturday)",
+                "example": [
+                  1,
+                  3,
+                  5
+                ],
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 6
+                }
+              },
+              "method": {
+                "type": "string",
+                "description": "The method in which the patient will be contacted.",
+                "enum": [
+                  "message",
+                  "call"
+                ]
+              },
+              "tz": {
+                "type": "string",
+                "description": "The timezone of the schedule",
+                "example": "US/Central"
+              },
+              "patientId": {
+                "type": "integer",
+                "description": "The ID of the patient who will receive the intervention",
+                "example": 1638
+              },
+              "contactId": {
+                "type": "integer",
+                "description": "The ID of the contact that will be assigned to the intervention",
+                "example": 76
+              }
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "example": 14
+              },
+              "isCanceled": {
+                "type": "boolean",
+                "description": "If true, the patient will not longer receive calls/messages"
+              },
+              "canceledAt": {
+                "type": "string",
+                "description": "The time that the schedule was canceled"
+              },
+              "patientId": {
+                "type": "integer",
+                "example": 372,
+                "description": "The ID of the patient"
+              },
+              "contactId": {
+                "type": "integer",
+                "description": "The ID of the contact associated to this schedule",
+                "example": 39
+              }
+            }
+          }
+        ]
+      }
     }
-  ]
+  }
 }
 ```
 
-<h3 id="epxcopd:-cancel-an-epxcopd-schedule-for-a-patient-responses">Responses</h3>
+<h3 id="post__epxcopd_cancel_-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|EpxCOPD Schedule Canceled|Inline|
 
-<h3 id="epxcopd:-cancel-an-epxcopd-schedule-for-a-patient-responseschema">Response Schema</h3>
+<h3 id="post__epxcopd_cancel_-responseschema">Response Schema</h3>
 
 Status Code **200**
 
@@ -5546,162 +5385,44 @@ Status Code **200**
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|»» *anonymous*|[ScheduleParams](#schemascheduleparams)|false|none|none|
-|»»» start|string|false|none|The start date of the intervention|
-|»»» end|string|false|none|The end date of the intervention (optional)|
-|»»» times|[string]|false|none|The times that the patient would prefer to receive messages (24-hour time)|
-|»»» days|[integer]|false|none|Days of the week that the sessions will occur (0: Sunday... 6: Saturday)|
-|»»» method|string|false|none|The method in which the patient will be contacted.|
-|»»» tz|string|false|none|The timezone of the schedule|
-|»»» patientId|integer|false|none|The ID of the patient who will receive the intervention|
-|»»» contactId|integer|false|none|The ID of the contact that will be assigned to the intervention|
 
 *and*
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|»» *anonymous*|object|false|none|none|
-|»»» id|integer|false|none|none|
-|»»» isCanceled|boolean|false|none|If true, the patient will not longer receive calls/messages|
-|»»» canceledAt|string|false|none|The time that the schedule was canceled|
-|»»» patientId|integer|false|none|The ID of the patient|
-|»»» contactId|integer|false|none|The ID of the contact associated to this schedule|
 
 #### Enumerated Values
 
 |Property|Value|
 |---|---|
 |status|OK|
-|method|message|
-|method|call|
 
 <aside class="success">
 This operation does not require authentication
 </aside>
 
-## EpxCOPD: Get EpxCOPD data for a patient
-
-> Code samples
-
-```shell
-curl --request POST \
-  --url https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxcopd/data/ \
-  --header 'accept: application/json' \
-  --header 'content-type: application/json' \
-  --data '{"patient":2645}'
-```
-
-```javascript
-var data = JSON.stringify({
-  "patient": 2645
-});
-
-var xhr = new XMLHttpRequest();
-xhr.withCredentials = true;
-
-xhr.addEventListener("readystatechange", function () {
-  if (this.readyState === this.DONE) {
-    console.log(this.responseText);
-  }
-});
-
-xhr.open("POST", "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxcopd/data/");
-xhr.setRequestHeader("content-type", "application/json");
-xhr.setRequestHeader("accept", "application/json");
-
-xhr.send(data);
-```
-
-```ruby
-require 'uri'
-require 'net/http'
-
-url = URI("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxcopd/data/")
-
-http = Net::HTTP.new(url.host, url.port)
-http.use_ssl = true
-http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-request = Net::HTTP::Post.new(url)
-request["content-type"] = 'application/json'
-request["accept"] = 'application/json'
-request.body = "{\"patient\":2645}"
-
-response = http.request(request)
-puts response.read_body
-```
-
-```python
-import http.client
-
-conn = http.client.HTTPSConnection("virtserver.swaggerhub.com")
-
-payload = "{\"patient\":2645}"
-
-headers = {
-    'content-type': "application/json",
-    'accept': "application/json"
-    }
-
-conn.request("POST", "/EpxHealth/Epharmix/1/epxcopd/data/", payload, headers)
-
-res = conn.getresponse()
-data = res.read()
-
-print(data.decode("utf-8"))
-```
-
-```java
-HttpResponse<String> response = Unirest.post("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxcopd/data/")
-  .header("content-type", "application/json")
-  .header("accept", "application/json")
-  .body("{\"patient\":2645}")
-  .asString();
-```
-
-```go
-package main
-
-import (
-	"fmt"
-	"strings"
-	"net/http"
-	"io/ioutil"
-)
-
-func main() {
-
-	url := "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxcopd/data/"
-
-	payload := strings.NewReader("{\"patient\":2645}")
-
-	req, _ := http.NewRequest("POST", url, payload)
-
-	req.Header.Add("content-type", "application/json")
-	req.Header.Add("accept", "application/json")
-
-	res, _ := http.DefaultClient.Do(req)
-
-	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
-
-	fmt.Println(res)
-	fmt.Println(string(body))
-
-}
-```
+## post__epxcopd_data_
 
 `POST /epxcopd/data/`
+
+*EpxCOPD: Get EpxCOPD data for a patient*
 
 > Body parameter
 
 ```json
 {
-  "patient": 2645
+  "type": "object",
+  "properties": {
+    "patient": {
+      "type": "integer",
+      "description": "The ID of the patient",
+      "example": 2645
+    }
+  }
 }
 ```
 
-<h3 id="epxcopd:-get-epxcopd-data-for-a-patient-parameters">Parameters</h3>
+<h3 id="post__epxcopd_data_-parameters">Parameters</h3>
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
@@ -5714,51 +5435,172 @@ func main() {
 
 ```json
 {
-  "status": "OK",
-  "sessions": [
-    {
-      "time": "2019-02-15T10:22:09-06:00",
-      "respondedAt": "2019-02-15T10:22:15-55:00",
-      "breathing": 1,
-      "coughing": 1,
-      "sputum": 3,
-      "isCanceled": true,
-      "schedule": {
-        "start": "2019-02-05T10:00:09-06:00",
-        "end": "2019-03-05T10:00:09-06:00",
-        "times": [
-          "09:00",
-          "17:30"
-        ],
-        "days": [
-          1,
-          3,
-          5
-        ],
-        "method": "message",
-        "tz": "US/Central",
-        "patientId": 1638,
-        "contactId": 76
-      },
-      "patient": {
-        "firstName": "John",
-        "middleInitial": "M",
-        "lastName": "Smith",
-        "phone": "5551234567",
-        "id": 623
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "OK"
+      ]
+    },
+    "sessions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "time": {
+            "type": "string",
+            "description": "The time of the session",
+            "example": "2019-02-15T10:22:09-06:00"
+          },
+          "respondedAt": {
+            "type": "string",
+            "description": "If set, it is the time that the patient first responded to the session. If null, the patient has not yet responded.",
+            "example": "2019-02-15T10:22:15-55:00"
+          },
+          "breathing": {
+            "type": "integer",
+            "description": "-1: worse, 0: same, 1: better",
+            "example": 1
+          },
+          "coughing": {
+            "type": "integer",
+            "description": "-1: worse, 0: same, 1: better",
+            "example": 1
+          },
+          "sputum": {
+            "type": "integer",
+            "description": "1: no change, 2: more, 3: changed color",
+            "example": 3
+          },
+          "isCanceled": {
+            "type": "boolean",
+            "description": "If true, the session was canceled"
+          },
+          "schedule": {
+            "type": "object",
+            "properties": {
+              "start": {
+                "type": "string",
+                "description": "The start date of the intervention",
+                "example": "2019-02-05T10:00:09-06:00"
+              },
+              "end": {
+                "type": "string",
+                "description": "The end date of the intervention (optional)",
+                "example": "2019-03-05T10:00:09-06:00"
+              },
+              "times": {
+                "type": "array",
+                "description": "The times that the patient would prefer to receive messages (24-hour time)",
+                "example": [
+                  "09:00",
+                  "17:30"
+                ],
+                "items": {
+                  "type": "string"
+                }
+              },
+              "days": {
+                "description": "Days of the week that the sessions will occur (0: Sunday... 6: Saturday)",
+                "example": [
+                  1,
+                  3,
+                  5
+                ],
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 6
+                }
+              },
+              "method": {
+                "type": "string",
+                "description": "The method in which the patient will be contacted.",
+                "enum": [
+                  "message",
+                  "call"
+                ]
+              },
+              "tz": {
+                "type": "string",
+                "description": "The timezone of the schedule",
+                "example": "US/Central"
+              },
+              "patientId": {
+                "type": "integer",
+                "description": "The ID of the patient who will receive the intervention",
+                "example": 1638
+              },
+              "contactId": {
+                "type": "integer",
+                "description": "The ID of the contact that will be assigned to the intervention",
+                "example": 76
+              }
+            }
+          },
+          "patient": {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "description": "The first name of the patient.",
+                    "type": "string",
+                    "example": "John"
+                  },
+                  "middleInitial": {
+                    "description": "The middle initial of the patient.",
+                    "type": "string",
+                    "example": "M"
+                  },
+                  "lastName": {
+                    "description": "The last name of the patient.",
+                    "type": "string",
+                    "example": "Smith"
+                  },
+                  "phone": {
+                    "description": "The phone number of the patient.",
+                    "type": "string",
+                    "pattern": "^\\d{10}$",
+                    "example": "5551234567"
+                  }
+                },
+                "required": [
+                  "firstName",
+                  "lastName",
+                  "phone"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "example": 623,
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "id"
+                ]
+              }
+            ]
+          }
+        }
       }
     }
-  ]
+  }
 }
 ```
 
-<h3 id="epxcopd:-get-epxcopd-data-for-a-patient-responses">Responses</h3>
+<h3 id="post__epxcopd_data_-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|EpxCOPD Session Data|Inline|
 
-<h3 id="epxcopd:-get-epxcopd-data-for-a-patient-responseschema">Response Schema</h3>
+<h3 id="post__epxcopd_data_-responseschema">Response Schema</h3>
 
 Status Code **200**
 
@@ -5772,203 +5614,128 @@ Status Code **200**
 |»» coughing|integer|false|none|-1: worse, 0: same, 1: better|
 |»» sputum|integer|false|none|1: no change, 2: more, 3: changed color|
 |»» isCanceled|boolean|false|none|If true, the session was canceled|
-|»» schedule|[ScheduleParams](#schemascheduleparams)|false|none|none|
-|»»» start|string|false|none|The start date of the intervention|
-|»»» end|string|false|none|The end date of the intervention (optional)|
-|»»» times|[string]|false|none|The times that the patient would prefer to receive messages (24-hour time)|
-|»»» days|[integer]|false|none|Days of the week that the sessions will occur (0: Sunday... 6: Saturday)|
-|»»» method|string|false|none|The method in which the patient will be contacted.|
-|»»» tz|string|false|none|The timezone of the schedule|
-|»»» patientId|integer|false|none|The ID of the patient who will receive the intervention|
-|»»» contactId|integer|false|none|The ID of the contact that will be assigned to the intervention|
-|»» patient|any|false|none|none|
 
 *allOf*
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|»»» *anonymous*|[PatientParams](#schemapatientparams)|false|none|none|
-|»»»» firstName|string|true|none|The first name of the patient.|
-|»»»» middleInitial|string|false|none|The middle initial of the patient.|
-|»»»» lastName|string|true|none|The last name of the patient.|
-|»»»» phone|string|true|none|The phone number of the patient.|
 
 *and*
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|»»» *anonymous*|object|false|none|none|
-|»»»» id|number|true|none|none|
 
 #### Enumerated Values
 
 |Property|Value|
 |---|---|
 |status|OK|
-|method|message|
-|method|call|
 
 <aside class="success">
 This operation does not require authentication
 </aside>
 
-## EpxHeartFailure: Create an EpxHeartFailure schedule for a patient
-
-> Code samples
-
-```shell
-curl --request POST \
-  --url https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxheart/create/ \
-  --header 'accept: application/json' \
-  --header 'content-type: application/json' \
-  --data '{"start":"2019-02-05T10:00:09-06:00","end":"2019-03-05T10:00:09-06:00","times":["09:00","17:30"],"days":[1,3,5],"method":"message","tz":"US/Central","patientId":1638,"contactId":76,"isFixed":true,"mode":"D","hasScale":true}'
-```
-
-```javascript
-var data = JSON.stringify({
-  "start": "2019-02-05T10:00:09-06:00",
-  "end": "2019-03-05T10:00:09-06:00",
-  "times": [
-    "09:00",
-    "17:30"
-  ],
-  "days": [
-    1,
-    3,
-    5
-  ],
-  "method": "message",
-  "tz": "US/Central",
-  "patientId": 1638,
-  "contactId": 76,
-  "isFixed": true,
-  "mode": "D",
-  "hasScale": true
-});
-
-var xhr = new XMLHttpRequest();
-xhr.withCredentials = true;
-
-xhr.addEventListener("readystatechange", function () {
-  if (this.readyState === this.DONE) {
-    console.log(this.responseText);
-  }
-});
-
-xhr.open("POST", "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxheart/create/");
-xhr.setRequestHeader("content-type", "application/json");
-xhr.setRequestHeader("accept", "application/json");
-
-xhr.send(data);
-```
-
-```ruby
-require 'uri'
-require 'net/http'
-
-url = URI("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxheart/create/")
-
-http = Net::HTTP.new(url.host, url.port)
-http.use_ssl = true
-http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-request = Net::HTTP::Post.new(url)
-request["content-type"] = 'application/json'
-request["accept"] = 'application/json'
-request.body = "{\"start\":\"2019-02-05T10:00:09-06:00\",\"end\":\"2019-03-05T10:00:09-06:00\",\"times\":[\"09:00\",\"17:30\"],\"days\":[1,3,5],\"method\":\"message\",\"tz\":\"US/Central\",\"patientId\":1638,\"contactId\":76,\"isFixed\":true,\"mode\":\"D\",\"hasScale\":true}"
-
-response = http.request(request)
-puts response.read_body
-```
-
-```python
-import http.client
-
-conn = http.client.HTTPSConnection("virtserver.swaggerhub.com")
-
-payload = "{\"start\":\"2019-02-05T10:00:09-06:00\",\"end\":\"2019-03-05T10:00:09-06:00\",\"times\":[\"09:00\",\"17:30\"],\"days\":[1,3,5],\"method\":\"message\",\"tz\":\"US/Central\",\"patientId\":1638,\"contactId\":76,\"isFixed\":true,\"mode\":\"D\",\"hasScale\":true}"
-
-headers = {
-    'content-type': "application/json",
-    'accept': "application/json"
-    }
-
-conn.request("POST", "/EpxHealth/Epharmix/1/epxheart/create/", payload, headers)
-
-res = conn.getresponse()
-data = res.read()
-
-print(data.decode("utf-8"))
-```
-
-```java
-HttpResponse<String> response = Unirest.post("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxheart/create/")
-  .header("content-type", "application/json")
-  .header("accept", "application/json")
-  .body("{\"start\":\"2019-02-05T10:00:09-06:00\",\"end\":\"2019-03-05T10:00:09-06:00\",\"times\":[\"09:00\",\"17:30\"],\"days\":[1,3,5],\"method\":\"message\",\"tz\":\"US/Central\",\"patientId\":1638,\"contactId\":76,\"isFixed\":true,\"mode\":\"D\",\"hasScale\":true}")
-  .asString();
-```
-
-```go
-package main
-
-import (
-	"fmt"
-	"strings"
-	"net/http"
-	"io/ioutil"
-)
-
-func main() {
-
-	url := "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxheart/create/"
-
-	payload := strings.NewReader("{\"start\":\"2019-02-05T10:00:09-06:00\",\"end\":\"2019-03-05T10:00:09-06:00\",\"times\":[\"09:00\",\"17:30\"],\"days\":[1,3,5],\"method\":\"message\",\"tz\":\"US/Central\",\"patientId\":1638,\"contactId\":76,\"isFixed\":true,\"mode\":\"D\",\"hasScale\":true}")
-
-	req, _ := http.NewRequest("POST", url, payload)
-
-	req.Header.Add("content-type", "application/json")
-	req.Header.Add("accept", "application/json")
-
-	res, _ := http.DefaultClient.Do(req)
-
-	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
-
-	fmt.Println(res)
-	fmt.Println(string(body))
-
-}
-```
+## post__epxheart_create_
 
 `POST /epxheart/create/`
+
+*EpxHeartFailure: Create an EpxHeartFailure schedule for a patient*
 
 > Body parameter
 
 ```json
 {
-  "start": "2019-02-05T10:00:09-06:00",
-  "end": "2019-03-05T10:00:09-06:00",
-  "times": [
-    "09:00",
-    "17:30"
-  ],
-  "days": [
-    1,
-    3,
-    5
-  ],
-  "method": "message",
-  "tz": "US/Central",
-  "patientId": 1638,
-  "contactId": 76,
-  "isFixed": true,
-  "mode": "D",
-  "hasScale": true
+  "allOf": [
+    {
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "string",
+          "description": "The start date of the intervention",
+          "example": "2019-02-05T10:00:09-06:00"
+        },
+        "end": {
+          "type": "string",
+          "description": "The end date of the intervention (optional)",
+          "example": "2019-03-05T10:00:09-06:00"
+        },
+        "times": {
+          "type": "array",
+          "description": "The times that the patient would prefer to receive messages (24-hour time)",
+          "example": [
+            "09:00",
+            "17:30"
+          ],
+          "items": {
+            "type": "string"
+          }
+        },
+        "days": {
+          "description": "Days of the week that the sessions will occur (0: Sunday... 6: Saturday)",
+          "example": [
+            1,
+            3,
+            5
+          ],
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 6
+          }
+        },
+        "method": {
+          "type": "string",
+          "description": "The method in which the patient will be contacted.",
+          "enum": [
+            "message",
+            "call"
+          ]
+        },
+        "tz": {
+          "type": "string",
+          "description": "The timezone of the schedule",
+          "example": "US/Central"
+        },
+        "patientId": {
+          "type": "integer",
+          "description": "The ID of the patient who will receive the intervention",
+          "example": 1638
+        },
+        "contactId": {
+          "type": "integer",
+          "description": "The ID of the contact that will be assigned to the intervention",
+          "example": 76
+        }
+      }
+    },
+    {
+      "type": "object",
+      "properties": {
+        "isFixed": {
+          "type": "boolean",
+          "description": "If true, the message will be on a fixed frequency of your choice. If false, the patient will be on \"smart schedule\", with the frequency based on their responses."
+        },
+        "mode": {
+          "type": "string",
+          "description": "Only required if schedule is fixed. Sets the frequency of sessions.",
+          "enum": [
+            "D",
+            "W"
+          ],
+          "example": "D"
+        },
+        "hasScale": {
+          "type": "boolean",
+          "description": "If true, the patient indicated that they own a scale."
+        }
+      }
+    }
+  ]
 }
 ```
 
-<h3 id="epxheartfailure:-create-an-epxheartfailure-schedule-for-a-patient-parameters">Parameters</h3>
+<h3 id="post__epxheart_create_-parameters">Parameters</h3>
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
@@ -5980,39 +5747,122 @@ func main() {
 
 ```json
 {
-  "status": "OK",
-  "schedule": [
-    {
-      "start": "2019-02-05T10:00:09-06:00",
-      "end": "2019-03-05T10:00:09-06:00",
-      "times": [
-        "09:00",
-        "17:30"
-      ],
-      "days": [
-        1,
-        3,
-        5
-      ],
-      "method": "message",
-      "tz": "US/Central",
-      "patientId": 372,
-      "contactId": 39,
-      "id": 14,
-      "isCanceled": true,
-      "canceledAt": "string"
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "OK"
+      ]
+    },
+    "schedule": {
+      "type": "array",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "start": {
+                "type": "string",
+                "description": "The start date of the intervention",
+                "example": "2019-02-05T10:00:09-06:00"
+              },
+              "end": {
+                "type": "string",
+                "description": "The end date of the intervention (optional)",
+                "example": "2019-03-05T10:00:09-06:00"
+              },
+              "times": {
+                "type": "array",
+                "description": "The times that the patient would prefer to receive messages (24-hour time)",
+                "example": [
+                  "09:00",
+                  "17:30"
+                ],
+                "items": {
+                  "type": "string"
+                }
+              },
+              "days": {
+                "description": "Days of the week that the sessions will occur (0: Sunday... 6: Saturday)",
+                "example": [
+                  1,
+                  3,
+                  5
+                ],
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 6
+                }
+              },
+              "method": {
+                "type": "string",
+                "description": "The method in which the patient will be contacted.",
+                "enum": [
+                  "message",
+                  "call"
+                ]
+              },
+              "tz": {
+                "type": "string",
+                "description": "The timezone of the schedule",
+                "example": "US/Central"
+              },
+              "patientId": {
+                "type": "integer",
+                "description": "The ID of the patient who will receive the intervention",
+                "example": 1638
+              },
+              "contactId": {
+                "type": "integer",
+                "description": "The ID of the contact that will be assigned to the intervention",
+                "example": 76
+              }
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "example": 14
+              },
+              "isCanceled": {
+                "type": "boolean",
+                "description": "If true, the patient will not longer receive calls/messages"
+              },
+              "canceledAt": {
+                "type": "string",
+                "description": "The time that the schedule was canceled"
+              },
+              "patientId": {
+                "type": "integer",
+                "example": 372,
+                "description": "The ID of the patient"
+              },
+              "contactId": {
+                "type": "integer",
+                "description": "The ID of the contact associated to this schedule",
+                "example": 39
+              }
+            }
+          }
+        ]
+      }
     }
-  ]
+  }
 }
 ```
 
-<h3 id="epxheartfailure:-create-an-epxheartfailure-schedule-for-a-patient-responses">Responses</h3>
+<h3 id="post__epxheart_create_-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |201|[Created](https://tools.ietf.org/html/rfc7231#section-6.3.2)|EpxHeartFailure Schedule Created|Inline|
 
-<h3 id="epxheartfailure:-create-an-epxheartfailure-schedule-for-a-patient-responseschema">Response Schema</h3>
+<h3 id="post__epxheart_create_-responseschema">Response Schema</h3>
 
 Status Code **201**
 
@@ -6025,198 +5875,129 @@ Status Code **201**
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|»» *anonymous*|[ScheduleParams](#schemascheduleparams)|false|none|none|
-|»»» start|string|false|none|The start date of the intervention|
-|»»» end|string|false|none|The end date of the intervention (optional)|
-|»»» times|[string]|false|none|The times that the patient would prefer to receive messages (24-hour time)|
-|»»» days|[integer]|false|none|Days of the week that the sessions will occur (0: Sunday... 6: Saturday)|
-|»»» method|string|false|none|The method in which the patient will be contacted.|
-|»»» tz|string|false|none|The timezone of the schedule|
-|»»» patientId|integer|false|none|The ID of the patient who will receive the intervention|
-|»»» contactId|integer|false|none|The ID of the contact that will be assigned to the intervention|
 
 *and*
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|»» *anonymous*|object|false|none|none|
-|»»» id|integer|false|none|none|
-|»»» isCanceled|boolean|false|none|If true, the patient will not longer receive calls/messages|
-|»»» canceledAt|string|false|none|The time that the schedule was canceled|
-|»»» patientId|integer|false|none|The ID of the patient|
-|»»» contactId|integer|false|none|The ID of the contact associated to this schedule|
 
 #### Enumerated Values
 
 |Property|Value|
 |---|---|
 |status|OK|
-|method|message|
-|method|call|
 
 <aside class="success">
 This operation does not require authentication
 </aside>
 
-## EpxHeartFailure: Edit an EpxHeartFailure schedule for a patient
-
-> Code samples
-
-```shell
-curl --request POST \
-  --url https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxheart/edit/ \
-  --header 'accept: application/json' \
-  --header 'content-type: application/json' \
-  --data '{"start":"2019-02-05T10:00:09-06:00","end":"2019-03-05T10:00:09-06:00","times":["09:00","17:30"],"days":[1,3,5],"method":"message","tz":"US/Central","patientId":1638,"contactId":76,"id":681,"isFixed":true,"mode":"T","hasScale":true}'
-```
-
-```javascript
-var data = JSON.stringify({
-  "start": "2019-02-05T10:00:09-06:00",
-  "end": "2019-03-05T10:00:09-06:00",
-  "times": [
-    "09:00",
-    "17:30"
-  ],
-  "days": [
-    1,
-    3,
-    5
-  ],
-  "method": "message",
-  "tz": "US/Central",
-  "patientId": 1638,
-  "contactId": 76,
-  "id": 681,
-  "isFixed": true,
-  "mode": "T",
-  "hasScale": true
-});
-
-var xhr = new XMLHttpRequest();
-xhr.withCredentials = true;
-
-xhr.addEventListener("readystatechange", function () {
-  if (this.readyState === this.DONE) {
-    console.log(this.responseText);
-  }
-});
-
-xhr.open("POST", "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxheart/edit/");
-xhr.setRequestHeader("content-type", "application/json");
-xhr.setRequestHeader("accept", "application/json");
-
-xhr.send(data);
-```
-
-```ruby
-require 'uri'
-require 'net/http'
-
-url = URI("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxheart/edit/")
-
-http = Net::HTTP.new(url.host, url.port)
-http.use_ssl = true
-http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-request = Net::HTTP::Post.new(url)
-request["content-type"] = 'application/json'
-request["accept"] = 'application/json'
-request.body = "{\"start\":\"2019-02-05T10:00:09-06:00\",\"end\":\"2019-03-05T10:00:09-06:00\",\"times\":[\"09:00\",\"17:30\"],\"days\":[1,3,5],\"method\":\"message\",\"tz\":\"US/Central\",\"patientId\":1638,\"contactId\":76,\"id\":681,\"isFixed\":true,\"mode\":\"T\",\"hasScale\":true}"
-
-response = http.request(request)
-puts response.read_body
-```
-
-```python
-import http.client
-
-conn = http.client.HTTPSConnection("virtserver.swaggerhub.com")
-
-payload = "{\"start\":\"2019-02-05T10:00:09-06:00\",\"end\":\"2019-03-05T10:00:09-06:00\",\"times\":[\"09:00\",\"17:30\"],\"days\":[1,3,5],\"method\":\"message\",\"tz\":\"US/Central\",\"patientId\":1638,\"contactId\":76,\"id\":681,\"isFixed\":true,\"mode\":\"T\",\"hasScale\":true}"
-
-headers = {
-    'content-type': "application/json",
-    'accept': "application/json"
-    }
-
-conn.request("POST", "/EpxHealth/Epharmix/1/epxheart/edit/", payload, headers)
-
-res = conn.getresponse()
-data = res.read()
-
-print(data.decode("utf-8"))
-```
-
-```java
-HttpResponse<String> response = Unirest.post("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxheart/edit/")
-  .header("content-type", "application/json")
-  .header("accept", "application/json")
-  .body("{\"start\":\"2019-02-05T10:00:09-06:00\",\"end\":\"2019-03-05T10:00:09-06:00\",\"times\":[\"09:00\",\"17:30\"],\"days\":[1,3,5],\"method\":\"message\",\"tz\":\"US/Central\",\"patientId\":1638,\"contactId\":76,\"id\":681,\"isFixed\":true,\"mode\":\"T\",\"hasScale\":true}")
-  .asString();
-```
-
-```go
-package main
-
-import (
-	"fmt"
-	"strings"
-	"net/http"
-	"io/ioutil"
-)
-
-func main() {
-
-	url := "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxheart/edit/"
-
-	payload := strings.NewReader("{\"start\":\"2019-02-05T10:00:09-06:00\",\"end\":\"2019-03-05T10:00:09-06:00\",\"times\":[\"09:00\",\"17:30\"],\"days\":[1,3,5],\"method\":\"message\",\"tz\":\"US/Central\",\"patientId\":1638,\"contactId\":76,\"id\":681,\"isFixed\":true,\"mode\":\"T\",\"hasScale\":true}")
-
-	req, _ := http.NewRequest("POST", url, payload)
-
-	req.Header.Add("content-type", "application/json")
-	req.Header.Add("accept", "application/json")
-
-	res, _ := http.DefaultClient.Do(req)
-
-	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
-
-	fmt.Println(res)
-	fmt.Println(string(body))
-
-}
-```
+## post__epxheart_edit_
 
 `POST /epxheart/edit/`
+
+*EpxHeartFailure: Edit an EpxHeartFailure schedule for a patient*
 
 > Body parameter
 
 ```json
 {
-  "start": "2019-02-05T10:00:09-06:00",
-  "end": "2019-03-05T10:00:09-06:00",
-  "times": [
-    "09:00",
-    "17:30"
-  ],
-  "days": [
-    1,
-    3,
-    5
-  ],
-  "method": "message",
-  "tz": "US/Central",
-  "patientId": 1638,
-  "contactId": 76,
-  "id": 681,
-  "isFixed": true,
-  "mode": "T",
-  "hasScale": true
+  "allOf": [
+    {
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "string",
+          "description": "The start date of the intervention",
+          "example": "2019-02-05T10:00:09-06:00"
+        },
+        "end": {
+          "type": "string",
+          "description": "The end date of the intervention (optional)",
+          "example": "2019-03-05T10:00:09-06:00"
+        },
+        "times": {
+          "type": "array",
+          "description": "The times that the patient would prefer to receive messages (24-hour time)",
+          "example": [
+            "09:00",
+            "17:30"
+          ],
+          "items": {
+            "type": "string"
+          }
+        },
+        "days": {
+          "description": "Days of the week that the sessions will occur (0: Sunday... 6: Saturday)",
+          "example": [
+            1,
+            3,
+            5
+          ],
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 6
+          }
+        },
+        "method": {
+          "type": "string",
+          "description": "The method in which the patient will be contacted.",
+          "enum": [
+            "message",
+            "call"
+          ]
+        },
+        "tz": {
+          "type": "string",
+          "description": "The timezone of the schedule",
+          "example": "US/Central"
+        },
+        "patientId": {
+          "type": "integer",
+          "description": "The ID of the patient who will receive the intervention",
+          "example": 1638
+        },
+        "contactId": {
+          "type": "integer",
+          "description": "The ID of the contact that will be assigned to the intervention",
+          "example": 76
+        }
+      }
+    },
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "The ID of the schedule being edited",
+          "example": 681
+        },
+        "isFixed": {
+          "type": "boolean",
+          "description": "If true, the message will be on a fixed frequency of your choice. If false, the patient will be on \"smart schedule\", with the frequency based on their responses."
+        },
+        "mode": {
+          "type": "string",
+          "description": "Only required if schedule is fixed. Sets the frequency of sessions.",
+          "enum": [
+            "T",
+            "D",
+            "B",
+            "C"
+          ]
+        },
+        "hasScale": {
+          "type": "boolean",
+          "description": "If true, the patient indicated that they own a scale."
+        }
+      }
+    }
+  ]
 }
 ```
 
-<h3 id="epxheartfailure:-edit-an-epxheartfailure-schedule-for-a-patient-parameters">Parameters</h3>
+<h3 id="post__epxheart_edit_-parameters">Parameters</h3>
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
@@ -6228,39 +6009,122 @@ func main() {
 
 ```json
 {
-  "status": "OK",
-  "schedule": [
-    {
-      "start": "2019-02-05T10:00:09-06:00",
-      "end": "2019-03-05T10:00:09-06:00",
-      "times": [
-        "09:00",
-        "17:30"
-      ],
-      "days": [
-        1,
-        3,
-        5
-      ],
-      "method": "message",
-      "tz": "US/Central",
-      "patientId": 372,
-      "contactId": 39,
-      "id": 14,
-      "isCanceled": true,
-      "canceledAt": "string"
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "OK"
+      ]
+    },
+    "schedule": {
+      "type": "array",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "start": {
+                "type": "string",
+                "description": "The start date of the intervention",
+                "example": "2019-02-05T10:00:09-06:00"
+              },
+              "end": {
+                "type": "string",
+                "description": "The end date of the intervention (optional)",
+                "example": "2019-03-05T10:00:09-06:00"
+              },
+              "times": {
+                "type": "array",
+                "description": "The times that the patient would prefer to receive messages (24-hour time)",
+                "example": [
+                  "09:00",
+                  "17:30"
+                ],
+                "items": {
+                  "type": "string"
+                }
+              },
+              "days": {
+                "description": "Days of the week that the sessions will occur (0: Sunday... 6: Saturday)",
+                "example": [
+                  1,
+                  3,
+                  5
+                ],
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 6
+                }
+              },
+              "method": {
+                "type": "string",
+                "description": "The method in which the patient will be contacted.",
+                "enum": [
+                  "message",
+                  "call"
+                ]
+              },
+              "tz": {
+                "type": "string",
+                "description": "The timezone of the schedule",
+                "example": "US/Central"
+              },
+              "patientId": {
+                "type": "integer",
+                "description": "The ID of the patient who will receive the intervention",
+                "example": 1638
+              },
+              "contactId": {
+                "type": "integer",
+                "description": "The ID of the contact that will be assigned to the intervention",
+                "example": 76
+              }
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "example": 14
+              },
+              "isCanceled": {
+                "type": "boolean",
+                "description": "If true, the patient will not longer receive calls/messages"
+              },
+              "canceledAt": {
+                "type": "string",
+                "description": "The time that the schedule was canceled"
+              },
+              "patientId": {
+                "type": "integer",
+                "example": 372,
+                "description": "The ID of the patient"
+              },
+              "contactId": {
+                "type": "integer",
+                "description": "The ID of the contact associated to this schedule",
+                "example": 39
+              }
+            }
+          }
+        ]
+      }
     }
-  ]
+  }
 }
 ```
 
-<h3 id="epxheartfailure:-edit-an-epxheartfailure-schedule-for-a-patient-responses">Responses</h3>
+<h3 id="post__epxheart_edit_-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|EpxHeartFailure Schedule Edited|Inline|
 
-<h3 id="epxheartfailure:-edit-an-epxheartfailure-schedule-for-a-patient-responseschema">Response Schema</h3>
+<h3 id="post__epxheart_edit_-responseschema">Response Schema</h3>
 
 Status Code **200**
 
@@ -6273,162 +6137,44 @@ Status Code **200**
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|»» *anonymous*|[ScheduleParams](#schemascheduleparams)|false|none|none|
-|»»» start|string|false|none|The start date of the intervention|
-|»»» end|string|false|none|The end date of the intervention (optional)|
-|»»» times|[string]|false|none|The times that the patient would prefer to receive messages (24-hour time)|
-|»»» days|[integer]|false|none|Days of the week that the sessions will occur (0: Sunday... 6: Saturday)|
-|»»» method|string|false|none|The method in which the patient will be contacted.|
-|»»» tz|string|false|none|The timezone of the schedule|
-|»»» patientId|integer|false|none|The ID of the patient who will receive the intervention|
-|»»» contactId|integer|false|none|The ID of the contact that will be assigned to the intervention|
 
 *and*
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|»» *anonymous*|object|false|none|none|
-|»»» id|integer|false|none|none|
-|»»» isCanceled|boolean|false|none|If true, the patient will not longer receive calls/messages|
-|»»» canceledAt|string|false|none|The time that the schedule was canceled|
-|»»» patientId|integer|false|none|The ID of the patient|
-|»»» contactId|integer|false|none|The ID of the contact associated to this schedule|
 
 #### Enumerated Values
 
 |Property|Value|
 |---|---|
 |status|OK|
-|method|message|
-|method|call|
 
 <aside class="success">
 This operation does not require authentication
 </aside>
 
-## EpxHeartFailure: Cancel an EpxHeartFailure schedule for a patient
-
-> Code samples
-
-```shell
-curl --request POST \
-  --url https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxheart/cancel/ \
-  --header 'accept: application/json' \
-  --header 'content-type: application/json' \
-  --data '{"id":681}'
-```
-
-```javascript
-var data = JSON.stringify({
-  "id": 681
-});
-
-var xhr = new XMLHttpRequest();
-xhr.withCredentials = true;
-
-xhr.addEventListener("readystatechange", function () {
-  if (this.readyState === this.DONE) {
-    console.log(this.responseText);
-  }
-});
-
-xhr.open("POST", "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxheart/cancel/");
-xhr.setRequestHeader("content-type", "application/json");
-xhr.setRequestHeader("accept", "application/json");
-
-xhr.send(data);
-```
-
-```ruby
-require 'uri'
-require 'net/http'
-
-url = URI("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxheart/cancel/")
-
-http = Net::HTTP.new(url.host, url.port)
-http.use_ssl = true
-http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-request = Net::HTTP::Post.new(url)
-request["content-type"] = 'application/json'
-request["accept"] = 'application/json'
-request.body = "{\"id\":681}"
-
-response = http.request(request)
-puts response.read_body
-```
-
-```python
-import http.client
-
-conn = http.client.HTTPSConnection("virtserver.swaggerhub.com")
-
-payload = "{\"id\":681}"
-
-headers = {
-    'content-type': "application/json",
-    'accept': "application/json"
-    }
-
-conn.request("POST", "/EpxHealth/Epharmix/1/epxheart/cancel/", payload, headers)
-
-res = conn.getresponse()
-data = res.read()
-
-print(data.decode("utf-8"))
-```
-
-```java
-HttpResponse<String> response = Unirest.post("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxheart/cancel/")
-  .header("content-type", "application/json")
-  .header("accept", "application/json")
-  .body("{\"id\":681}")
-  .asString();
-```
-
-```go
-package main
-
-import (
-	"fmt"
-	"strings"
-	"net/http"
-	"io/ioutil"
-)
-
-func main() {
-
-	url := "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxheart/cancel/"
-
-	payload := strings.NewReader("{\"id\":681}")
-
-	req, _ := http.NewRequest("POST", url, payload)
-
-	req.Header.Add("content-type", "application/json")
-	req.Header.Add("accept", "application/json")
-
-	res, _ := http.DefaultClient.Do(req)
-
-	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
-
-	fmt.Println(res)
-	fmt.Println(string(body))
-
-}
-```
+## post__epxheart_cancel_
 
 `POST /epxheart/cancel/`
+
+*EpxHeartFailure: Cancel an EpxHeartFailure schedule for a patient*
 
 > Body parameter
 
 ```json
 {
-  "id": 681
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "description": "The ID of the schedule being canceled",
+      "example": 681
+    }
+  }
 }
 ```
 
-<h3 id="epxheartfailure:-cancel-an-epxheartfailure-schedule-for-a-patient-parameters">Parameters</h3>
+<h3 id="post__epxheart_cancel_-parameters">Parameters</h3>
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
@@ -6441,39 +6187,122 @@ func main() {
 
 ```json
 {
-  "status": "OK",
-  "schedule": [
-    {
-      "start": "2019-02-05T10:00:09-06:00",
-      "end": "2019-03-05T10:00:09-06:00",
-      "times": [
-        "09:00",
-        "17:30"
-      ],
-      "days": [
-        1,
-        3,
-        5
-      ],
-      "method": "message",
-      "tz": "US/Central",
-      "patientId": 372,
-      "contactId": 39,
-      "id": 14,
-      "isCanceled": true,
-      "canceledAt": "string"
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "OK"
+      ]
+    },
+    "schedule": {
+      "type": "array",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "start": {
+                "type": "string",
+                "description": "The start date of the intervention",
+                "example": "2019-02-05T10:00:09-06:00"
+              },
+              "end": {
+                "type": "string",
+                "description": "The end date of the intervention (optional)",
+                "example": "2019-03-05T10:00:09-06:00"
+              },
+              "times": {
+                "type": "array",
+                "description": "The times that the patient would prefer to receive messages (24-hour time)",
+                "example": [
+                  "09:00",
+                  "17:30"
+                ],
+                "items": {
+                  "type": "string"
+                }
+              },
+              "days": {
+                "description": "Days of the week that the sessions will occur (0: Sunday... 6: Saturday)",
+                "example": [
+                  1,
+                  3,
+                  5
+                ],
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 6
+                }
+              },
+              "method": {
+                "type": "string",
+                "description": "The method in which the patient will be contacted.",
+                "enum": [
+                  "message",
+                  "call"
+                ]
+              },
+              "tz": {
+                "type": "string",
+                "description": "The timezone of the schedule",
+                "example": "US/Central"
+              },
+              "patientId": {
+                "type": "integer",
+                "description": "The ID of the patient who will receive the intervention",
+                "example": 1638
+              },
+              "contactId": {
+                "type": "integer",
+                "description": "The ID of the contact that will be assigned to the intervention",
+                "example": 76
+              }
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "example": 14
+              },
+              "isCanceled": {
+                "type": "boolean",
+                "description": "If true, the patient will not longer receive calls/messages"
+              },
+              "canceledAt": {
+                "type": "string",
+                "description": "The time that the schedule was canceled"
+              },
+              "patientId": {
+                "type": "integer",
+                "example": 372,
+                "description": "The ID of the patient"
+              },
+              "contactId": {
+                "type": "integer",
+                "description": "The ID of the contact associated to this schedule",
+                "example": 39
+              }
+            }
+          }
+        ]
+      }
     }
-  ]
+  }
 }
 ```
 
-<h3 id="epxheartfailure:-cancel-an-epxheartfailure-schedule-for-a-patient-responses">Responses</h3>
+<h3 id="post__epxheart_cancel_-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|EpxHeartFailure Schedule Canceled|Inline|
 
-<h3 id="epxheartfailure:-cancel-an-epxheartfailure-schedule-for-a-patient-responseschema">Response Schema</h3>
+<h3 id="post__epxheart_cancel_-responseschema">Response Schema</h3>
 
 Status Code **200**
 
@@ -6486,162 +6315,44 @@ Status Code **200**
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|»» *anonymous*|[ScheduleParams](#schemascheduleparams)|false|none|none|
-|»»» start|string|false|none|The start date of the intervention|
-|»»» end|string|false|none|The end date of the intervention (optional)|
-|»»» times|[string]|false|none|The times that the patient would prefer to receive messages (24-hour time)|
-|»»» days|[integer]|false|none|Days of the week that the sessions will occur (0: Sunday... 6: Saturday)|
-|»»» method|string|false|none|The method in which the patient will be contacted.|
-|»»» tz|string|false|none|The timezone of the schedule|
-|»»» patientId|integer|false|none|The ID of the patient who will receive the intervention|
-|»»» contactId|integer|false|none|The ID of the contact that will be assigned to the intervention|
 
 *and*
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|»» *anonymous*|object|false|none|none|
-|»»» id|integer|false|none|none|
-|»»» isCanceled|boolean|false|none|If true, the patient will not longer receive calls/messages|
-|»»» canceledAt|string|false|none|The time that the schedule was canceled|
-|»»» patientId|integer|false|none|The ID of the patient|
-|»»» contactId|integer|false|none|The ID of the contact associated to this schedule|
 
 #### Enumerated Values
 
 |Property|Value|
 |---|---|
 |status|OK|
-|method|message|
-|method|call|
 
 <aside class="success">
 This operation does not require authentication
 </aside>
 
-## EpxHeartFailure: Get EpxHeartFailure data for a patient
-
-> Code samples
-
-```shell
-curl --request POST \
-  --url https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxheart/data/ \
-  --header 'accept: application/json' \
-  --header 'content-type: application/json' \
-  --data '{"patient":2645}'
-```
-
-```javascript
-var data = JSON.stringify({
-  "patient": 2645
-});
-
-var xhr = new XMLHttpRequest();
-xhr.withCredentials = true;
-
-xhr.addEventListener("readystatechange", function () {
-  if (this.readyState === this.DONE) {
-    console.log(this.responseText);
-  }
-});
-
-xhr.open("POST", "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxheart/data/");
-xhr.setRequestHeader("content-type", "application/json");
-xhr.setRequestHeader("accept", "application/json");
-
-xhr.send(data);
-```
-
-```ruby
-require 'uri'
-require 'net/http'
-
-url = URI("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxheart/data/")
-
-http = Net::HTTP.new(url.host, url.port)
-http.use_ssl = true
-http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-request = Net::HTTP::Post.new(url)
-request["content-type"] = 'application/json'
-request["accept"] = 'application/json'
-request.body = "{\"patient\":2645}"
-
-response = http.request(request)
-puts response.read_body
-```
-
-```python
-import http.client
-
-conn = http.client.HTTPSConnection("virtserver.swaggerhub.com")
-
-payload = "{\"patient\":2645}"
-
-headers = {
-    'content-type': "application/json",
-    'accept': "application/json"
-    }
-
-conn.request("POST", "/EpxHealth/Epharmix/1/epxheart/data/", payload, headers)
-
-res = conn.getresponse()
-data = res.read()
-
-print(data.decode("utf-8"))
-```
-
-```java
-HttpResponse<String> response = Unirest.post("https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxheart/data/")
-  .header("content-type", "application/json")
-  .header("accept", "application/json")
-  .body("{\"patient\":2645}")
-  .asString();
-```
-
-```go
-package main
-
-import (
-	"fmt"
-	"strings"
-	"net/http"
-	"io/ioutil"
-)
-
-func main() {
-
-	url := "https://virtserver.swaggerhub.com/EpxHealth/Epharmix/1/epxheart/data/"
-
-	payload := strings.NewReader("{\"patient\":2645}")
-
-	req, _ := http.NewRequest("POST", url, payload)
-
-	req.Header.Add("content-type", "application/json")
-	req.Header.Add("accept", "application/json")
-
-	res, _ := http.DefaultClient.Do(req)
-
-	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
-
-	fmt.Println(res)
-	fmt.Println(string(body))
-
-}
-```
+## post__epxheart_data_
 
 `POST /epxheart/data/`
+
+*EpxHeartFailure: Get EpxHeartFailure data for a patient*
 
 > Body parameter
 
 ```json
 {
-  "patient": 2645
+  "type": "object",
+  "properties": {
+    "patient": {
+      "type": "integer",
+      "description": "The ID of the patient",
+      "example": 2645
+    }
+  }
 }
 ```
 
-<h3 id="epxheartfailure:-get-epxheartfailure-data-for-a-patient-parameters">Parameters</h3>
+<h3 id="post__epxheart_data_-parameters">Parameters</h3>
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
@@ -6654,52 +6365,177 @@ func main() {
 
 ```json
 {
-  "status": "OK",
-  "sessions": [
-    {
-      "time": "2019-02-15T10:22:09-06:00",
-      "respondedAt": "2019-02-15T10:22:15-55:00",
-      "weight": 190,
-      "dpe": 1,
-      "orthopnea": 1,
-      "edema": 0,
-      "isCanceled": true,
-      "schedule": {
-        "start": "2019-02-05T10:00:09-06:00",
-        "end": "2019-03-05T10:00:09-06:00",
-        "times": [
-          "09:00",
-          "17:30"
-        ],
-        "days": [
-          1,
-          3,
-          5
-        ],
-        "method": "message",
-        "tz": "US/Central",
-        "patientId": 1638,
-        "contactId": 76
-      },
-      "patient": {
-        "firstName": "John",
-        "middleInitial": "M",
-        "lastName": "Smith",
-        "phone": "5551234567",
-        "id": 623
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "OK"
+      ]
+    },
+    "sessions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "time": {
+            "type": "string",
+            "description": "The time of the session",
+            "example": "2019-02-15T10:22:09-06:00"
+          },
+          "respondedAt": {
+            "type": "string",
+            "description": "If set, it is the time that the patient first responded to the session. If null, the patient has not yet responded.",
+            "example": "2019-02-15T10:22:15-55:00"
+          },
+          "weight": {
+            "type": "integer",
+            "description": "The patient's weight, in pounds",
+            "example": 190
+          },
+          "dpe": {
+            "type": "integer",
+            "description": "Patient experiencing dyspnea or pedal edema. -1: worse, 0: same, 1: better",
+            "example": 1
+          },
+          "orthopnea": {
+            "type": "integer",
+            "description": "Patient experiencing orthopnea. -1: worse, 0: same, 1: better",
+            "example": 1
+          },
+          "edema": {
+            "type": "integer",
+            "description": "-1: more, 0: same, 1: less",
+            "example": 0
+          },
+          "isCanceled": {
+            "type": "boolean",
+            "description": "If true, the session was canceled"
+          },
+          "schedule": {
+            "type": "object",
+            "properties": {
+              "start": {
+                "type": "string",
+                "description": "The start date of the intervention",
+                "example": "2019-02-05T10:00:09-06:00"
+              },
+              "end": {
+                "type": "string",
+                "description": "The end date of the intervention (optional)",
+                "example": "2019-03-05T10:00:09-06:00"
+              },
+              "times": {
+                "type": "array",
+                "description": "The times that the patient would prefer to receive messages (24-hour time)",
+                "example": [
+                  "09:00",
+                  "17:30"
+                ],
+                "items": {
+                  "type": "string"
+                }
+              },
+              "days": {
+                "description": "Days of the week that the sessions will occur (0: Sunday... 6: Saturday)",
+                "example": [
+                  1,
+                  3,
+                  5
+                ],
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 6
+                }
+              },
+              "method": {
+                "type": "string",
+                "description": "The method in which the patient will be contacted.",
+                "enum": [
+                  "message",
+                  "call"
+                ]
+              },
+              "tz": {
+                "type": "string",
+                "description": "The timezone of the schedule",
+                "example": "US/Central"
+              },
+              "patientId": {
+                "type": "integer",
+                "description": "The ID of the patient who will receive the intervention",
+                "example": 1638
+              },
+              "contactId": {
+                "type": "integer",
+                "description": "The ID of the contact that will be assigned to the intervention",
+                "example": 76
+              }
+            }
+          },
+          "patient": {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "description": "The first name of the patient.",
+                    "type": "string",
+                    "example": "John"
+                  },
+                  "middleInitial": {
+                    "description": "The middle initial of the patient.",
+                    "type": "string",
+                    "example": "M"
+                  },
+                  "lastName": {
+                    "description": "The last name of the patient.",
+                    "type": "string",
+                    "example": "Smith"
+                  },
+                  "phone": {
+                    "description": "The phone number of the patient.",
+                    "type": "string",
+                    "pattern": "^\\d{10}$",
+                    "example": "5551234567"
+                  }
+                },
+                "required": [
+                  "firstName",
+                  "lastName",
+                  "phone"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "example": 623,
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "id"
+                ]
+              }
+            ]
+          }
+        }
       }
     }
-  ]
+  }
 }
 ```
 
-<h3 id="epxheartfailure:-get-epxheartfailure-data-for-a-patient-responses">Responses</h3>
+<h3 id="post__epxheart_data_-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|EpxHeartFailure Session Data|Inline|
 
-<h3 id="epxheartfailure:-get-epxheartfailure-data-for-a-patient-responseschema">Response Schema</h3>
+<h3 id="post__epxheart_data_-responseschema">Response Schema</h3>
 
 Status Code **200**
 
@@ -6714,41 +6550,22 @@ Status Code **200**
 |»» orthopnea|integer|false|none|Patient experiencing orthopnea. -1: worse, 0: same, 1: better|
 |»» edema|integer|false|none|-1: more, 0: same, 1: less|
 |»» isCanceled|boolean|false|none|If true, the session was canceled|
-|»» schedule|[ScheduleParams](#schemascheduleparams)|false|none|none|
-|»»» start|string|false|none|The start date of the intervention|
-|»»» end|string|false|none|The end date of the intervention (optional)|
-|»»» times|[string]|false|none|The times that the patient would prefer to receive messages (24-hour time)|
-|»»» days|[integer]|false|none|Days of the week that the sessions will occur (0: Sunday... 6: Saturday)|
-|»»» method|string|false|none|The method in which the patient will be contacted.|
-|»»» tz|string|false|none|The timezone of the schedule|
-|»»» patientId|integer|false|none|The ID of the patient who will receive the intervention|
-|»»» contactId|integer|false|none|The ID of the contact that will be assigned to the intervention|
-|»» patient|any|false|none|none|
 
 *allOf*
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|»»» *anonymous*|[PatientParams](#schemapatientparams)|false|none|none|
-|»»»» firstName|string|true|none|The first name of the patient.|
-|»»»» middleInitial|string|false|none|The middle initial of the patient.|
-|»»»» lastName|string|true|none|The last name of the patient.|
-|»»»» phone|string|true|none|The phone number of the patient.|
 
 *and*
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|»»» *anonymous*|object|false|none|none|
-|»»»» id|number|true|none|none|
 
 #### Enumerated Values
 
 |Property|Value|
 |---|---|
 |status|OK|
-|method|message|
-|method|call|
 
 <aside class="success">
 This operation does not require authentication
@@ -6762,10 +6579,35 @@ This operation does not require authentication
 
 ```json
 {
-  "firstName": "John",
-  "middleInitial": "M",
-  "lastName": "Smith",
-  "phone": "5551234567"
+  "type": "object",
+  "properties": {
+    "firstName": {
+      "description": "The first name of the patient.",
+      "type": "string",
+      "example": "John"
+    },
+    "middleInitial": {
+      "description": "The middle initial of the patient.",
+      "type": "string",
+      "example": "M"
+    },
+    "lastName": {
+      "description": "The last name of the patient.",
+      "type": "string",
+      "example": "Smith"
+    },
+    "phone": {
+      "description": "The phone number of the patient.",
+      "type": "string",
+      "pattern": "^\\d{10}$",
+      "example": "5551234567"
+    }
+  },
+  "required": [
+    "firstName",
+    "lastName",
+    "phone"
+  ]
 }
 
 ```
@@ -6785,11 +6627,51 @@ This operation does not require authentication
 
 ```json
 {
-  "firstName": "John",
-  "middleInitial": "M",
-  "lastName": "Smith",
-  "phone": "5551234567",
-  "id": 623
+  "allOf": [
+    {
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "description": "The first name of the patient.",
+          "type": "string",
+          "example": "John"
+        },
+        "middleInitial": {
+          "description": "The middle initial of the patient.",
+          "type": "string",
+          "example": "M"
+        },
+        "lastName": {
+          "description": "The last name of the patient.",
+          "type": "string",
+          "example": "Smith"
+        },
+        "phone": {
+          "description": "The phone number of the patient.",
+          "type": "string",
+          "pattern": "^\\d{10}$",
+          "example": "5551234567"
+        }
+      },
+      "required": [
+        "firstName",
+        "lastName",
+        "phone"
+      ]
+    },
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "example": 623,
+          "type": "number"
+        }
+      },
+      "required": [
+        "id"
+      ]
+    }
+  ]
 }
 
 ```
@@ -6798,16 +6680,7 @@ This operation does not require authentication
 
 *allOf*
 
-|Name|Type|Required|Restrictions|Description|
-|---|---|---|---|---|
-|*anonymous*|[PatientParams](#schemapatientparams)|false|none|none|
-
 *and*
-
-|Name|Type|Required|Restrictions|Description|
-|---|---|---|---|---|
-|*anonymous*|object|false|none|none|
-|» id|number|true|none|none|
 
 <h2 id="tocStriagecategory">TriageCategory</h2>
 
@@ -6815,15 +6688,65 @@ This operation does not require authentication
 
 ```json
 {
-  "page": 0,
-  "limit": 20,
-  "apps": [
-    "epxcopd",
-    "epxdiabetes"
-  ],
-  "order": [
-    "addressedAt",
-    "desc"
+  "type": "object",
+  "properties": {
+    "page": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "limit": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100,
+      "example": 20
+    },
+    "apps": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^epx[a-z]+$"
+      },
+      "minItems": 1,
+      "uniqueItems": true,
+      "example": [
+        "epxcopd",
+        "epxdiabetes"
+      ]
+    },
+    "order": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "string",
+            "enum": [
+              "alerts",
+              "addressedAt",
+              "snoozedUntil",
+              "lastName",
+              "enrollDate"
+            ]
+          },
+          {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ]
+          }
+        ]
+      },
+      "minItems": 1,
+      "maxItems": 2,
+      "example": [
+        "addressedAt",
+        "desc"
+      ]
+    }
+  },
+  "required": [
+    "page",
+    "limit"
   ]
 }
 
@@ -6868,65 +6791,303 @@ This operation does not require authentication
 
 ```json
 {
-  "patients": {
-    "danger": {
-      "page": 0,
-      "limit": 20,
-      "apps": [
-        "epxcopd",
-        "epxdiabetes"
-      ],
-      "order": [
-        "addressedAt",
-        "desc"
-      ]
+  "type": "object",
+  "properties": {
+    "patients": {
+      "type": "object",
+      "properties": {
+        "danger": {
+          "type": "object",
+          "properties": {
+            "page": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100,
+              "example": 20
+            },
+            "apps": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^epx[a-z]+$"
+              },
+              "minItems": 1,
+              "uniqueItems": true,
+              "example": [
+                "epxcopd",
+                "epxdiabetes"
+              ]
+            },
+            "order": {
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "alerts",
+                      "addressedAt",
+                      "snoozedUntil",
+                      "lastName",
+                      "enrollDate"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "asc",
+                      "desc"
+                    ]
+                  }
+                ]
+              },
+              "minItems": 1,
+              "maxItems": 2,
+              "example": [
+                "addressedAt",
+                "desc"
+              ]
+            }
+          },
+          "required": [
+            "page",
+            "limit"
+          ]
+        },
+        "warning": {
+          "type": "object",
+          "properties": {
+            "page": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100,
+              "example": 20
+            },
+            "apps": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^epx[a-z]+$"
+              },
+              "minItems": 1,
+              "uniqueItems": true,
+              "example": [
+                "epxcopd",
+                "epxdiabetes"
+              ]
+            },
+            "order": {
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "alerts",
+                      "addressedAt",
+                      "snoozedUntil",
+                      "lastName",
+                      "enrollDate"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "asc",
+                      "desc"
+                    ]
+                  }
+                ]
+              },
+              "minItems": 1,
+              "maxItems": 2,
+              "example": [
+                "addressedAt",
+                "desc"
+              ]
+            }
+          },
+          "required": [
+            "page",
+            "limit"
+          ]
+        },
+        "success": {
+          "type": "object",
+          "properties": {
+            "page": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100,
+              "example": 20
+            },
+            "apps": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^epx[a-z]+$"
+              },
+              "minItems": 1,
+              "uniqueItems": true,
+              "example": [
+                "epxcopd",
+                "epxdiabetes"
+              ]
+            },
+            "order": {
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "alerts",
+                      "addressedAt",
+                      "snoozedUntil",
+                      "lastName",
+                      "enrollDate"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "asc",
+                      "desc"
+                    ]
+                  }
+                ]
+              },
+              "minItems": 1,
+              "maxItems": 2,
+              "example": [
+                "addressedAt",
+                "desc"
+              ]
+            }
+          },
+          "required": [
+            "page",
+            "limit"
+          ]
+        },
+        "unresponsive": {
+          "type": "object",
+          "properties": {
+            "page": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100,
+              "example": 20
+            },
+            "apps": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^epx[a-z]+$"
+              },
+              "minItems": 1,
+              "uniqueItems": true,
+              "example": [
+                "epxcopd",
+                "epxdiabetes"
+              ]
+            },
+            "order": {
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "alerts",
+                      "addressedAt",
+                      "snoozedUntil",
+                      "lastName",
+                      "enrollDate"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "asc",
+                      "desc"
+                    ]
+                  }
+                ]
+              },
+              "minItems": 1,
+              "maxItems": 2,
+              "example": [
+                "addressedAt",
+                "desc"
+              ]
+            }
+          },
+          "required": [
+            "page",
+            "limit"
+          ]
+        }
+      }
     },
-    "warning": {
-      "page": 0,
-      "limit": 20,
-      "apps": [
-        "epxcopd",
-        "epxdiabetes"
-      ],
-      "order": [
-        "addressedAt",
-        "desc"
-      ]
-    },
-    "success": {
-      "page": 0,
-      "limit": 20,
-      "apps": [
-        "epxcopd",
-        "epxdiabetes"
-      ],
-      "order": [
-        "addressedAt",
-        "desc"
-      ]
-    },
-    "unresponsive": {
-      "page": 0,
-      "limit": 20,
-      "apps": [
-        "epxcopd",
-        "epxdiabetes"
-      ],
-      "order": [
-        "addressedAt",
-        "desc"
+    "alerts": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "example": 20
+        },
+        "unreadOnly": {
+          "type": "boolean",
+          "example": false
+        },
+        "apps": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^epx[a-z]+$"
+          },
+          "minItems": 1,
+          "uniqueItems": true,
+          "example": [
+            "epxdiabetes",
+            "epxheart",
+            "epxcopd"
+          ]
+        },
+        "order": {
+          "type": "string",
+          "pattern": "^(asc)|(desc)$",
+          "example": "desc"
+        }
+      },
+      "required": [
+        "page",
+        "limit"
       ]
     }
-  },
-  "alerts": {
-    "page": 0,
-    "limit": 20,
-    "unreadOnly": false,
-    "apps": [
-      "epxdiabetes",
-      "epxheart"
-    ],
-    "order": "desc"
   }
 }
 
@@ -6937,10 +7098,6 @@ This operation does not require authentication
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |patients|object|false|none|none|
-|» danger|[TriageCategory](#schematriagecategory)|false|none|none|
-|» warning|[TriageCategory](#schematriagecategory)|false|none|none|
-|» success|[TriageCategory](#schematriagecategory)|false|none|none|
-|» unresponsive|[TriageCategory](#schematriagecategory)|false|none|none|
 |alerts|object|false|none|none|
 |» page|integer|true|none|none|
 |» limit|integer|true|none|none|
@@ -6954,123 +7111,502 @@ This operation does not require authentication
 
 ```json
 {
-  "alerts": {
-    "limit": 0,
-    "page": 0,
-    "total": 0,
-    "results": [
-      {
-        "id": 2543,
-        "app": "epxcopd",
-        "body": "Patient Brionna has responded that she is having trouble breathing.",
-        "contact": {
-          "id": 53,
-          "displayName": "Your Nurse Carly",
-          "description": "Dr. Woodward (Internal Medicine)",
-          "email": "string"
+  "type": "object",
+  "properties": {
+    "alerts": {
+      "type": "object",
+      "properties": {
+        "limit": {
+          "type": "integer"
         },
-        "createdAt": "2019-02-01T19:37:00.000Z",
-        "isRead": true,
-        "snoozedAt": "2019-02-18T10:00:00-06:00",
-        "snoozedUntil": "2019-02-25T10:00:09-06:00",
-        "patient": {
-          "firstName": "John",
-          "middleInitial": "M",
-          "lastName": "Smith",
-          "phone": "5551234567",
-          "id": 623
-        }
-      }
-    ]
-  },
-  "contacts": [
-    {
-      "id": 53,
-      "displayName": "Your Nurse Carly",
-      "description": "Dr. Woodward (Internal Medicine)",
-      "email": "string"
-    }
-  ],
-  "patientIds": [
-    0
-  ],
-  "patients": {
-    "danger": {
-      "page": 0,
-      "limit": 0,
-      "total": 0,
-      "results": [
-        {
-          "alerts": [
-            {
-              "id": 2543,
-              "app": "epxcopd",
-              "body": "Patient Brionna has responded that she is having trouble breathing.",
+        "page": {
+          "type": "integer"
+        },
+        "total": {
+          "type": "integer",
+          "description": "The total amount of results without the limit restriction"
+        },
+        "results": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "example": 2543
+              },
+              "app": {
+                "type": "string",
+                "example": "epxcopd"
+              },
+              "body": {
+                "type": "string",
+                "example": "Patient Brionna has responded that she is having trouble breathing."
+              },
               "contact": {
-                "id": 53,
-                "displayName": "Your Nurse Carly",
-                "description": "Dr. Woodward (Internal Medicine)",
-                "email": "string"
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "example": 53
+                  },
+                  "displayName": {
+                    "type": "string",
+                    "example": "Your Nurse Carly",
+                    "description": "The patient-facing name used in text messages/calls"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "Dr. Woodward (Internal Medicine)",
+                    "description": "The internal description to help differentiate contacts"
+                  },
+                  "email": {
+                    "type": "string"
+                  }
+                }
               },
-              "createdAt": "2019-02-01T19:37:00.000Z",
-              "isRead": true,
-              "snoozedAt": "2019-02-18T10:00:00-06:00",
-              "snoozedUntil": "2019-02-25T10:00:09-06:00",
+              "createdAt": {
+                "type": "string",
+                "description": "When the alert was triggered (ISO timestamp)",
+                "example": "2019-02-01T19:37:00.000Z"
+              },
+              "isRead": {
+                "type": "boolean",
+                "description": "True if the alert has been addressed by a user"
+              },
+              "snoozedAt": {
+                "type": "string",
+                "description": "When the alert was snoozed (ISO timestamp)",
+                "example": "2019-02-18T10:00:00-06:00"
+              },
+              "snoozedUntil": {
+                "type": "string",
+                "description": "When the alert will no longer be snoozed (ISO timestamp)",
+                "example": "2019-02-25T10:00:09-06:00"
+              },
               "patient": {
-                "firstName": "John",
-                "middleInitial": "M",
-                "lastName": "Smith",
-                "phone": "5551234567",
-                "id": 623
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "firstName": {
+                        "description": "The first name of the patient.",
+                        "type": "string",
+                        "example": "John"
+                      },
+                      "middleInitial": {
+                        "description": "The middle initial of the patient.",
+                        "type": "string",
+                        "example": "M"
+                      },
+                      "lastName": {
+                        "description": "The last name of the patient.",
+                        "type": "string",
+                        "example": "Smith"
+                      },
+                      "phone": {
+                        "description": "The phone number of the patient.",
+                        "type": "string",
+                        "pattern": "^\\d{10}$",
+                        "example": "5551234567"
+                      }
+                    },
+                    "required": [
+                      "firstName",
+                      "lastName",
+                      "phone"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "example": 623,
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "id"
+                    ]
+                  }
+                ]
               }
             }
-          ],
-          "apps": {
-            "epx{appname}": {
-              "alert": {
-                "total": 8,
-                "unread": 2,
-                "active": 2
-              },
-              "category": 1,
-              "contactId": 81,
-              "engagement": {
-                "responded": 10,
-                "total": 14,
-                "rate": 0.714285
-              },
-              "schedule": {
-                "start": "2019-02-05T10:00:09-06:00",
-                "end": "2019-03-05T10:00:09-06:00",
-                "times": [
-                  "09:00",
-                  "17:30"
-                ],
-                "days": [
-                  1,
-                  3,
-                  5
-                ],
-                "method": "message",
-                "tz": "US/Central",
-                "patientId": 372,
-                "contactId": 39,
-                "id": 14,
-                "isCanceled": true,
-                "canceledAt": "string"
-              }
-            }
-          },
-          "category": 2,
-          "patient": {
-            "firstName": "John",
-            "middleInitial": "M",
-            "lastName": "Smith",
-            "phone": "5551234567",
-            "id": 623
           }
         }
-      ]
+      }
+    },
+    "contacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 53
+          },
+          "displayName": {
+            "type": "string",
+            "example": "Your Nurse Carly",
+            "description": "The patient-facing name used in text messages/calls"
+          },
+          "description": {
+            "type": "string",
+            "example": "Dr. Woodward (Internal Medicine)",
+            "description": "The internal description to help differentiate contacts"
+          },
+          "email": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "patientIds": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "description": "IDs of the patients that are included in the results"
+      }
+    },
+    "patients": {
+      "type": "object",
+      "properties": {
+        "danger": {
+          "type": "object",
+          "properties": {
+            "page": {
+              "type": "integer"
+            },
+            "limit": {
+              "type": "integer"
+            },
+            "total": {
+              "type": "integer"
+            },
+            "results": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "alerts": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 2543
+                        },
+                        "app": {
+                          "type": "string",
+                          "example": "epxcopd"
+                        },
+                        "body": {
+                          "type": "string",
+                          "example": "Patient Brionna has responded that she is having trouble breathing."
+                        },
+                        "contact": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 53
+                            },
+                            "displayName": {
+                              "type": "string",
+                              "example": "Your Nurse Carly",
+                              "description": "The patient-facing name used in text messages/calls"
+                            },
+                            "description": {
+                              "type": "string",
+                              "example": "Dr. Woodward (Internal Medicine)",
+                              "description": "The internal description to help differentiate contacts"
+                            },
+                            "email": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "description": "When the alert was triggered (ISO timestamp)",
+                          "example": "2019-02-01T19:37:00.000Z"
+                        },
+                        "isRead": {
+                          "type": "boolean",
+                          "description": "True if the alert has been addressed by a user"
+                        },
+                        "snoozedAt": {
+                          "type": "string",
+                          "description": "When the alert was snoozed (ISO timestamp)",
+                          "example": "2019-02-18T10:00:00-06:00"
+                        },
+                        "snoozedUntil": {
+                          "type": "string",
+                          "description": "When the alert will no longer be snoozed (ISO timestamp)",
+                          "example": "2019-02-25T10:00:09-06:00"
+                        },
+                        "patient": {
+                          "allOf": [
+                            {
+                              "type": "object",
+                              "properties": {
+                                "firstName": {
+                                  "description": "The first name of the patient.",
+                                  "type": "string",
+                                  "example": "John"
+                                },
+                                "middleInitial": {
+                                  "description": "The middle initial of the patient.",
+                                  "type": "string",
+                                  "example": "M"
+                                },
+                                "lastName": {
+                                  "description": "The last name of the patient.",
+                                  "type": "string",
+                                  "example": "Smith"
+                                },
+                                "phone": {
+                                  "description": "The phone number of the patient.",
+                                  "type": "string",
+                                  "pattern": "^\\d{10}$",
+                                  "example": "5551234567"
+                                }
+                              },
+                              "required": [
+                                "firstName",
+                                "lastName",
+                                "phone"
+                              ]
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "example": 623,
+                                  "type": "number"
+                                }
+                              },
+                              "required": [
+                                "id"
+                              ]
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "apps": {
+                    "type": "object",
+                    "properties": {
+                      "epx{appname}": {
+                        "type": "object",
+                        "properties": {
+                          "alert": {
+                            "type": "object",
+                            "properties": {
+                              "total": {
+                                "type": "integer",
+                                "example": 8,
+                                "description": "The total amount of alerts triggered by this patient in the given timeframe"
+                              },
+                              "unread": {
+                                "type": "integer",
+                                "example": 2,
+                                "description": "The amount of unresolved alerts for the patient in the given timeframe"
+                              },
+                              "active": {
+                                "type": "integer",
+                                "example": 2
+                              }
+                            }
+                          },
+                          "category": {
+                            "type": "integer",
+                            "example": 1,
+                            "description": "The current category for the corresponding app. 1: danger 2: warning 3: success 4: unresponsive 5: empty 6: inactive"
+                          },
+                          "contactId": {
+                            "type": "integer",
+                            "example": 81,
+                            "description": "The ID of the patient's contact for this app"
+                          },
+                          "engagement": {
+                            "type": "object",
+                            "properties": {
+                              "responded": {
+                                "type": "integer",
+                                "description": "The amount of sessions the patient responded to for the corresponding app (in the set timeframe)",
+                                "example": 10
+                              },
+                              "total": {
+                                "type": "integer",
+                                "description": "The total amount of sessions the patient had for the corresponding app (in the set timeframe)",
+                                "example": 14
+                              },
+                              "rate": {
+                                "type": "number",
+                                "example": ".714285",
+                                "description": "The response rate for this app (in the set timeframe)"
+                              }
+                            }
+                          },
+                          "schedule": {
+                            "allOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "start": {
+                                    "type": "string",
+                                    "description": "The start date of the intervention",
+                                    "example": "2019-02-05T10:00:09-06:00"
+                                  },
+                                  "end": {
+                                    "type": "string",
+                                    "description": "The end date of the intervention (optional)",
+                                    "example": "2019-03-05T10:00:09-06:00"
+                                  },
+                                  "times": {
+                                    "type": "array",
+                                    "description": "The times that the patient would prefer to receive messages (24-hour time)",
+                                    "example": [
+                                      "09:00",
+                                      "17:30"
+                                    ],
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "days": {
+                                    "description": "Days of the week that the sessions will occur (0: Sunday... 6: Saturday)",
+                                    "example": [
+                                      1,
+                                      3,
+                                      5
+                                    ],
+                                    "type": "array",
+                                    "items": {
+                                      "type": "integer",
+                                      "minimum": 0,
+                                      "maximum": 6
+                                    }
+                                  },
+                                  "method": {
+                                    "type": "string",
+                                    "description": "The method in which the patient will be contacted.",
+                                    "enum": [
+                                      "message",
+                                      "call"
+                                    ]
+                                  },
+                                  "tz": {
+                                    "type": "string",
+                                    "description": "The timezone of the schedule",
+                                    "example": "US/Central"
+                                  },
+                                  "patientId": {
+                                    "type": "integer",
+                                    "description": "The ID of the patient who will receive the intervention",
+                                    "example": 1638
+                                  },
+                                  "contactId": {
+                                    "type": "integer",
+                                    "description": "The ID of the contact that will be assigned to the intervention",
+                                    "example": 76
+                                  }
+                                }
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "integer",
+                                    "example": 14
+                                  },
+                                  "isCanceled": {
+                                    "type": "boolean",
+                                    "description": "If true, the patient will not longer receive calls/messages"
+                                  },
+                                  "canceledAt": {
+                                    "type": "string",
+                                    "description": "The time that the schedule was canceled"
+                                  },
+                                  "patientId": {
+                                    "type": "integer",
+                                    "example": 372,
+                                    "description": "The ID of the patient"
+                                  },
+                                  "contactId": {
+                                    "type": "integer",
+                                    "description": "The ID of the contact associated to this schedule",
+                                    "example": 39
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "category": {
+                    "type": "integer",
+                    "example": 2,
+                    "description": "The current primary category for the patient (patients can be in more than one category at a time). 1: danger 2: warning 3: success 4: unresponsive 5: empty 6: inactive 7: snoozed 8: completed 9: paused 10: recent"
+                  },
+                  "patient": {
+                    "allOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "firstName": {
+                            "description": "The first name of the patient.",
+                            "type": "string",
+                            "example": "John"
+                          },
+                          "middleInitial": {
+                            "description": "The middle initial of the patient.",
+                            "type": "string",
+                            "example": "M"
+                          },
+                          "lastName": {
+                            "description": "The last name of the patient.",
+                            "type": "string",
+                            "example": "Smith"
+                          },
+                          "phone": {
+                            "description": "The phone number of the patient.",
+                            "type": "string",
+                            "pattern": "^\\d{10}$",
+                            "example": "5551234567"
+                          }
+                        },
+                        "required": [
+                          "firstName",
+                          "lastName",
+                          "phone"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "example": 623,
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "id"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
@@ -7087,9 +7623,6 @@ This operation does not require authentication
 |» total|integer|false|none|The total amount of results without the limit restriction|
 |» results|[[AlertObject](#schemaalertobject)]|false|none|none|
 |contacts|[[ContactObject](#schemacontactobject)]|false|none|none|
-|patientIds|[integer]|false|none|none|
-|patients|object|false|none|none|
-|» danger|[TriageCategoryData](#schematriagecategorydata)|false|none|none|
 
 <h2 id="tocStriagecategorydata">TriageCategoryData</h2>
 
@@ -7097,81 +7630,339 @@ This operation does not require authentication
 
 ```json
 {
-  "page": 0,
-  "limit": 0,
-  "total": 0,
-  "results": [
-    {
-      "alerts": [
-        {
-          "id": 2543,
-          "app": "epxcopd",
-          "body": "Patient Brionna has responded that she is having trouble breathing.",
-          "contact": {
-            "id": 53,
-            "displayName": "Your Nurse Carly",
-            "description": "Dr. Woodward (Internal Medicine)",
-            "email": "string"
+  "type": "object",
+  "properties": {
+    "page": {
+      "type": "integer"
+    },
+    "limit": {
+      "type": "integer"
+    },
+    "total": {
+      "type": "integer"
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "alerts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "example": 2543
+                },
+                "app": {
+                  "type": "string",
+                  "example": "epxcopd"
+                },
+                "body": {
+                  "type": "string",
+                  "example": "Patient Brionna has responded that she is having trouble breathing."
+                },
+                "contact": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "example": 53
+                    },
+                    "displayName": {
+                      "type": "string",
+                      "example": "Your Nurse Carly",
+                      "description": "The patient-facing name used in text messages/calls"
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": "Dr. Woodward (Internal Medicine)",
+                      "description": "The internal description to help differentiate contacts"
+                    },
+                    "email": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "createdAt": {
+                  "type": "string",
+                  "description": "When the alert was triggered (ISO timestamp)",
+                  "example": "2019-02-01T19:37:00.000Z"
+                },
+                "isRead": {
+                  "type": "boolean",
+                  "description": "True if the alert has been addressed by a user"
+                },
+                "snoozedAt": {
+                  "type": "string",
+                  "description": "When the alert was snoozed (ISO timestamp)",
+                  "example": "2019-02-18T10:00:00-06:00"
+                },
+                "snoozedUntil": {
+                  "type": "string",
+                  "description": "When the alert will no longer be snoozed (ISO timestamp)",
+                  "example": "2019-02-25T10:00:09-06:00"
+                },
+                "patient": {
+                  "allOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "firstName": {
+                          "description": "The first name of the patient.",
+                          "type": "string",
+                          "example": "John"
+                        },
+                        "middleInitial": {
+                          "description": "The middle initial of the patient.",
+                          "type": "string",
+                          "example": "M"
+                        },
+                        "lastName": {
+                          "description": "The last name of the patient.",
+                          "type": "string",
+                          "example": "Smith"
+                        },
+                        "phone": {
+                          "description": "The phone number of the patient.",
+                          "type": "string",
+                          "pattern": "^\\d{10}$",
+                          "example": "5551234567"
+                        }
+                      },
+                      "required": [
+                        "firstName",
+                        "lastName",
+                        "phone"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "example": 623,
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "id"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
           },
-          "createdAt": "2019-02-01T19:37:00.000Z",
-          "isRead": true,
-          "snoozedAt": "2019-02-18T10:00:00-06:00",
-          "snoozedUntil": "2019-02-25T10:00:09-06:00",
+          "apps": {
+            "type": "object",
+            "properties": {
+              "epx{appname}": {
+                "type": "object",
+                "properties": {
+                  "alert": {
+                    "type": "object",
+                    "properties": {
+                      "total": {
+                        "type": "integer",
+                        "example": 8,
+                        "description": "The total amount of alerts triggered by this patient in the given timeframe"
+                      },
+                      "unread": {
+                        "type": "integer",
+                        "example": 2,
+                        "description": "The amount of unresolved alerts for the patient in the given timeframe"
+                      },
+                      "active": {
+                        "type": "integer",
+                        "example": 2
+                      }
+                    }
+                  },
+                  "category": {
+                    "type": "integer",
+                    "example": 1,
+                    "description": "The current category for the corresponding app. 1: danger 2: warning 3: success 4: unresponsive 5: empty 6: inactive"
+                  },
+                  "contactId": {
+                    "type": "integer",
+                    "example": 81,
+                    "description": "The ID of the patient's contact for this app"
+                  },
+                  "engagement": {
+                    "type": "object",
+                    "properties": {
+                      "responded": {
+                        "type": "integer",
+                        "description": "The amount of sessions the patient responded to for the corresponding app (in the set timeframe)",
+                        "example": 10
+                      },
+                      "total": {
+                        "type": "integer",
+                        "description": "The total amount of sessions the patient had for the corresponding app (in the set timeframe)",
+                        "example": 14
+                      },
+                      "rate": {
+                        "type": "number",
+                        "example": ".714285",
+                        "description": "The response rate for this app (in the set timeframe)"
+                      }
+                    }
+                  },
+                  "schedule": {
+                    "allOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "start": {
+                            "type": "string",
+                            "description": "The start date of the intervention",
+                            "example": "2019-02-05T10:00:09-06:00"
+                          },
+                          "end": {
+                            "type": "string",
+                            "description": "The end date of the intervention (optional)",
+                            "example": "2019-03-05T10:00:09-06:00"
+                          },
+                          "times": {
+                            "type": "array",
+                            "description": "The times that the patient would prefer to receive messages (24-hour time)",
+                            "example": [
+                              "09:00",
+                              "17:30"
+                            ],
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "days": {
+                            "description": "Days of the week that the sessions will occur (0: Sunday... 6: Saturday)",
+                            "example": [
+                              1,
+                              3,
+                              5
+                            ],
+                            "type": "array",
+                            "items": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 6
+                            }
+                          },
+                          "method": {
+                            "type": "string",
+                            "description": "The method in which the patient will be contacted.",
+                            "enum": [
+                              "message",
+                              "call"
+                            ]
+                          },
+                          "tz": {
+                            "type": "string",
+                            "description": "The timezone of the schedule",
+                            "example": "US/Central"
+                          },
+                          "patientId": {
+                            "type": "integer",
+                            "description": "The ID of the patient who will receive the intervention",
+                            "example": 1638
+                          },
+                          "contactId": {
+                            "type": "integer",
+                            "description": "The ID of the contact that will be assigned to the intervention",
+                            "example": 76
+                          }
+                        }
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 14
+                          },
+                          "isCanceled": {
+                            "type": "boolean",
+                            "description": "If true, the patient will not longer receive calls/messages"
+                          },
+                          "canceledAt": {
+                            "type": "string",
+                            "description": "The time that the schedule was canceled"
+                          },
+                          "patientId": {
+                            "type": "integer",
+                            "example": 372,
+                            "description": "The ID of the patient"
+                          },
+                          "contactId": {
+                            "type": "integer",
+                            "description": "The ID of the contact associated to this schedule",
+                            "example": 39
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "category": {
+            "type": "integer",
+            "example": 2,
+            "description": "The current primary category for the patient (patients can be in more than one category at a time). 1: danger 2: warning 3: success 4: unresponsive 5: empty 6: inactive 7: snoozed 8: completed 9: paused 10: recent"
+          },
           "patient": {
-            "firstName": "John",
-            "middleInitial": "M",
-            "lastName": "Smith",
-            "phone": "5551234567",
-            "id": 623
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "description": "The first name of the patient.",
+                    "type": "string",
+                    "example": "John"
+                  },
+                  "middleInitial": {
+                    "description": "The middle initial of the patient.",
+                    "type": "string",
+                    "example": "M"
+                  },
+                  "lastName": {
+                    "description": "The last name of the patient.",
+                    "type": "string",
+                    "example": "Smith"
+                  },
+                  "phone": {
+                    "description": "The phone number of the patient.",
+                    "type": "string",
+                    "pattern": "^\\d{10}$",
+                    "example": "5551234567"
+                  }
+                },
+                "required": [
+                  "firstName",
+                  "lastName",
+                  "phone"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "example": 623,
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "id"
+                ]
+              }
+            ]
           }
         }
-      ],
-      "apps": {
-        "epx{appname}": {
-          "alert": {
-            "total": 8,
-            "unread": 2,
-            "active": 2
-          },
-          "category": 1,
-          "contactId": 81,
-          "engagement": {
-            "responded": 10,
-            "total": 14,
-            "rate": 0.714285
-          },
-          "schedule": {
-            "start": "2019-02-05T10:00:09-06:00",
-            "end": "2019-03-05T10:00:09-06:00",
-            "times": [
-              "09:00",
-              "17:30"
-            ],
-            "days": [
-              1,
-              3,
-              5
-            ],
-            "method": "message",
-            "tz": "US/Central",
-            "patientId": 372,
-            "contactId": 39,
-            "id": 14,
-            "isCanceled": true,
-            "canceledAt": "string"
-          }
-        }
-      },
-      "category": 2,
-      "patient": {
-        "firstName": "John",
-        "middleInitial": "M",
-        "lastName": "Smith",
-        "phone": "5551234567",
-        "id": 623
       }
     }
-  ]
+  }
 }
 
 ```
@@ -7191,73 +7982,321 @@ This operation does not require authentication
 
 ```json
 {
-  "alerts": [
-    {
-      "id": 2543,
-      "app": "epxcopd",
-      "body": "Patient Brionna has responded that she is having trouble breathing.",
-      "contact": {
-        "id": 53,
-        "displayName": "Your Nurse Carly",
-        "description": "Dr. Woodward (Internal Medicine)",
-        "email": "string"
-      },
-      "createdAt": "2019-02-01T19:37:00.000Z",
-      "isRead": true,
-      "snoozedAt": "2019-02-18T10:00:00-06:00",
-      "snoozedUntil": "2019-02-25T10:00:09-06:00",
-      "patient": {
-        "firstName": "John",
-        "middleInitial": "M",
-        "lastName": "Smith",
-        "phone": "5551234567",
-        "id": 623
+  "type": "object",
+  "properties": {
+    "alerts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 2543
+          },
+          "app": {
+            "type": "string",
+            "example": "epxcopd"
+          },
+          "body": {
+            "type": "string",
+            "example": "Patient Brionna has responded that she is having trouble breathing."
+          },
+          "contact": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "example": 53
+              },
+              "displayName": {
+                "type": "string",
+                "example": "Your Nurse Carly",
+                "description": "The patient-facing name used in text messages/calls"
+              },
+              "description": {
+                "type": "string",
+                "example": "Dr. Woodward (Internal Medicine)",
+                "description": "The internal description to help differentiate contacts"
+              },
+              "email": {
+                "type": "string"
+              }
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "When the alert was triggered (ISO timestamp)",
+            "example": "2019-02-01T19:37:00.000Z"
+          },
+          "isRead": {
+            "type": "boolean",
+            "description": "True if the alert has been addressed by a user"
+          },
+          "snoozedAt": {
+            "type": "string",
+            "description": "When the alert was snoozed (ISO timestamp)",
+            "example": "2019-02-18T10:00:00-06:00"
+          },
+          "snoozedUntil": {
+            "type": "string",
+            "description": "When the alert will no longer be snoozed (ISO timestamp)",
+            "example": "2019-02-25T10:00:09-06:00"
+          },
+          "patient": {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "description": "The first name of the patient.",
+                    "type": "string",
+                    "example": "John"
+                  },
+                  "middleInitial": {
+                    "description": "The middle initial of the patient.",
+                    "type": "string",
+                    "example": "M"
+                  },
+                  "lastName": {
+                    "description": "The last name of the patient.",
+                    "type": "string",
+                    "example": "Smith"
+                  },
+                  "phone": {
+                    "description": "The phone number of the patient.",
+                    "type": "string",
+                    "pattern": "^\\d{10}$",
+                    "example": "5551234567"
+                  }
+                },
+                "required": [
+                  "firstName",
+                  "lastName",
+                  "phone"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "example": 623,
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "id"
+                ]
+              }
+            ]
+          }
+        }
       }
-    }
-  ],
-  "apps": {
-    "epx{appname}": {
-      "alert": {
-        "total": 8,
-        "unread": 2,
-        "active": 2
-      },
-      "category": 1,
-      "contactId": 81,
-      "engagement": {
-        "responded": 10,
-        "total": 14,
-        "rate": 0.714285
-      },
-      "schedule": {
-        "start": "2019-02-05T10:00:09-06:00",
-        "end": "2019-03-05T10:00:09-06:00",
-        "times": [
-          "09:00",
-          "17:30"
-        ],
-        "days": [
-          1,
-          3,
-          5
-        ],
-        "method": "message",
-        "tz": "US/Central",
-        "patientId": 372,
-        "contactId": 39,
-        "id": 14,
-        "isCanceled": true,
-        "canceledAt": "string"
+    },
+    "apps": {
+      "type": "object",
+      "properties": {
+        "epx{appname}": {
+          "type": "object",
+          "properties": {
+            "alert": {
+              "type": "object",
+              "properties": {
+                "total": {
+                  "type": "integer",
+                  "example": 8,
+                  "description": "The total amount of alerts triggered by this patient in the given timeframe"
+                },
+                "unread": {
+                  "type": "integer",
+                  "example": 2,
+                  "description": "The amount of unresolved alerts for the patient in the given timeframe"
+                },
+                "active": {
+                  "type": "integer",
+                  "example": 2
+                }
+              }
+            },
+            "category": {
+              "type": "integer",
+              "example": 1,
+              "description": "The current category for the corresponding app. 1: danger 2: warning 3: success 4: unresponsive 5: empty 6: inactive"
+            },
+            "contactId": {
+              "type": "integer",
+              "example": 81,
+              "description": "The ID of the patient's contact for this app"
+            },
+            "engagement": {
+              "type": "object",
+              "properties": {
+                "responded": {
+                  "type": "integer",
+                  "description": "The amount of sessions the patient responded to for the corresponding app (in the set timeframe)",
+                  "example": 10
+                },
+                "total": {
+                  "type": "integer",
+                  "description": "The total amount of sessions the patient had for the corresponding app (in the set timeframe)",
+                  "example": 14
+                },
+                "rate": {
+                  "type": "number",
+                  "example": ".714285",
+                  "description": "The response rate for this app (in the set timeframe)"
+                }
+              }
+            },
+            "schedule": {
+              "allOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "start": {
+                      "type": "string",
+                      "description": "The start date of the intervention",
+                      "example": "2019-02-05T10:00:09-06:00"
+                    },
+                    "end": {
+                      "type": "string",
+                      "description": "The end date of the intervention (optional)",
+                      "example": "2019-03-05T10:00:09-06:00"
+                    },
+                    "times": {
+                      "type": "array",
+                      "description": "The times that the patient would prefer to receive messages (24-hour time)",
+                      "example": [
+                        "09:00",
+                        "17:30"
+                      ],
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "days": {
+                      "description": "Days of the week that the sessions will occur (0: Sunday... 6: Saturday)",
+                      "example": [
+                        1,
+                        3,
+                        5
+                      ],
+                      "type": "array",
+                      "items": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 6
+                      }
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "The method in which the patient will be contacted.",
+                      "enum": [
+                        "message",
+                        "call"
+                      ]
+                    },
+                    "tz": {
+                      "type": "string",
+                      "description": "The timezone of the schedule",
+                      "example": "US/Central"
+                    },
+                    "patientId": {
+                      "type": "integer",
+                      "description": "The ID of the patient who will receive the intervention",
+                      "example": 1638
+                    },
+                    "contactId": {
+                      "type": "integer",
+                      "description": "The ID of the contact that will be assigned to the intervention",
+                      "example": 76
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "example": 14
+                    },
+                    "isCanceled": {
+                      "type": "boolean",
+                      "description": "If true, the patient will not longer receive calls/messages"
+                    },
+                    "canceledAt": {
+                      "type": "string",
+                      "description": "The time that the schedule was canceled"
+                    },
+                    "patientId": {
+                      "type": "integer",
+                      "example": 372,
+                      "description": "The ID of the patient"
+                    },
+                    "contactId": {
+                      "type": "integer",
+                      "description": "The ID of the contact associated to this schedule",
+                      "example": 39
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
       }
+    },
+    "category": {
+      "type": "integer",
+      "example": 2,
+      "description": "The current primary category for the patient (patients can be in more than one category at a time). 1: danger 2: warning 3: success 4: unresponsive 5: empty 6: inactive 7: snoozed 8: completed 9: paused 10: recent"
+    },
+    "patient": {
+      "allOf": [
+        {
+          "type": "object",
+          "properties": {
+            "firstName": {
+              "description": "The first name of the patient.",
+              "type": "string",
+              "example": "John"
+            },
+            "middleInitial": {
+              "description": "The middle initial of the patient.",
+              "type": "string",
+              "example": "M"
+            },
+            "lastName": {
+              "description": "The last name of the patient.",
+              "type": "string",
+              "example": "Smith"
+            },
+            "phone": {
+              "description": "The phone number of the patient.",
+              "type": "string",
+              "pattern": "^\\d{10}$",
+              "example": "5551234567"
+            }
+          },
+          "required": [
+            "firstName",
+            "lastName",
+            "phone"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "example": 623,
+              "type": "number"
+            }
+          },
+          "required": [
+            "id"
+          ]
+        }
+      ]
     }
-  },
-  "category": 2,
-  "patient": {
-    "firstName": "John",
-    "middleInitial": "M",
-    "lastName": "Smith",
-    "phone": "5551234567",
-    "id": 623
   }
 }
 
@@ -7268,21 +8307,7 @@ This operation does not require authentication
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |alerts|[[AlertObject](#schemaalertobject)]|false|none|none|
-|apps|object|false|none|none|
-|» epx{appname}|object|false|none|none|
-|»» alert|object|false|none|none|
-|»»» total|integer|false|none|The total amount of alerts triggered by this patient in the given timeframe|
-|»»» unread|integer|false|none|The amount of unresolved alerts for the patient in the given timeframe|
-|»»» active|integer|false|none|none|
-|»» category|integer|false|none|The current category for the corresponding app. 1: danger 2: warning 3: success 4: unresponsive 5: empty 6: inactive|
-|»» contactId|integer|false|none|The ID of the patient's contact for this app|
-|»» engagement|object|false|none|none|
-|»»» responded|integer|false|none|The amount of sessions the patient responded to for the corresponding app (in the set timeframe)|
-|»»» total|integer|false|none|The total amount of sessions the patient had for the corresponding app (in the set timeframe)|
-|»»» rate|number|false|none|The response rate for this app (in the set timeframe)|
-|»» schedule|[ScheduleObject](#schemascheduleobject)|false|none|none|
 |» category|integer|false|none|The current primary category for the patient (patients can be in more than one category at a time). 1: danger 2: warning 3: success 4: unresponsive 5: empty 6: inactive 7: snoozed 8: completed 9: paused 10: recent|
-|» patient|[PatientObject](#schemapatientobject)|false|none|none|
 
 <h2 id="tocScontactobject">ContactObject</h2>
 
@@ -7290,10 +8315,26 @@ This operation does not require authentication
 
 ```json
 {
-  "id": 53,
-  "displayName": "Your Nurse Carly",
-  "description": "Dr. Woodward (Internal Medicine)",
-  "email": "string"
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "example": 53
+    },
+    "displayName": {
+      "type": "string",
+      "example": "Your Nurse Carly",
+      "description": "The patient-facing name used in text messages/calls"
+    },
+    "description": {
+      "type": "string",
+      "example": "Dr. Woodward (Internal Medicine)",
+      "description": "The internal description to help differentiate contacts"
+    },
+    "email": {
+      "type": "string"
+    }
+  }
 }
 
 ```
@@ -7313,14 +8354,51 @@ This operation does not require authentication
 
 ```json
 {
-  "tz": "US/Eastern",
-  "displayName": "Your Nurse Carly",
-  "description": "Dr. Woodward (Internal Medicine)",
-  "email": "string",
-  "primaryPhone": "5551234567",
-  "primaryStart": "08:00",
-  "primaryEnd": "string",
-  "notificationPreference": "C"
+  "type": "object",
+  "properties": {
+    "tz": {
+      "type": "string",
+      "example": "US/Eastern"
+    },
+    "displayName": {
+      "type": "string",
+      "example": "Your Nurse Carly",
+      "description": "The patient-facing name used in text messages/calls"
+    },
+    "description": {
+      "type": "string",
+      "example": "Dr. Woodward (Internal Medicine)",
+      "description": "The internal description to help differentiate contacts"
+    },
+    "email": {
+      "type": "string"
+    },
+    "primaryPhone": {
+      "type": "string",
+      "description": "A 10-digit phone number, used to route calls/alerts to the contact.",
+      "example": "5551234567"
+    },
+    "primaryStart": {
+      "type": "string",
+      "description": "The time that the primary phone becomes active. (24-hour time)",
+      "example": "08:00"
+    },
+    "primaryEnd": {
+      "type": "string",
+      "description": "The time that the primary phone is no longer active. (24-hour time)"
+    },
+    "notificationPreference": {
+      "type": "string",
+      "enum": [
+        "C",
+        "T",
+        "P",
+        "E",
+        "O"
+      ],
+      "description": "How the contact would like to be notified. Call, Text, Page, Email, Integration, Off"
+    }
+  }
 }
 
 ```
@@ -7354,25 +8432,108 @@ This operation does not require authentication
 
 ```json
 {
-  "id": 2543,
-  "app": "epxcopd",
-  "body": "Patient Brionna has responded that she is having trouble breathing.",
-  "contact": {
-    "id": 53,
-    "displayName": "Your Nurse Carly",
-    "description": "Dr. Woodward (Internal Medicine)",
-    "email": "string"
-  },
-  "createdAt": "2019-02-01T19:37:00.000Z",
-  "isRead": true,
-  "snoozedAt": "2019-02-18T10:00:00-06:00",
-  "snoozedUntil": "2019-02-25T10:00:09-06:00",
-  "patient": {
-    "firstName": "John",
-    "middleInitial": "M",
-    "lastName": "Smith",
-    "phone": "5551234567",
-    "id": 623
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "example": 2543
+    },
+    "app": {
+      "type": "string",
+      "example": "epxcopd"
+    },
+    "body": {
+      "type": "string",
+      "example": "Patient Brionna has responded that she is having trouble breathing."
+    },
+    "contact": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "example": 53
+        },
+        "displayName": {
+          "type": "string",
+          "example": "Your Nurse Carly",
+          "description": "The patient-facing name used in text messages/calls"
+        },
+        "description": {
+          "type": "string",
+          "example": "Dr. Woodward (Internal Medicine)",
+          "description": "The internal description to help differentiate contacts"
+        },
+        "email": {
+          "type": "string"
+        }
+      }
+    },
+    "createdAt": {
+      "type": "string",
+      "description": "When the alert was triggered (ISO timestamp)",
+      "example": "2019-02-01T19:37:00.000Z"
+    },
+    "isRead": {
+      "type": "boolean",
+      "description": "True if the alert has been addressed by a user"
+    },
+    "snoozedAt": {
+      "type": "string",
+      "description": "When the alert was snoozed (ISO timestamp)",
+      "example": "2019-02-18T10:00:00-06:00"
+    },
+    "snoozedUntil": {
+      "type": "string",
+      "description": "When the alert will no longer be snoozed (ISO timestamp)",
+      "example": "2019-02-25T10:00:09-06:00"
+    },
+    "patient": {
+      "allOf": [
+        {
+          "type": "object",
+          "properties": {
+            "firstName": {
+              "description": "The first name of the patient.",
+              "type": "string",
+              "example": "John"
+            },
+            "middleInitial": {
+              "description": "The middle initial of the patient.",
+              "type": "string",
+              "example": "M"
+            },
+            "lastName": {
+              "description": "The last name of the patient.",
+              "type": "string",
+              "example": "Smith"
+            },
+            "phone": {
+              "description": "The phone number of the patient.",
+              "type": "string",
+              "pattern": "^\\d{10}$",
+              "example": "5551234567"
+            }
+          },
+          "required": [
+            "firstName",
+            "lastName",
+            "phone"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "example": 623,
+              "type": "number"
+            }
+          },
+          "required": [
+            "id"
+          ]
+        }
+      ]
+    }
   }
 }
 
@@ -7385,12 +8546,6 @@ This operation does not require authentication
 |id|integer|false|none|none|
 |app|string|false|none|none|
 |body|string|false|none|none|
-|contact|[ContactObject](#schemacontactobject)|false|none|none|
-|createdAt|string|false|none|When the alert was triggered (ISO timestamp)|
-|isRead|boolean|false|none|True if the alert has been addressed by a user|
-|snoozedAt|string|false|none|When the alert was snoozed (ISO timestamp)|
-|snoozedUntil|string|false|none|When the alert will no longer be snoozed (ISO timestamp)|
-|patient|[PatientObject](#schemapatientobject)|false|none|none|
 
 <h2 id="tocSscheduleparams">ScheduleParams</h2>
 
@@ -7398,21 +8553,67 @@ This operation does not require authentication
 
 ```json
 {
-  "start": "2019-02-05T10:00:09-06:00",
-  "end": "2019-03-05T10:00:09-06:00",
-  "times": [
-    "09:00",
-    "17:30"
-  ],
-  "days": [
-    1,
-    3,
-    5
-  ],
-  "method": "message",
-  "tz": "US/Central",
-  "patientId": 1638,
-  "contactId": 76
+  "type": "object",
+  "properties": {
+    "start": {
+      "type": "string",
+      "description": "The start date of the intervention",
+      "example": "2019-02-05T10:00:09-06:00"
+    },
+    "end": {
+      "type": "string",
+      "description": "The end date of the intervention (optional)",
+      "example": "2019-03-05T10:00:09-06:00"
+    },
+    "times": {
+      "type": "array",
+      "description": "The times that the patient would prefer to receive messages (24-hour time)",
+      "example": [
+        "09:00",
+        "17:30"
+      ],
+      "items": {
+        "type": "string"
+      }
+    },
+    "days": {
+      "description": "Days of the week that the sessions will occur (0: Sunday... 6: Saturday)",
+      "example": [
+        1,
+        3,
+        5
+      ],
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 6
+      }
+    },
+    "method": {
+      "type": "string",
+      "description": "The method in which the patient will be contacted.",
+      "enum": [
+        "message",
+        "call"
+      ]
+    },
+    "tz": {
+      "type": "string",
+      "description": "The timezone of the schedule",
+      "example": "US/Central"
+    },
+    "patientId": {
+      "type": "integer",
+      "description": "The ID of the patient who will receive the intervention",
+      "example": 1638
+    },
+    "contactId": {
+      "type": "integer",
+      "description": "The ID of the contact that will be assigned to the intervention",
+      "example": 76
+    }
+  }
 }
 
 ```
@@ -7443,24 +8644,98 @@ This operation does not require authentication
 
 ```json
 {
-  "start": "2019-02-05T10:00:09-06:00",
-  "end": "2019-03-05T10:00:09-06:00",
-  "times": [
-    "09:00",
-    "17:30"
-  ],
-  "days": [
-    1,
-    3,
-    5
-  ],
-  "method": "message",
-  "tz": "US/Central",
-  "patientId": 372,
-  "contactId": 39,
-  "id": 14,
-  "isCanceled": true,
-  "canceledAt": "string"
+  "allOf": [
+    {
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "string",
+          "description": "The start date of the intervention",
+          "example": "2019-02-05T10:00:09-06:00"
+        },
+        "end": {
+          "type": "string",
+          "description": "The end date of the intervention (optional)",
+          "example": "2019-03-05T10:00:09-06:00"
+        },
+        "times": {
+          "type": "array",
+          "description": "The times that the patient would prefer to receive messages (24-hour time)",
+          "example": [
+            "09:00",
+            "17:30"
+          ],
+          "items": {
+            "type": "string"
+          }
+        },
+        "days": {
+          "description": "Days of the week that the sessions will occur (0: Sunday... 6: Saturday)",
+          "example": [
+            1,
+            3,
+            5
+          ],
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 6
+          }
+        },
+        "method": {
+          "type": "string",
+          "description": "The method in which the patient will be contacted.",
+          "enum": [
+            "message",
+            "call"
+          ]
+        },
+        "tz": {
+          "type": "string",
+          "description": "The timezone of the schedule",
+          "example": "US/Central"
+        },
+        "patientId": {
+          "type": "integer",
+          "description": "The ID of the patient who will receive the intervention",
+          "example": 1638
+        },
+        "contactId": {
+          "type": "integer",
+          "description": "The ID of the contact that will be assigned to the intervention",
+          "example": 76
+        }
+      }
+    },
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "example": 14
+        },
+        "isCanceled": {
+          "type": "boolean",
+          "description": "If true, the patient will not longer receive calls/messages"
+        },
+        "canceledAt": {
+          "type": "string",
+          "description": "The time that the schedule was canceled"
+        },
+        "patientId": {
+          "type": "integer",
+          "example": 372,
+          "description": "The ID of the patient"
+        },
+        "contactId": {
+          "type": "integer",
+          "description": "The ID of the contact associated to this schedule",
+          "example": 39
+        }
+      }
+    }
+  ]
 }
 
 ```
@@ -7469,18 +8744,5 @@ This operation does not require authentication
 
 *allOf*
 
-|Name|Type|Required|Restrictions|Description|
-|---|---|---|---|---|
-|*anonymous*|[ScheduleParams](#schemascheduleparams)|false|none|none|
-
 *and*
-
-|Name|Type|Required|Restrictions|Description|
-|---|---|---|---|---|
-|*anonymous*|object|false|none|none|
-|» id|integer|false|none|none|
-|» isCanceled|boolean|false|none|If true, the patient will not longer receive calls/messages|
-|» canceledAt|string|false|none|The time that the schedule was canceled|
-|» patientId|integer|false|none|The ID of the patient|
-|» contactId|integer|false|none|The ID of the contact associated to this schedule|
 
